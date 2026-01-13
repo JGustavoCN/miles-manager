@@ -1,40 +1,24 @@
-# Guia de Contribuição - Projeto Milhas
+# 👋 Bem-vindo ao Projeto Milhas!
 
-## 📂 Organização de Pastas
-Seguimos a Arquitetura Limpa. Não coloque lógica de banco no Frontend!
-- **Core:** Só classes puras C# (Ex: `Usuario`, `CalculadoraPontos`). Nada de SQL aqui.
-- **Infrastructure:** Só aqui entra o Entity Framework e SQL.
-- **Web:** Aqui ficam as páginas `.razor` e componentes MudBlazor.
+Ficamos felizes com seu interesse em contribuir. Para garantir que nosso time de 3 pessoas trabalhe de forma ágil e sem conflitos, seguimos alguns processos de governança e arquitetura.
 
-## 🤝 Padrão de Commits
-Usamos **Conventional Commits**. Mensagens claras!
-- `feat:` Nova funcionalidade (Ex: `feat: cria tela de login`)
-- `fix:` Correção de erro (Ex: `fix: erro no calculo de pontos`)
-- `docs:` Apenas documentação
-- `style:` Formatação, ponto e vírgula, espaços (sem mudar código)
+## 📚 Leitura Obrigatória
+Antes de abrir seu primeiro Pull Request, por favor leia nosso manual completo:
 
-## 🎨 Linter e Estilo
-O projeto tem um arquivo `.editorconfig`.
-- **NÃO** ignore os avisos amarelos do Visual Studio.
-- Se o código estiver sublinhado, corrija antes de subir.
+👉 **[CLIQUE AQUI PARA LER O MANUAL DE DESENVOLVIMENTO E FLUXO DE TRABALHO](docs/DESENVOLVIMENTO.md)**
 
-## 🚀 Fluxo de Trabalho (Obrigatório)
+Lá você encontrará os detalhes sobre:
+1.  **Git Flow:** Como nomear branches (`feat/`, `fix/`) e commits.
+2.  **Automação:** Palavras-chave obrigatórias (`Closes #123`) para mover cards no Kanban.
+3.  **Arquitetura:** Onde colocar lógica de negócio, EF Core e Views (Clean Arch).
+4.  **Regras de PR:** Por que a `main` é bloqueada e como aprovar código.
 
-### 1. Iniciando uma Tarefa
-1. Vá no Board e escolha uma Issue da coluna **Todo**.
-2. Arraste para **In Progress** e se adicione como *Assignee* (dono).
-3. **Importante:** Verifique se a Issue está na Milestone correta (Swimlane).
+## ⚡ Resumo Rápido (Checklist)
+Se você já leu o manual e precisa apenas relembrar as regras básicas:
 
-### 2. Criando a Branch
-Crie a branch sempre a partir da `main` atualizada.
-Padrão de nome: `tipo/numero-issue-breve-descricao`
-*Exemplos:*
-- `feat/42-tela-login` (Para a Issue #42)
-- `fix/15-erro-calculo` (Para a Issue #15)
+- [ ] A branch sai da `main`: `git checkout -b tipo/numero-issue-nome`
+- [ ] O código segue o `.editorconfig` (sem avisos amarelos)?
+- [ ] O PR tem `Closes #numero-da-issue` na descrição?
+- [ ] Você moveu o card no Board para **In Progress** antes de começar?
 
-### 3. Finalizando (Pull Request)
-1. Abra um **Pull Request (PR)** para a `main`.
-2. **Automação:** Na descrição do PR, você DEVE escrever: `Closes #numero-da-issue`.
-   - *Isso fará o card mover sozinho para Done quando aprovado.*
-3. O card moverá automaticamente para **Review/Testing**.
-4. Avise no grupo para alguém revisar. Só após **1 aprovação** o merge será liberado.
+Dúvidas? Chame no grupo da equipe!
