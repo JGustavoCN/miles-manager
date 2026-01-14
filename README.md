@@ -48,6 +48,15 @@ A organização reflete a separação de responsabilidades exigida para projetos
 └── 📄 README.md                 → Este arquivo.
 
 ```
+---
+
+## 🤝 Como Contribuir
+
+Ficamos felizes com seu interesse em ajudar! Para garantir a qualidade e organização do nosso código, pedimos que leia e respeite atentamente as regras descritas no nosso guia de contribuição:
+
+📄 **[Clique aqui para ler o Guia de Contribuição (CONTRIBUTING.md)](./CONTRIBUTING.md)**
+
+Por favor, certifique-se de seguir os padrões definidos neste arquivo antes de abrir qualquer Pull Request.
 
 ---
 
