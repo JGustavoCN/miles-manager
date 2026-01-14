@@ -1,0 +1,23 @@
+# EditorConfig ajuda os programadores a definir e manter estilos de codificação consistentes entre diferentes editores e IDEs.
+# Mais informações em https://editorconfig.org
+
+# Esta é a configuração raiz, para impedir que o editor procure configurações em pastas acima desta
+root = true
+
+# Definições para TODOS os arquivos
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Ajustes específicos para arquivos Web (HTML, CSS, JS, JSON, YAML)
+# Geralmente usam indentação de 2 espaços
+[*.{html,js,css,scss,json,yml,yaml}]
+indent_size = 2
+
+# O Markdown muitas vezes precisa de espaços no final da linha para quebra de linha
+[*.md]
+trim_trailing_whitespace = false
