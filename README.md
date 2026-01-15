@@ -23,12 +23,12 @@
 
 Utilizamos uma abordagem de **crescimento orgânico** baseada em camadas para garantir manutenibilidade.
 
-| 💻 Camada / Tech | 📘 Descrição Técnica |
-| :--- | :--- |
-| **Frontend (UI)** | **Blazor Server** com **MudBlazor** para componentes ricos, máscaras e responsividade. |
+| 💻 Camada / Tech   | 📘 Descrição Técnica                                                                            |
+| :----------------- | :---------------------------------------------------------------------------------------------- |
+| **Frontend (UI)**  | **Blazor Server** com **MudBlazor** para componentes ricos, máscaras e responsividade.          |
 | **Core (Domínio)** | Regras de negócio puras (C#), dissociadas de frameworks externos (Lógica de cálculo de milhas). |
-| **Infrastructure** | **Entity Framework Core** com **SQL Server** para persistência e Repositories. |
-| **Padronização** | Uso de `.editorconfig` e **Conventional Commits** para governança do código. |
+| **Infrastructure** | **Entity Framework Core** com **SQL Server** para persistência e Repositories.                  |
+| **Padronização**   | Uso de `.editorconfig` e **Conventional Commits** para governança do código.                    |
 
 ---
 
@@ -48,27 +48,30 @@ A organização reflete a separação de responsabilidades exigida para projetos
 └── 📄 README.md                 → Este arquivo.
 
 ```
+
 ---
 
 ## 🤝 Como Contribuir
 
-Ficamos felizes com seu interesse em ajudar! Para garantir a qualidade e organização do nosso código, pedimos que leia e respeite atentamente as regras descritas no nosso guia de contribuição:
+Para manter a qualidade e a padronização do código entre VS Code e Visual Studio, siga estes passos rápidos:
 
-📄 **[Clique aqui para ler o Guia de Contribuição (CONTRIBUTING.md)](./CONTRIBUTING.md)**
+1. **Ambiente:** Ao abrir o projeto no VS Code, aceite a instalação das **Extensões Recomendadas** (janela pop-up no canto inferior direito). Isso garante que o C# Dev Kit e os formatadores funcionem automaticamente.
+2. **Padronização:** Respeite as regras do `.editorconfig` (C# com 4 espaços, Web com 2 espaços).
+3. **Commits:** Use o padrão de **Conventional Commits** (ex: `feat: novo dashboard`, `fix: erro no login`).
 
-Por favor, certifique-se de seguir os padrões definidos neste arquivo antes de abrir qualquer Pull Request.
+Para detalhes completos sobre o fluxo de trabalho (Git Flow, Clean Arch), leia nosso guia oficial:
 
----
+## 📄 **[Manual Completo de Contribuição (CONTRIBUTING.md)](./CONTRIBUTING.md)**
 
 ## ✨ Funcionalidades (Requisitos WEB 2)
 
 O sistema atende aos critérios avaliativos da 2ª Unidade:
 
-* [x] **Gestão de Dados (CRUD):** Cadastro completo de Usuários, Cartões e Compras.
-* [x] **Prevenção de Erros:** Uso de máscaras (CPF, Data, Moeda) e validações robustas (Data Annotations).
-* [x] **Navegabilidade:** Menu lateral responsivo e fluxo de usuário intuitivo.
-* [x] **Inteligência de Negócio:** Dashboard com estatísticas (Média de pontos, Total acumulado).
-* [x] **Feedback Visual:** Alertas de sucesso/erro (Snackbars) e indicadores de carregamento.
+- [x] **Gestão de Dados (CRUD):** Cadastro completo de Usuários, Cartões e Compras.
+- [x] **Prevenção de Erros:** Uso de máscaras (CPF, Data, Moeda) e validações robustas (Data Annotations).
+- [x] **Navegabilidade:** Menu lateral responsivo e fluxo de usuário intuitivo.
+- [x] **Inteligência de Negócio:** Dashboard com estatísticas (Média de pontos, Total acumulado).
+- [x] **Feedback Visual:** Alertas de sucesso/erro (Snackbars) e indicadores de carregamento.
 
 ---
 
@@ -76,11 +79,11 @@ O sistema atende aos critérios avaliativos da 2ª Unidade:
 
 <div align="center">
 
-| Desenvolvedor                                                                                                                                                                               | Descrição                                                                                         | Contato                                                                                                                                                                                                                                                                                                                         |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <img src="https://avatars.githubusercontent.com/u/142621578?v=4" width="90" height="90" style="border-radius:50%"><br><b>José Gustavo C. Nascimento</b><br><sub>Matrícula: 2023004247</sub> | Desenvolvedor Full Stack • Java • .NET • Go (Golang) • Flutter • React • Foco em Engenharia de Software & Alta Performance | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge\&logo=linkedin\&logoColor=white)](https://www.linkedin.com/in/josé-gustavo-correia-nascimento-2100b2377) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/JGustavoCN) |
-| <img src="https://avatars.githubusercontent.com/u/38109358?v=4" width="90" height="90" style="border-radius:50%"><br><b>Jeferson de Souza Andrade</b><br><sub>Matrícula: 2023001405</sub>   | Desenvolvedor Web • FullStack • Node • React • Firebase • IA • Java • PHP • Técnico de Segurança do Trabalho | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge\&logo=linkedin\&logoColor=white)](https://www.linkedin.com/in/dev-jeferson-andrade/?locale=pt_BR) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/jefersonae)        |
-| <img src="https://avatars.githubusercontent.com/u/210615743?v=4" width="90" height="90" style="border-radius:50%"><br><b>Mariano Nascimento Santos</b><br><sub>Matrícula: 2023004069</sub>  | Back-End Developer • Java • Spring Boot • React • Redes de Computadores                           | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge\&logo=linkedin\&logoColor=white)](https://www.linkedin.com/in/mariano-santos-892871272/) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/marianosantts)              |
+| Desenvolvedor                                                                                                                                                                               | Descrição                                                                                                                  | Contato                                                                                                                                                                                                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img src="https://avatars.githubusercontent.com/u/142621578?v=4" width="90" height="90" style="border-radius:50%"><br><b>José Gustavo C. Nascimento</b><br><sub>Matrícula: 2023004247</sub> | Desenvolvedor Full Stack • Java • .NET • Go (Golang) • Flutter • React • Foco em Engenharia de Software & Alta Performance | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/josé-gustavo-correia-nascimento-2100b2377) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JGustavoCN) |
+| <img src="https://avatars.githubusercontent.com/u/38109358?v=4" width="90" height="90" style="border-radius:50%"><br><b>Jeferson de Souza Andrade</b><br><sub>Matrícula: 2023001405</sub>   | Desenvolvedor Web • FullStack • Node • React • Firebase • IA • Java • PHP • Técnico de Segurança do Trabalho               | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/dev-jeferson-andrade/?locale=pt_BR) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/jefersonae)        |
+| <img src="https://avatars.githubusercontent.com/u/210615743?v=4" width="90" height="90" style="border-radius:50%"><br><b>Mariano Nascimento Santos</b><br><sub>Matrícula: 2023004069</sub>  | Back-End Developer • Java • Spring Boot • React • Redes de Computadores                                                    | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mariano-santos-892871272/) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/marianosantts)              |
 
 </div>
 

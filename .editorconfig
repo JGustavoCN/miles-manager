@@ -1,10 +1,9 @@
-# EditorConfig ajuda os programadores a definir e manter estilos de codificação consistentes entre diferentes editores e IDEs.
+# EditorConfig ajuda a manter estilos consistentes entre VS Code e Visual Studio
 # Mais informações em https://editorconfig.org
 
-# Esta é a configuração raiz, para impedir que o editor procure configurações em pastas acima desta
 root = true
 
-# Definições para TODOS os arquivos
+# 1. Configurações Globais (Padrão para C# e a maioria dos arquivos)
 [*]
 charset = utf-8
 indent_style = space
@@ -13,11 +12,18 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# Ajustes específicos para arquivos Web (HTML, CSS, JS, JSON, YAML)
-# Geralmente usam indentação de 2 espaços
+# 2. Configurações para C# e Blazor (Razor)
+# Blazor (.razor) mistura C# e HTML. O padrão do VS é 4 espaços.
+[*.{cs,razor}]
+indent_size = 4
+
+# 3. Arquivos Web "Puros" e Configurações (JSON, YAML, HTML estático)
+# Frontend moderno geralmente usa 2 espaços
 [*.{html,js,css,scss,json,yml,yaml}]
 indent_size = 2
 
-# O Markdown muitas vezes precisa de espaços no final da linha para quebra de linha
-[*.md]
+# 4. Documentação (Markdown)
+# Mantém indentação de 2 espaços e PERMITE espaços em branco no final (para quebra de linha)
+[*.{md,markdown}]
+indent_size = 2
 trim_trailing_whitespace = false
