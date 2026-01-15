@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    // --- OBRIGATÓRIO PARA C# / BLAZOR ---
+    "ms-dotnettools.csdevkit",
+    "ms-dotnettools.csharp",
+
+    // --- PADRONIZAÇÃO ---
+    "editorconfig.editorconfig",
+
+    // --- DOCUMENTAÇÃO (MARKDOWN) ---
+    "esbenp.prettier-vscode",
+    "davidanson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
+    "bierner.markdown-mermaid"
+  ]
+}

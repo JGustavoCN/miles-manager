@@ -1,0 +1,36 @@
+{
+  // --- CORREÇÃO DE REDE ---
+  // Resolve o erro "Hostname/IP does not match certificate" ao baixar schemas
+  "http.proxyStrictSSL": false,
+
+  // --- COMPORTAMENTO GLOBAL ---
+  "editor.formatOnSave": true,
+
+  // --- C# & BLAZOR (Novo!) ---
+  // Garante que o C# Dev Kit formate o código seguindo o .editorconfig
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+  "[razor]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+
+  // --- MARKDOWN ---
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
+
+  // --- JSON ---
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
