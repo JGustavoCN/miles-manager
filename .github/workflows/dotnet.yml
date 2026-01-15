@@ -1,0 +1,32 @@
+# Nome da Action que aparece no GitHub
+name: .NET Build Validation
+
+# Quando isso vai rodar?
+on:
+  push:
+    branches: ['main'] # Quando der push direto na main (raro, pois está bloqueada)
+  pull_request:
+    branches: ['main'] # A CADA Pull Request para a main (O mais importante)
+
+jobs:
+  build:
+    # O computador virtual que o GitHub vai usar (Linux é mais rápido e barato)
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. O Robô baixa o seu código
+      - uses: actions/checkout@v4
+
+      # 2. O Robô instala o .NET 9 (igual ao seu Directory.Build.props)
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      # 3. O Robô tenta baixar as dependências (Bibliotecas)
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # 4. O Robô tenta compilar o projeto (Se falhar aqui, o PR fica vermelho)
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
