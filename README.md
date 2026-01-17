@@ -6,16 +6,24 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/.NET-8.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Blazor-MudBlazor-7722FF?style=for-the-badge&logo=blazor&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Entity_Framework-Core-6DB33F?style=for-the-badge&logo=nuget&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Clean_Architecture-Onion-000000?style=for-the-badge&logo=csharp&logoColor=white"/>
+  <img src="https://img.shields.io/badge/.NET-8.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt="Badge .NET 8.0"/>
+  <img src="https://img.shields.io/badge/Blazor-MudBlazor-7722FF?style=for-the-badge&logo=blazor&logoColor=white" alt="Badge Blazor e MudBlazor"/>
+  <img src="https://img.shields.io/badge/Entity_Framework-Core-6DB33F?style=for-the-badge&logo=nuget&logoColor=white" alt="Badge Entity Framework Core"/>
+  <img src="https://img.shields.io/badge/Clean_Architecture-Onion-000000?style=for-the-badge&logo=csharp&logoColor=white" alt="Badge Clean Architecture"/>
 </p>
 
 ---
 
 > 🎯 **Projeto Acadêmico** focado no gerenciamento de cartões de crédito e programas de milhas.
 > Desenvolvido sobre os pilares da **Clean Architecture**, este sistema visa resolver o problema de dispersão de pontos entre múltiplos programas de fidelidade, oferecendo um dashboard unificado e cálculo automático de pontuação.
+
+---
+
+## 📄 Documentação e Relatórios
+
+A documentação técnica do projeto, incluindo levantamento de requisitos, diagramas UML e especificações de implementação (ABNT), é mantida no Overleaf.
+
+> **[Clique aqui para acessar o Relatório Completo (PDF)](https://pt.overleaf.com/read/xbsrktrhmdkq#f9ca28)** > _Link de leitura (Não requer login)_
 
 ---
 
@@ -79,11 +87,11 @@ O sistema atende aos critérios avaliativos da 2ª Unidade:
 
 <div align="center">
 
-| Desenvolvedor                                                                                                                                                                               | Descrição                                                                                                                  | Contato                                                                                                                                                                                                                                                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <img src="https://avatars.githubusercontent.com/u/142621578?v=4" width="90" height="90" style="border-radius:50%"><br><b>José Gustavo C. Nascimento</b><br><sub>Matrícula: 2023004247</sub> | Desenvolvedor Full Stack • Java • .NET • Go (Golang) • Flutter • React • Foco em Engenharia de Software & Alta Performance | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/josé-gustavo-correia-nascimento-2100b2377) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JGustavoCN) |
-| <img src="https://avatars.githubusercontent.com/u/38109358?v=4" width="90" height="90" style="border-radius:50%"><br><b>Jeferson de Souza Andrade</b><br><sub>Matrícula: 2023001405</sub>   | Desenvolvedor Web • FullStack • Node • React • Firebase • IA • Java • PHP • Técnico de Segurança do Trabalho               | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/dev-jeferson-andrade/?locale=pt_BR) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/jefersonae)        |
-| <img src="https://avatars.githubusercontent.com/u/210615743?v=4" width="90" height="90" style="border-radius:50%"><br><b>Mariano Nascimento Santos</b><br><sub>Matrícula: 2023004069</sub>  | Back-End Developer • Java • Spring Boot • React • Redes de Computadores                                                    | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mariano-santos-892871272/) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/marianosantts)              |
+| Desenvolvedor                                                                                                                                                                                                       | Descrição                                                                                                                  | Contato                                                                                                                                                                                                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img src="https://avatars.githubusercontent.com/u/142621578?v=4" width="90" height="90" style="border-radius:50%" alt="José Gustavo"><br><b>José Gustavo C. Nascimento</b><br><sub>Matrícula: 2023004247</sub>      | Desenvolvedor Full Stack • Java • .NET • Go (Golang) • Flutter • React • Foco em Engenharia de Software & Alta Performance | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/josé-gustavo-correia-nascimento-2100b2377) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JGustavoCN) |
+| <img src="https://avatars.githubusercontent.com/u/38109358?v=4" width="90" height="90" style="border-radius:50%" alt="Jeferson de Souza"><br><b>Jeferson de Souza Andrade</b><br><sub>Matrícula: 2023001405</sub>   | Desenvolvedor Web • FullStack • Node • React • Firebase • IA • Java • PHP • Técnico de Segurança do Trabalho               | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/dev-jeferson-andrade/?locale=pt_BR) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/jefersonae)        |
+| <img src="https://avatars.githubusercontent.com/u/210615743?v=4" width="90" height="90" style="border-radius:50%" alt="Mariano Nascimento"><br><b>Mariano Nascimento Santos</b><br><sub>Matrícula: 2023004069</sub> | Back-End Developer • Java • Spring Boot • React • Redes de Computadores                                                    | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mariano-santos-892871272/) [![GitHub](https://img.shields.io/badge/GitHub-24292F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/marianosantts)              |
 
 </div>
 
