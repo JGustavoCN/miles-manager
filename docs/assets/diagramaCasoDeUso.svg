@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="644px" preserveAspectRatio="none" style="width:756px;height:644px;background:#FFFFFF;" version="1.1" viewBox="0 0 756 644" width="756px" zoomAndPan="magnify"><defs/><g><!--MD5=[17485923fc5ab9ea9076363cf331e95f]
+cluster Miles Manager (Sistema de Gestão)--><g id="cluster_Miles Manager (Sistema de Gestão)"><rect fill="none" height="631" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="645" x="105" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="278" x="288.5" y="21.9951">Miles Manager (Sistema de Gestão)</text></g><g id="elem_RF001"><ellipse cx="249.564" cy="70.1128" fill="#F1F1F1" rx="128.564" ry="28.1128" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="177" x="158.064" y="65.7119">Autenticar Usuário (Login)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="216.564" y="82.0088">(RF-001)</text></g><g id="elem_RF009"><ellipse cx="249.6493" cy="159.0551" fill="#F1F1F1" rx="75.1493" ry="26.0551" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="90" x="203.3211" y="154.1778">Fazer Logout</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="218.3211" y="170.4746">(RF-009)</text></g><g id="elem_RF002"><ellipse cx="249.2873" cy="246.1211" fill="#F1F1F1" rx="85.2873" ry="26.1211" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="194.2873" y="241.7203">Manter Usuário</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="216.2873" y="258.0171">(RF-002)</text></g><g id="elem_RF003"><ellipse cx="249.7406" cy="333.1307" fill="#F1F1F1" rx="86.7406" ry="26.1307" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="106" x="193.7406" y="328.7298">Manter Cartões</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="216.7406" y="345.0267">(RF-003)</text></g><g id="elem_RF004"><ellipse cx="249.2747" cy="420.2112" fill="#F1F1F1" rx="101.2747" ry="26.2112" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126" x="183.2747" y="415.8103">Manter Programas</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="216.2747" y="432.1072">(RF-004)</text></g><g id="elem_RF005"><ellipse cx="249.4957" cy="507.2493" fill="#F1F1F1" rx="109.9957" ry="26.2493" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="138" x="177.4957" y="502.8484">Registrar Transação</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="216.4957" y="519.1453">(RF-005)</text></g><g id="elem_RF007"><ellipse cx="249.3563" cy="594.7662" fill="#F1F1F1" rx="114.3563" ry="26.2662" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144" x="174.3563" y="590.3653">Visualizar Dashboard</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="216.3563" y="606.6621">(RF-007)</text></g><g id="elem_RF006"><ellipse cx="617.5366" cy="506.7741" fill="#F1F1F1" rx="116.5366" ry="26.2741" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="147" x="541.0366" y="502.3732">Calcular Pontos Auto.</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="584.5366" y="518.6701">(RF-006)</text></g><g id="elem_RF008"><ellipse cx="617.5262" cy="363.0697" fill="#F1F1F1" rx="78.0262" ry="26.0697" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="94" x="568.1883" y="358.4868">Validar Dados</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="585.1883" y="374.7837">(RF-008)</text></g><!--MD5=[ee0fec323975fbe97ba28321ad4c4bf3]
+entity U--><g id="elem_U"><ellipse cx="32" cy="303.5" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M32,311.5 L32,338.5 M19,319.5 L45,319.5 M32,338.5 L19,353.5 M32,338.5 L45,353.5 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52" x="6" y="367.9951">Usuário</text></g><!--MD5=[26d50d77f4df1d83911d8319bc151cd6]
+link U to RF001--><g id="link_U_RF001"><path d="M33.6,294.77 C36.46,246.37 48.69,163.47 97,115 C108.76,103.2 123.47,94.47 139.06,88.01 " fill="none" id="U-to-RF001" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="143.92,86.08,134.0792,85.6825,139.2727,87.9246,137.0306,93.1182,143.92,86.08" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[8699d87dee67e3ee3ac3155b06eea85e]
+link U to RF009--><g id="link_U_RF009"><path d="M42.4,294.96 C51.59,265.52 68.46,225.87 97,202 C118.14,184.32 146.11,173.9 172.26,167.76 " fill="none" id="U-to-RF009" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="177.47,166.59,167.81,164.6706,172.5928,167.6913,169.5721,172.4741,177.47,166.59" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[ae35b462722910816051c3704ba958b7]
+link U to RF002--><g id="link_U_RF002"><path d="M58.3,312.77 C69.62,304.48 83.46,295.37 97,289 C121.12,277.66 148.85,268.72 173.93,262 " fill="none" id="U-to-RF002" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="178.91,260.68,169.1881,259.1036,174.0748,261.9532,171.2252,266.8399,178.91,260.68" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[99d74616f3d63a7deb9079a9fc24e843]
+link U to RF003--><g id="link_U_RF003"><path d="M58.14,333 C82.59,333 121.21,333 157.3,333 " fill="none" id="U-to-RF003" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="162.6,333,153.6,329,157.6,333,153.6,337,162.6,333" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[935d762e674a46c558ed2a8a491af18a]
+link U to RF004--><g id="link_U_RF004"><path d="M58.08,352.49 C69.47,360.63 83.42,369.65 97,376 C119.12,386.34 144.21,394.81 167.52,401.47 " fill="none" id="U-to-RF004" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="172.46,402.86,164.8829,396.5681,167.6476,401.5034,162.7123,404.268,172.46,402.86" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[a7297bf7ea76605268173e8f43265fd0]
+link U to RF005--><g id="link_U_RF005"><path d="M42.61,371.01 C51.89,400.16 68.76,439.31 97,463 C112.48,475.98 131.61,485.14 151.01,491.59 " fill="none" id="U-to-RF005" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="155.94,493.17,148.5773,486.6286,151.1756,491.6534,146.1507,494.2517,155.94,493.17" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[9a36fce9fc21c636b8e05684b2d71c7a]
+link U to RF007--><g id="link_U_RF007"><path d="M33.66,371.06 C36.57,419.24 48.86,501.77 97,550 C110.46,563.49 127.78,572.97 145.86,579.63 " fill="none" id="U-to-RF007" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="150.98,581.43,143.8158,574.6717,146.2629,579.7719,141.1628,582.219,150.98,581.43" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[d851b70a7beaeac1b43eb0fe373fe614]
+link RF005 to RF006--><g id="link_RF005_RF006"><path d="M359.29,508.67 C394.89,509.04 434.63,509.25 471,509 C479.05,508.94 487.36,508.87 495.73,508.79 " fill="none" id="RF005-to-RF006" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="500.94,508.73,491.906,504.8073,495.9402,508.7729,491.9746,512.807,500.94,508.73" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="61" x="409" y="505.0669">«include»</text></g><!--MD5=[4bb5fb3f55b977fe14fc5a7d0c03eb38]
+link RF002 to RF008--><g id="link_RF002_RF008"><path d="M309.3,264.8 C376.89,286.4 487.27,321.69 555.69,343.56 " fill="none" id="RF002-to-RF008" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="560.54,345.11,553.1716,338.5749,555.7742,343.5975,550.7517,346.2001,560.54,345.11" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="61" x="409" y="294.0669">«include»</text></g><!--MD5=[188133f66c2dcb7ee6005b5569dca007]
+link RF003 to RF008--><g id="link_RF003_RF008"><path d="M333.09,339.77 C394,344.76 476.4,351.52 536.65,356.45 " fill="none" id="RF003-to-RF008" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="541.67,356.87,533.0187,352.1631,536.686,356.4701,532.3789,360.1374,541.67,356.87" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="61" x="409" y="343.0669">«include»</text></g><!--MD5=[bc920855374509d411dd564bb6a3a5fa]
+link RF004 to RF008--><g id="link_RF004_RF008"><path d="M336.77,406.56 C398.96,396.88 482.05,383.94 541.48,374.68 " fill="none" id="RF004-to-RF008" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="546.44,373.91,536.9381,371.3188,541.4976,374.6671,538.1494,379.2266,546.44,373.91" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="61" x="409" y="383.0669">«include»</text></g><!--MD5=[a203813c9baee2910273c85977b08591]
+link RF005 to RF008--><g id="link_RF005_RF008"><path d="M314.35,485.87 C334.78,478.87 357.44,470.85 378,463 C443.09,438.15 516.9,406.69 564.94,385.76 " fill="none" id="RF005-to-RF008" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="569.8,383.64,559.9514,383.5715,565.2169,385.6388,563.1495,390.9044,569.8,383.64" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="61" x="409" y="423.0669">«include»</text></g><!--MD5=[1947b0fa9b2bc0ea4f355967512eecf6]
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+' Definição do Ator conforme documento
+actor "Usuário" as U 
+
+package "Miles Manager (Sistema de Gestão)" {
+    ' Autenticação e Segurança
+    usecase "Autenticar Usuário (Login)\n(RF-001)" as RF001
+    usecase "Fazer Logout\n(RF-009)" as RF009
+    
+    ' CRUDs (Manter)
+    usecase "Manter Usuário\n(RF-002)" as RF002
+    usecase "Manter Cartões\n(RF-003)" as RF003
+    usecase "Manter Programas\n(RF-004)" as RF004
+    
+    ' Processos de Negócio
+    usecase "Registrar Transação\n(RF-005)" as RF005
+    usecase "Visualizar Dashboard\n(RF-007)" as RF007
+    
+    ' Funcionalidades Internas (Reutilizáveis)
+    usecase "Calcular Pontos Auto.\n(RF-006)" as RF006
+    usecase "Validar Dados\n(RF-008)" as RF008
+}
+
+' Interações do Ator (Usuário inicia estes processos)
+U - -> RF001
+U - -> RF009
+U - -> RF002
+U - -> RF003
+U - -> RF004
+U - -> RF005
+U - -> RF007
+
+' Relacionamentos de Inclusão (Obrigatórios)
+' O cálculo é parte obrigatória do registro da transação [RF-006]
+RF005 ..> RF006 : <<include>>
+
+' A validação é obrigatória em todos os formulários [RF-008]
+RF002 ..> RF008 : <<include>>
+RF003 ..> RF008 : <<include>>
+RF004 ..> RF008 : <<include>>
+RF005 ..> RF008 : <<include>>
+@enduml
+
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Usuário" as U 
+
+package "Miles Manager (Sistema de Gestão)" {
+    usecase "Autenticar Usuário (Login)\n(RF-001)" as RF001
+    usecase "Fazer Logout\n(RF-009)" as RF009
+    
+    usecase "Manter Usuário\n(RF-002)" as RF002
+    usecase "Manter Cartões\n(RF-003)" as RF003
+    usecase "Manter Programas\n(RF-004)" as RF004
+    
+    usecase "Registrar Transação\n(RF-005)" as RF005
+    usecase "Visualizar Dashboard\n(RF-007)" as RF007
+    
+    usecase "Calcular Pontos Auto.\n(RF-006)" as RF006
+    usecase "Validar Dados\n(RF-008)" as RF008
+}
+
+U - -> RF001
+U - -> RF009
+U - -> RF002
+U - -> RF003
+U - -> RF004
+U - -> RF005
+U - -> RF007
+
+RF005 ..> RF006 : <<include>>
+
+RF002 ..> RF008 : <<include>>
+RF003 ..> RF008 : <<include>>
+RF004 ..> RF008 : <<include>>
+RF005 ..> RF008 : <<include>>
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 17:01:30 UTC 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>
