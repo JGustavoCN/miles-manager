@@ -1,0 +1,57 @@
+@startuml diagramaObjetos
+!theme plain
+skinparam objectBackgroundColor LightYellow
+skinparam objectBorderColor Black
+skinparam objectFontSize 12
+skinparam objectAttributeFontSize 11
+
+title Diagrama de Objetos - Cenário: "José compra um Livro na Amazon usando seu cartão Nubank"
+
+' Instâncias dos Objetos
+object "u1: Usuario" as u1 {
+    Nome = "José"
+    Email = "jose@email.com"
+    Senha = "********"
+}
+
+object "p1: ProgramaFidelidade" as p1 {
+    Nome = "Livelo"
+    Banco = "Bradesco"
+    FatorConversao = 1.0
+}
+
+object "c1: Cartao" as c1 {
+    Nome = "Nubank Ultravioleta"
+    Bandeira = "Mastercard"
+    Limite = 5000.00
+    FatorPontos = 1.0
+    DiaVencimento = 15
+}
+
+object "t1: Transacao" as t1 {
+    Descricao = "Livro - Amazon"
+    Valor = 100.00
+    Categoria = "Educação"
+    Data = "2024-01-15"
+    PontosGerados = 100.0
+}
+
+' Relacionamentos (Links)
+u1 "1" -- "1..*" c1 : possui >
+c1 "1" -- "1" p1 : pontua em >
+c1 "1" -- "0..*" t1 : registra >
+
+note right of t1
+  **Cálculo de Pontos:**
+  Valor R$ 100,00 × Fator 1.0 
+  = 100 pontos na Livelo
+end note
+
+note left of u1
+  **Cenário de Teste:**
+  O usuário José usa seu cartão 
+  Nubank (vinculado à Livelo) 
+  para comprar um Livro na Amazon
+end note
+
+@enduml

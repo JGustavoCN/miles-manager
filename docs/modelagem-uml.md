@@ -59,3 +59,61 @@ _Estes casos descrevem processos internos reutilizáveis (Includes)._
 
 **[CLIQUE AQUI PARA VER O UC-08 (Validar Dados)](casos-de-uso/UC-08.md)**
 **[CLIQUE AQUI PARA VER O UC-09 (Calcular Pontos)](casos-de-uso/UC-09.md)**
+
+## Diagrama de Objetos
+
+O diagrama de objetos apresenta um **snapshot** (instante) do sistema em execução, mostrando objetos concretos e seus relacionamentos em um cenário real de uso. Este diagrama serve como validação do modelo de classes e como base para a criação dos dados de teste (seed data) no banco de dados.
+
+### Cenário Representado
+
+**"O usuário José usa seu cartão Nubank (vinculado à Livelo) para comprar um Livro na Amazon"**
+
+Este cenário demonstra o fluxo completo de dados do sistema:
+
+1. Um **Usuário** (José) possui um ou mais **Cartões** cadastrados
+2. Cada **Cartão** está vinculado a um **Programa de Fidelidade** (Livelo)
+3. As **Transações** de compra são registradas e associadas ao cartão utilizado
+4. O sistema calcula automaticamente os **pontos gerados** com base no valor da transação e no fator de conversão
+
+![Diagrama de Objetos](assets/diagramaObjetos.svg)
+
+### Instâncias Representadas
+
+#### u1: Usuario
+- **Nome:** José
+- **Email:** jose@email.com
+- **Senha:** ******** (ocultada por segurança)
+
+#### p1: ProgramaFidelidade
+- **Nome:** Livelo
+- **Banco:** Bradesco
+- **FatorConversao:** 1.0
+
+#### c1: Cartao
+- **Nome:** Nubank Ultravioleta
+- **Bandeira:** Mastercard
+- **Limite:** R$ 5.000,00
+- **FatorPontos:** 1.0
+- **DiaVencimento:** 15
+
+#### t1: Transacao
+- **Descricao:** Livro - Amazon
+- **Valor:** R$ 100,00
+- **Categoria:** Educação
+- **Data:** 15/01/2024
+- **PontosGerados:** 100 pontos
+
+### Relacionamentos (Links)
+
+- **Usuario → Cartao:** Um usuário pode possuir um ou mais cartões (1..*)
+- **Cartao → ProgramaFidelidade:** Cada cartão pontua em exatamente um programa de fidelidade (1)
+- **Cartao → Transacao:** Um cartão pode ter zero ou mais transações registradas (0..*)
+
+### Cálculo de Pontos Demonstrado
+
+No exemplo apresentado:
+- Valor da transação: **R$ 100,00**
+- Fator do cartão: **1.0**
+- **Pontos gerados: 100,00 × 1.0 = 100 pontos na Livelo**
+
+Este diagrama valida que as classes definidas no modelo conseguem suportar um fluxo de dados completo e demonstra como os dados serão estruturados no sistema real.
