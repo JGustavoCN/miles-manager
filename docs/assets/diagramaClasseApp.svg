@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="1208.7px" preserveAspectRatio="none" style="width:1669px;height:1208px;background:#FFFFFF;" version="1.1" viewBox="0 0 1669 1208" width="1669.5px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="23.6672" id="_title" style="stroke:none;stroke-width:0.9;" width="442.8" x="607.05" y="4.5"/><text fill="#000000" font-family="sans-serif" font-size="12.6" font-weight="bold" lengthAdjust="spacing" textLength="433.8" x="611.55" y="20.6956">Diagrama de Classes Unificado - Miles.Application (Completo)</text><!--MD5=[65c2e0724ac9d564fd7d741d9ee0fc8c]
+cluster Miles.Core (Referências)--><g id="cluster_Miles.Core (Referências)"><rect fill="#DDDDDD" height="100.8" rx="2.25" ry="2.25" style="stroke:#000000;stroke-width:1.35;" width="1395" x="269.1" y="1102.7672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" font-weight="bold" lengthAdjust="spacing" textLength="174.6" x="879.3" y="1116.2628">Miles.Core (Referências)</text></g><!--MD5=[0071ff25bc134a586a31104211cded2f]
+cluster Miles.Application--><g id="cluster_Miles.Application"><rect fill="none" height="1018.8" rx="2.25" ry="2.25" style="stroke:#000000;stroke-width:1.35;" width="1145.7" x="6.3" y="39.8672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" font-weight="bold" lengthAdjust="spacing" textLength="118.8" x="519.75" y="53.3628">Miles.Application</text></g><!--MD5=[a160cbe32fb273f795fc554267a49ac0]
+class IUsuarioRepository--><g id="elem_IUsuarioRepository"><rect codeLine="23" fill="#F1F1F1" height="38.0672" id="IUsuarioRepository" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="121.5" x="1527.75" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" font-style="italic" lengthAdjust="spacing" textLength="116.1" x="1530.45" y="1167.5628">IUsuarioRepository</text><line style="stroke:#181818;stroke-width:0.45;" x1="1528.65" x2="1648.35" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="1528.65" x2="1648.35" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[94577ad630aacadfcf72cecd32dcd6ae]
+class ITransacaoRepository--><g id="elem_ITransacaoRepository"><rect codeLine="24" fill="#F1F1F1" height="38.0672" id="ITransacaoRepository" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="139.5" x="586.35" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" font-style="italic" lengthAdjust="spacing" textLength="134.1" x="589.05" y="1167.5628">ITransacaoRepository</text><line style="stroke:#181818;stroke-width:0.45;" x1="587.25" x2="724.95" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="587.25" x2="724.95" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[9ed9880ab1a847ba7376a76aabd09c63]
+class ICartaoRepository--><g id="elem_ICartaoRepository"><rect codeLine="25" fill="#F1F1F1" height="38.0672" id="ICartaoRepository" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="115.2" x="744.3" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" font-style="italic" lengthAdjust="spacing" textLength="109.8" x="747" y="1167.5628">ICartaoRepository</text><line style="stroke:#181818;stroke-width:0.45;" x1="745.2" x2="858.6" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="745.2" x2="858.6" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[67ebacf0dca4b5ed55355db12e047e22]
+class IProgramaRepository--><g id="elem_IProgramaRepository"><rect codeLine="26" fill="#F1F1F1" height="38.0672" id="IProgramaRepository" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="134.1" x="877.95" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" font-style="italic" lengthAdjust="spacing" textLength="128.7" x="880.65" y="1167.5628">IProgramaRepository</text><line style="stroke:#181818;stroke-width:0.45;" x1="878.85" x2="1011.15" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="878.85" x2="1011.15" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[313ba3a844c03017492c0d446c25ca44]
+class ITransacaoFactory--><g id="elem_ITransacaoFactory"><rect codeLine="27" fill="#F1F1F1" height="38.0672" id="ITransacaoFactory" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="117.9" x="283.95" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" font-style="italic" lengthAdjust="spacing" textLength="112.5" x="286.65" y="1167.5628">ITransacaoFactory</text><line style="stroke:#181818;stroke-width:0.45;" x1="284.85" x2="400.95" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="284.85" x2="400.95" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[d38b7d91589a912b23fba6e2f44c50f1]
+class ICalculoPontosStrategy--><g id="elem_ICalculoPontosStrategy"><rect codeLine="28" fill="#F1F1F1" height="38.0672" id="ICalculoPontosStrategy" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="148.5" x="419.85" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" font-style="italic" lengthAdjust="spacing" textLength="143.1" x="422.55" y="1167.5628">ICalculoPontosStrategy</text><line style="stroke:#181818;stroke-width:0.45;" x1="420.75" x2="567.45" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="420.75" x2="567.45" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[35a64b983c79880384a2fd9b61f0c24b]
+class Usuario--><g id="elem_Usuario"><rect codeLine="31" fill="#F1F1F1" height="38.0672" id="Usuario" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="52.2" x="1223.1" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="46.8" x="1225.8" y="1167.5628">Usuario</text><line style="stroke:#181818;stroke-width:0.45;" x1="1224" x2="1274.4" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="1224" x2="1274.4" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[2de463454f7588e20c9a29e8d111f9cc]
+class Transacao--><g id="elem_Transacao"><rect codeLine="32" fill="#F1F1F1" height="38.0672" id="Transacao" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="70.2" x="1439.1" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="64.8" x="1441.8" y="1167.5628">Transacao</text><line style="stroke:#181818;stroke-width:0.45;" x1="1440" x2="1508.4" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="1440" x2="1508.4" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[a13ca1da61a66d544daddca6fa0a1a30]
+class Cartao--><g id="elem_Cartao"><rect codeLine="33" fill="#F1F1F1" height="38.0672" id="Cartao" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="45.9" x="1158.75" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="40.5" x="1161.45" y="1167.5628">Cartao</text><line style="stroke:#181818;stroke-width:0.45;" x1="1159.65" x2="1203.75" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="1159.65" x2="1203.75" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[bccb4c1d67246c2b8cf92958961a97de]
+class ProgramaFidelidade--><g id="elem_ProgramaFidelidade"><rect codeLine="34" fill="#F1F1F1" height="38.0672" id="ProgramaFidelidade" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="127.8" x="1293.3" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="122.4" x="1296" y="1167.5628">ProgramaFidelidade</text><line style="stroke:#181818;stroke-width:0.45;" x1="1294.2" x2="1420.2" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="1294.2" x2="1420.2" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[fd822ee2f7e292bca8747da3d250eb99]
+class DadosTransacao--><g id="elem_DadosTransacao"><rect codeLine="35" fill="#F1F1F1" height="38.0672" id="DadosTransacao" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="110.7" x="1030.05" y="1151.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="105.3" x="1032.75" y="1167.5628">DadosTransacao</text><line style="stroke:#181818;stroke-width:0.45;" x1="1030.95" x2="1139.85" y1="1175.0344" y2="1175.0344"/><line style="stroke:#181818;stroke-width:0.45;" x1="1030.95" x2="1139.85" y1="1182.2344" y2="1182.2344"/></g><!--MD5=[4cfa8f35a984ec029d80889cf7a74c8e]
+class __APP_BOTTOM_ANCHOR__--><g id="elem___APP_BOTTOM_ANCHOR__"><rect codeLine="44" fill="none" height="50.6391" id="__APP_BOTTOM_ANCHOR__" rx="2.25" ry="2.25" style="stroke:none;stroke-width:0.45;" width="177.3" x="685.35" y="832.3172"/><rect fill="none" height="36.2391" rx="2.25" ry="2.25" style="stroke:none;stroke-width:0.45;" width="177.3" x="685.35" y="832.3172"/><rect fill="none" height="2.25" style="stroke:none;stroke-width:0.45;" width="177.3" x="685.35" y="866.3063"/><rect codeLine="44" fill="none" height="50.6391" id="__APP_BOTTOM_ANCHOR__" rx="2.25" ry="2.25" style="stroke:none;stroke-width:0.45;" width="177.3" x="685.35" y="832.3172"/><line style="stroke:none;stroke-width:0.45;" x1="686.25" x2="861.75" y1="868.5563" y2="868.5563"/><line style="stroke:none;stroke-width:0.45;" x1="686.25" x2="861.75" y1="875.7563" y2="875.7563"/></g><!--MD5=[a3af56c0d6429029ec72698f8a12e930]
+class LoginInputDTO--><g id="elem_LoginInputDTO"><rect codeLine="45" fill="#F1F1F1" height="67.4016" id="LoginInputDTO" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="104.4" x="795.6" y="203.6672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="92.7" x="801.45" y="219.8628">LoginInputDTO</text><line style="stroke:#181818;stroke-width:0.45;" x1="796.5" x2="899.1" y1="227.3344" y2="227.3344"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="86.4" x="801" y="242.63">+Email: string</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="93.6" x="801" y="257.2972">+Senha: string</text><line style="stroke:#181818;stroke-width:0.45;" x1="796.5" x2="899.1" y1="263.8688" y2="263.8688"/></g><!--MD5=[87bf0b97a5b234105c535cdd38848aff]
+class SessaoResultDTO--><g id="elem_SessaoResultDTO"><rect codeLine="50" fill="#F1F1F1" height="82.0688" id="SessaoResultDTO" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="148.5" x="918.45" y="196.4672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="113.4" x="936" y="212.6628">SessaoResultDTO</text><line style="stroke:#181818;stroke-width:0.45;" x1="919.35" x2="1066.05" y1="220.1344" y2="220.1344"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="93.6" x="923.85" y="235.43">+Token: string</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="137.7" x="923.85" y="250.0972">+NomeUsuario: string</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="91.8" x="923.85" y="264.7644">+UsuarioId: int</text><line style="stroke:#181818;stroke-width:0.45;" x1="919.35" x2="1066.05" y1="271.3359" y2="271.3359"/></g><!--MD5=[4d50ec38a009e06a87ae6971ddd064ec]
+class TransacaoInputDTO--><g id="elem_TransacaoInputDTO"><rect codeLine="56" fill="#F1F1F1" height="96.7359" id="TransacaoInputDTO" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="129.6" x="537.3" y="809.3672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="124.2" x="540" y="825.5628">TransacaoInputDTO</text><line style="stroke:#181818;stroke-width:0.45;" x1="538.2" x2="666" y1="833.0344" y2="833.0344"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="97.2" x="542.7" y="848.33">+Valor: decimal</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="108" x="542.7" y="862.9972">+Data: DateTime</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="116.1" x="542.7" y="877.6644">+Descricao: string</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="85.5" x="542.7" y="892.3315">+CartaoId: int</text><line style="stroke:#181818;stroke-width:0.45;" x1="538.2" x2="666" y1="898.9031" y2="898.9031"/></g><!--MD5=[4707a40c0a523e958519b7585302fb58]
+class TransacaoSummaryDTO--><g id="elem_TransacaoSummaryDTO"><rect codeLine="63" fill="#F1F1F1" height="111.4031" id="TransacaoSummaryDTO" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="162" x="82.8" y="655.4672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="150.3" x="88.65" y="671.6628">TransacaoSummaryDTO</text><line style="stroke:#181818;stroke-width:0.45;" x1="83.7" x2="243.9" y1="679.1344" y2="679.1344"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="45" x="88.2" y="694.43">+Id: int</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="148.5" x="88.2" y="709.0972">+DataFormatada: string</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="116.1" x="88.2" y="723.7644">+Descricao: string</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="151.2" x="88.2" y="738.4315">+ValorFormatado: string</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="78.3" x="88.2" y="753.0987">+Pontos: int</text><line style="stroke:#181818;stroke-width:0.45;" x1="83.7" x2="243.9" y1="759.6703" y2="759.6703"/></g><!--MD5=[fd23c91b47edb9155db73d9534d10ebf]
+class CartaoSummaryDTO--><g id="elem_CartaoSummaryDTO"><rect codeLine="71" fill="#F1F1F1" height="82.0688" id="CartaoSummaryDTO" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="153.9" x="477.45" y="531.2672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="126" x="491.4" y="547.4628">CartaoSummaryDTO</text><line style="stroke:#181818;stroke-width:0.45;" x1="478.35" x2="630.45" y1="554.9344" y2="554.9344"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="45" x="482.85" y="570.23">+Id: int</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="90.9" x="482.85" y="584.8972">+Nome: string</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="143.1" x="482.85" y="599.5644">+UltimosDigitos: string</text><line style="stroke:#181818;stroke-width:0.45;" x1="478.35" x2="630.45" y1="606.1359" y2="606.1359"/></g><!--MD5=[3cd2ed90d8af37d03217d9fee2191524]
+class ProgramaSummaryDTO--><g id="elem_ProgramaSummaryDTO"><rect codeLine="77" fill="#F1F1F1" height="67.4016" id="ProgramaSummaryDTO" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="150.3" x="487.35" y="677.5172"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="144.9" x="490.05" y="693.7128">ProgramaSummaryDTO</text><line style="stroke:#181818;stroke-width:0.45;" x1="488.25" x2="636.75" y1="701.1844" y2="701.1844"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="45" x="492.75" y="716.48">+Id: int</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="90.9" x="492.75" y="731.1472">+Nome: string</text><line style="stroke:#181818;stroke-width:0.45;" x1="488.25" x2="636.75" y1="737.7188" y2="737.7188"/></g><!--MD5=[ed9a13cb9aeaf5fd1e013afea4c1e758]
+class DashboardDetailsDTO--><g id="elem_DashboardDetailsDTO"><rect codeLine="82" fill="#F1F1F1" height="82.0688" id="DashboardDetailsDTO" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="340.2" x="118.8" y="531.2672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="138.6" x="219.6" y="547.4628">DashboardDetailsDTO</text><line style="stroke:#181818;stroke-width:0.45;" x1="119.7" x2="458.1" y1="554.9344" y2="554.9344"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="108.9" x="124.2" y="570.23">+TotalPontos: int</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="160.2" x="124.2" y="584.8972">+TotalGastoMes: decimal</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="329.4" x="124.2" y="599.5644">+UltimasTransacoes: List&lt;TransacaoSummaryDTO&gt;</text><line style="stroke:#181818;stroke-width:0.45;" x1="119.7" x2="458.1" y1="606.1359" y2="606.1359"/></g><!--MD5=[1a70795ac229e48b124a99137acc095a]
+class IAuthService--><g id="elem_IAuthService"><rect codeLine="90" fill="#F1F1F1" height="65.3063" id="IAuthService" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="347.4" x="714.6" y="88.4672"/><text fill="#000000" font-family="sans-serif" font-size="10.8" font-style="italic" lengthAdjust="spacing" textLength="63" x="856.8" y="102.992">«Interface»</text><text fill="#000000" font-family="sans-serif" font-size="12.6" font-style="italic" lengthAdjust="spacing" textLength="76.5" x="850.05" y="117.2347">IAuthService</text><line style="stroke:#181818;stroke-width:0.45;" x1="715.5" x2="1061.1" y1="124.7063" y2="124.7063"/><line style="stroke:#181818;stroke-width:0.45;" x1="715.5" x2="1061.1" y1="131.9063" y2="131.9063"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="336.6" x="720" y="147.2019">+Autenticar(input: LoginInputDTO): SessaoResultDTO</text></g><!--MD5=[fdb78f300853586fe36911abfcd46422]
+class ITransacaoService--><g id="elem_ITransacaoService"><rect codeLine="94" fill="#F1F1F1" height="65.3063" id="ITransacaoService" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="283.5" x="181.35" y="824.6672"/><text fill="#000000" font-family="sans-serif" font-size="10.8" font-style="italic" lengthAdjust="spacing" textLength="63" x="291.6" y="839.192">«Interface»</text><text fill="#000000" font-family="sans-serif" font-size="12.6" font-style="italic" lengthAdjust="spacing" textLength="112.5" x="266.85" y="853.4347">ITransacaoService</text><line style="stroke:#181818;stroke-width:0.45;" x1="182.25" x2="463.95" y1="860.9063" y2="860.9063"/><line style="stroke:#181818;stroke-width:0.45;" x1="182.25" x2="463.95" y1="868.1063" y2="868.1063"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="272.7" x="186.75" y="883.4019">+Registrar(input: TransacaoInputDTO): void</text></g><!--MD5=[b4ba655f63e6042b5589d87795149566]
+class IDashboardFacade--><g id="elem_IDashboardFacade"><rect codeLine="98" fill="#F1F1F1" height="65.3063" id="IDashboardFacade" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="330.3" x="806.85" y="539.3672"/><text fill="#000000" font-family="sans-serif" font-size="10.8" font-style="italic" lengthAdjust="spacing" textLength="63" x="940.5" y="553.892">«Interface»</text><text fill="#000000" font-family="sans-serif" font-size="12.6" font-style="italic" lengthAdjust="spacing" textLength="116.1" x="913.95" y="568.1347">IDashboardFacade</text><line style="stroke:#181818;stroke-width:0.45;" x1="807.75" x2="1136.25" y1="575.6063" y2="575.6063"/><line style="stroke:#181818;stroke-width:0.45;" x1="807.75" x2="1136.25" y1="582.8063" y2="582.8063"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="319.5" x="812.25" y="598.1019">+ObterDetalhes(userId: int): DashboardDetailsDTO</text></g><!--MD5=[b4f586f7c628b5a371c8c0ac9af5f898]
+class AuthService--><g id="elem_AuthService"><rect codeLine="103" fill="#F1F1F1" height="67.4016" id="AuthService" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="347.4" x="375.3" y="203.6672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="73.8" x="512.1" y="219.8628">AuthService</text><line style="stroke:#181818;stroke-width:0.45;" x1="376.2" x2="721.8" y1="227.3344" y2="227.3344"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="214.2" x="380.7" y="242.63">-_usuarioRepo: IUsuarioRepository</text><line style="stroke:#181818;stroke-width:0.9;" x1="376.2" x2="721.8" y1="249.2016" y2="249.2016"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="336.6" x="380.7" y="264.4972">+Autenticar(input: LoginInputDTO): SessaoResultDTO</text></g><!--MD5=[afafccf34a3ee15ef32437d837bfff45]
+class TransacaoService--><g id="elem_TransacaoService"><rect codeLine="109" fill="#F1F1F1" height="96.7359" id="TransacaoService" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="283.5" x="201.15" y="947.9672"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="109.8" x="288" y="964.1628">TransacaoService</text><line style="stroke:#181818;stroke-width:0.45;" x1="202.05" x2="483.75" y1="971.6344" y2="971.6344"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="181.8" x="206.55" y="986.93">-_repo: ITransacaoRepository</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="172.8" x="206.55" y="1001.5972">-_factory: ITransacaoFactory</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="212.4" x="206.55" y="1016.2644">-_strategy: ICalculoPontosStrategy</text><line style="stroke:#181818;stroke-width:0.9;" x1="202.05" x2="483.75" y1="1022.8359" y2="1022.8359"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="272.7" x="206.55" y="1038.1315">+Registrar(input: TransacaoInputDTO): void</text></g><!--MD5=[d8c90dfeca2de54f71aacbe0f2f42ab1]
+class DashboardFacade--><g id="elem_DashboardFacade"><rect codeLine="117" fill="#F1F1F1" height="96.7359" id="DashboardFacade" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="330.3" x="760.05" y="663.1172"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="113.4" x="868.5" y="679.3128">DashboardFacade</text><line style="stroke:#181818;stroke-width:0.45;" x1="760.95" x2="1089.45" y1="686.7844" y2="686.7844"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="247.5" x="765.45" y="702.08">-_transacaoRepo: ITransacaoRepository</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="200.7" x="765.45" y="716.7472">-_cartaoRepo: ICartaoRepository</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="240.3" x="765.45" y="731.4144">-_programaRepo: IProgramaRepository</text><line style="stroke:#181818;stroke-width:0.9;" x1="760.95" x2="1089.45" y1="737.9859" y2="737.9859"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="319.5" x="765.45" y="753.2815">+ObterDetalhes(userId: int): DashboardDetailsDTO</text></g><!--MD5=[886a42966f6a9c90425c854372bf4b9b]
+class MilesMapper--><g id="elem_MilesMapper"><rect codeLine="126" fill="#F1F1F1" height="167.9766" id="MilesMapper" rx="2.25" ry="2.25" style="stroke:#181818;stroke-width:0.45;" width="396" x="567.9" y="320.6672"/><text fill="#000000" font-family="sans-serif" font-size="10.8" font-style="italic" lengthAdjust="spacing" textLength="44.1" x="743.85" y="335.192">«static»</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="78.3" x="726.75" y="349.4347">MilesMapper</text><line style="stroke:#181818;stroke-width:0.45;" x1="568.8" x2="963" y1="356.9063" y2="356.9063"/><line style="stroke:#181818;stroke-width:0.45;" x1="568.8" x2="963" y1="364.1063" y2="364.1063"/><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" text-decoration="underline" textLength="332.1" x="573.3" y="379.4019">+ToCore(dto: TransacaoInputDTO): DadosTransacao</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="3.6" x="573.3" y="394.069"> </text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" text-decoration="underline" textLength="346.5" x="573.3" y="408.7362">+ToResult(u: Usuario, token: string): SessaoResultDTO</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" text-decoration="underline" textLength="362.7" x="573.3" y="423.4034">+ToDetails(t: List&lt;Transacao&gt;, ...): DashboardDetailsDTO</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" textLength="3.6" x="573.3" y="438.0706"> </text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" text-decoration="underline" textLength="329.4" x="573.3" y="452.7378">+ToSummary(t: Transacao): TransacaoSummaryDTO</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" text-decoration="underline" textLength="283.5" x="573.3" y="467.405">+ToSummary(c: Cartao): CartaoSummaryDTO</text><text fill="#000000" font-family="sans-serif" font-size="12.6" lengthAdjust="spacing" text-decoration="underline" textLength="385.2" x="573.3" y="482.0722">+ToSummary(p: ProgramaFidelidade): ProgramaSummaryDTO</text></g><!--MD5=[d334e2be6e8837c9aa582d04c03a336d]
+reverse link IAuthService to AuthService--><g id="link_IAuthService_AuthService"><path codeLine="146" d="M776.061,160.0262 C734.193,174.1292 687.042,190.0142 646.596,203.6402 " fill="none" id="IAuthService-backto-AuthService" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="774.261,153.9872,793.332,154.2122,778.284,165.9212,774.261,153.9872" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="69.3" x="750.6" y="179.4274">implementa</text></g><!--MD5=[dffe96cdda620c75ae705ce482e251d0]
+reverse link ITransacaoService to TransacaoService--><g id="link_ITransacaoService_TransacaoService"><path codeLine="147" d="M330.336,908.4212 C332.199,921.2732 334.197,935.0612 336.033,947.7872 " fill="none" id="ITransacaoService-backto-TransacaoService" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="324.09,909.2042,327.744,890.4932,336.555,907.4042,324.09,909.2042" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="69.3" x="334.8" y="930.9274">implementa</text></g><!--MD5=[2cc38461d965335a6e5627b452b98315]
+reverse link IDashboardFacade to DashboardFacade--><g id="link_IDashboardFacade_DashboardFacade"><path codeLine="148" d="M955.17,622.4732 C950.661,635.6852 945.801,649.9412 941.337,663.0452 " fill="none" id="IDashboardFacade-backto-DashboardFacade" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="949.257,620.3042,961.029,605.2922,961.182,624.3632,949.257,620.3042" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="69.3" x="953.1" y="638.4274">implementa</text></g><!--MD5=[4e85f99f0fe8b897ec99bab92369de3c]
+link AuthService to IUsuarioRepository--><g id="link_AuthService_IUsuarioRepository"><path codeLine="151" d="M722.961,269.3312 C744.354,272.6522 765.954,275.7572 786.6,278.3672 C957.51,299.9762 1551.6,231.6392 1551.6,403.9172 C1551.6,403.9172 1551.6,403.9172 1551.6,997.0172 C1551.6,1051.7012 1569.582,1114.0262 1580.445,1146.6782 " fill="none" id="AuthService-to-IUsuarioRepository" style="stroke:#181818;stroke-width:0.9;"/><polygon fill="#181818" points="1581.984,1151.2772,1582.806,1142.4514,1580.5456,1147.0133,1575.9837,1144.7529,1581.984,1151.2772" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="31.5" x="1552.5" y="715.3774">injeta</text></g><!--MD5=[211c8f46253c581c0f6f2c5977ed9890]
+link TransacaoService to ITransacaoRepository--><g id="link_TransacaoService_ITransacaoRepository"><path codeLine="152" d="M477.891,1044.3662 C511.425,1058.6582 546.462,1075.8662 576.9,1095.5672 C599.634,1110.2822 621.873,1131.8102 636.966,1147.8302 " fill="none" id="TransacaoService-to-ITransacaoRepository" style="stroke:#181818;stroke-width:0.9;"/><polygon fill="#181818" points="640.26,1151.3582,637.3639,1142.9807,637.1891,1148.0689,632.1009,1147.8941,640.26,1151.3582" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="31.5" x="567" y="1084.8274">injeta</text></g><!--MD5=[a61d266ba729e6865fa9dc5ae34b41a5]
+link TransacaoService to ITransacaoFactory--><g id="link_TransacaoService_ITransacaoFactory"><path codeLine="153" d="M342.9,1044.3392 C342.9,1077.5492 342.9,1120.4972 342.9,1146.4352 " fill="none" id="TransacaoService-to-ITransacaoFactory" style="stroke:#181818;stroke-width:0.9;"/><polygon fill="#181818" points="342.9,1151.0792,346.5,1142.9792,342.9,1146.5792,339.3,1142.9792,342.9,1151.0792" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="31.5" x="343.8" y="1084.8274">injeta</text></g><!--MD5=[ec36b81d64c40997db0bca0dcee1608b]
+link TransacaoService to ICalculoPontosStrategy--><g id="link_TransacaoService_ICalculoPontosStrategy"><path codeLine="154" d="M384.417,1044.3392 C413.91,1077.9632 452.169,1121.5682 474.822,1147.3982 " fill="none" id="TransacaoService-to-ICalculoPontosStrategy" style="stroke:#181818;stroke-width:0.9;"/><polygon fill="#181818" points="478.053,1151.0792,475.4125,1142.6177,475.0834,1147.6982,470.0028,1147.3691,478.053,1151.0792" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="31.5" x="424.8" y="1084.8274">injeta</text></g><!--MD5=[5881dc06a5f844dbfe8097a74d4d98c9]
+link DashboardFacade to ITransacaoRepository--><g id="link_DashboardFacade_ITransacaoRepository"><path codeLine="155" d="M917.919,759.5342 C910.386,800.0162 896.256,858.9392 872.1,905.6672 C819.531,1007.3762 723.06,1105.9532 679.059,1148.0552 " fill="none" id="DashboardFacade-to-ITransacaoRepository" style="stroke:#181818;stroke-width:0.9;"/><polygon fill="#181818" points="675.729,1151.2232,684.077,1148.2431,678.9873,1148.1194,679.111,1143.0298,675.729,1151.2232" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="31.5" x="864" y="930.9274">injeta</text></g><!--MD5=[96bc4572f62a94340a9ebc3c6e949f87]
+link DashboardFacade to ICartaoRepository--><g id="link_DashboardFacade_ICartaoRepository"><path codeLine="156" d="M926.496,759.5072 C927.99,848.9222 926.298,1038.1652 887.4,1088.3672 C882.126,1095.1802 876.483,1090.6622 869.4,1095.5672 C848.997,1109.6792 830.34,1131.0362 817.839,1147.1462 " fill="none" id="DashboardFacade-to-ICartaoRepository" style="stroke:#181818;stroke-width:0.9;"/><polygon fill="#181818" points="814.797,1151.1242,822.581,1146.884,817.5339,1147.5521,816.8657,1142.505,814.797,1151.1242" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="31.5" x="924.3" y="930.9274">injeta</text></g><!--MD5=[670c1905c444d191036c05ddfe73cb24]
+link DashboardFacade to IProgramaRepository--><g id="link_DashboardFacade_IProgramaRepository"><path codeLine="157" d="M938.403,759.4712 C940.149,766.5092 941.814,773.7092 943.2,780.5672 C955.539,841.5602 958.59,857.0942 963,919.1672 C968.958,1002.9932 955.71,1102.6052 948.816,1146.5792 " fill="none" id="DashboardFacade-to-IProgramaRepository" style="stroke:#181818;stroke-width:0.9;"/><polygon fill="#181818" points="948.096,1151.1602,952.923,1143.7258,948.8024,1146.716,945.8122,1142.5955,948.096,1151.1602" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="31.5" x="963.9" y="930.9274">injeta</text></g><!--MD5=[d6b84c744e0f9da9de946a1fcab43dca]
+link IAuthService to LoginInputDTO--><g id="link_IAuthService_LoginInputDTO"><path codeLine="160" d="M845.442,154.2752 C842.076,158.4152 839.151,162.8972 837,167.6672 C832.608,177.4142 832.536,188.6372 834.327,199.1582 " fill="none" id="IAuthService-to-LoginInputDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="835.2,203.6132,837.1851,194.9744,834.3397,199.1962,830.1179,196.3508,835.2,203.6132" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="53.1" x="837.9" y="179.4274">consome</text></g><!--MD5=[993a640c99b266ab06138087c2ce7700]
+link IAuthService to SessaoResultDTO--><g id="link_IAuthService_SessaoResultDTO"><path codeLine="161" d="M916.434,154.2122 C924.714,163.5362 933.822,173.6972 942.3,182.9672 C945.27,186.2162 948.357,189.5642 951.48,192.9212 " fill="none" id="IAuthService-to-SessaoResultDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="954.603,196.2782,951.7244,187.8947,951.539,192.9825,946.4512,192.7971,954.603,196.2782" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="42.3" x="943.2" y="179.4274">retorna</text></g><!--MD5=[993a640c99b266ab06138087c2ce7700]
+link IAuthService to SessaoResultDTO--><!--MD5=[67f9dd1dea5b6042400ce08a2d75c7fc]
+link ITransacaoService to TransacaoInputDTO--><g id="link_ITransacaoService_TransacaoInputDTO"><path codeLine="162" d="M465.048,857.5172 C488.457,857.5172 511.767,857.5172 532.35,857.5172 " fill="none" id="ITransacaoService-to-TransacaoInputDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="536.976,857.5172,528.876,853.9172,532.476,857.5172,528.876,861.1172,536.976,857.5172" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="53.1" x="474.525" y="851.2774">consome</text></g><!--MD5=[463ac7e52d3c40d2b62936c4387bd73e]
+link IDashboardFacade to DashboardDetailsDTO--><g id="link_IDashboardFacade_DashboardDetailsDTO"><path codeLine="163" d="M857.097,539.3312 C813.555,528.4412 763.29,517.7402 716.85,512.3672 C606.663,499.6142 577.53,513.7712 468,531.2672 C466.632,531.4832 465.264,531.7082 463.887,531.9332 " fill="none" id="IDashboardFacade-to-DashboardDetailsDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="459.198,532.7252,467.7827,534.9325,463.6357,531.9791,466.5891,527.8321,459.198,532.7252" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="42.3" x="673.65" y="514.2274">retorna</text></g><!--MD5=[23a73560e1d5af3f3e0a3fdcf878a74d]
+link AuthService to LoginInputDTO--><g id="link_AuthService_LoginInputDTO"><path codeLine="164" d="M722.817,237.4172 C747.297,237.4172 770.886,237.4172 790.839,237.4172 " fill="none" id="AuthService-to-LoginInputDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="795.573,237.4172,787.473,233.8172,791.073,237.4172,787.473,241.0172,795.573,237.4172" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="53.1" x="732.6" y="231.1774">consome</text></g><!--MD5=[b563e3509d8c7deb0d8c857a1bac0a6f]
+link TransacaoService to MilesMapper--><g id="link_TransacaoService_MilesMapper"><path codeLine="168" d="M213.147,947.7962 C196.74,936.4562 182.133,922.5872 171.9,905.6672 C149.742,869.0462 143.01,840.9482 171.9,809.3672 C243.324,731.2922 563.391,832.9472 646.2,767.0672 C743.004,690.0452 693.27,619.7552 732.6,502.4672 C733.563,499.5962 734.544,496.6712 735.543,493.7282 " fill="none" id="TransacaoService-to-MilesMapper" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="737.118,489.0752,731.1117,495.594,735.6757,493.3378,737.9319,497.9017,737.118,489.0752" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="20.7" x="711.9" y="715.3774">usa</text></g><!--MD5=[3ef7c73b353ab6f439a50975dcff8e27]
+link MilesMapper to TransacaoService--><!--MD5=[ce612f0d4893988813c28b2bcdc2af15]
+link DashboardFacade to MilesMapper--><g id="link_DashboardFacade_MilesMapper"><path codeLine="169" d="M822.645,663.0992 C803.709,649.6622 786.33,633.1202 774.9,613.1672 C754.542,577.6172 750.483,532.7612 752.265,493.8542 " fill="none" id="DashboardFacade-to-MilesMapper" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="752.517,489.1382,748.5046,497.042,752.2852,493.6322,755.695,497.4129,752.517,489.1382" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="20.7" x="775.8" y="576.3274">usa</text></g><!--MD5=[c87653e98986232da4b31905e5e23de9]
+link MilesMapper to DashboardFacade--><!--MD5=[8199ae61044ec0efc43425c642c6c0e2]
+link AuthService to MilesMapper--><g id="link_AuthService_MilesMapper"><path codeLine="170" d="M592.11,271.2302 C609.867,284.7842 631.341,301.1822 653.049,317.7602 " fill="none" id="AuthService-to-MilesMapper" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="656.82,320.6402,652.5798,312.8562,653.2479,317.9033,648.2008,318.5715,656.82,320.6402" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="20.7" x="639" y="303.6274">usa</text></g><!--MD5=[3231047a1052733165e2136714c5822d]
+link MilesMapper to Usuario--><g id="link_MilesMapper_Usuario"><path codeLine="173" d="M964.224,436.7492 C1097.604,463.4252 1249.2,507.7322 1249.2,571.3172 C1249.2,571.3172 1249.2,571.3172 1249.2,997.0172 C1249.2,1050.6302 1249.2,1113.6302 1249.2,1146.6062 " fill="none" id="MilesMapper-to-Usuario" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="1249.2,1151.2502,1252.8,1143.1502,1249.2,1146.7502,1245.6,1143.1502,1249.2,1151.2502" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="9.9" x="1250.1" y="792.3274">lê</text></g><!--MD5=[e4edd2f81f930f5149bb0f6d26cfd43b]
+link MilesMapper to Transacao--><g id="link_MilesMapper_Transacao"><path codeLine="174" d="M964.044,416.5982 C1161.207,433.0232 1434.6,473.4332 1434.6,571.3172 C1434.6,571.3172 1434.6,571.3172 1434.6,997.0172 C1434.6,1051.8812 1453.896,1114.1342 1465.551,1146.7232 " fill="none" id="MilesMapper-to-Transacao" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="1467.207,1151.3132,1467.8373,1142.4717,1465.6764,1147.0815,1461.0665,1144.9206,1467.207,1151.3132" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="9.9" x="1435.5" y="792.3274">lê</text></g><!--MD5=[d0e5fa54709d055dc8d013acb48d4355]
+link MilesMapper to Cartao--><g id="link_MilesMapper_Cartao"><path codeLine="175" d="M964.224,442.9232 C1083.114,471.1022 1211.4,514.6442 1211.4,571.3172 C1211.4,571.3172 1211.4,571.3172 1211.4,997.0172 C1211.4,1051.2782 1196.928,1113.7742 1188.189,1146.5612 " fill="none" id="MilesMapper-to-Cartao" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="1186.938,1151.1782,1192.52,1144.2926,1188.1079,1146.8329,1185.5676,1142.4208,1186.938,1151.1782" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="9.9" x="1212.3" y="792.3274">lê</text></g><!--MD5=[9e96e2ae7987bd67abc5ad44c6631e3b]
+link MilesMapper to ProgramaFidelidade--><g id="link_MilesMapper_ProgramaFidelidade"><path codeLine="176" d="M963.954,427.1912 C1123.758,450.2132 1322.1,494.3042 1322.1,571.3172 C1322.1,571.3172 1322.1,571.3172 1322.1,997.0172 C1322.1,1051.5842 1339.209,1113.9632 1349.532,1146.6422 " fill="none" id="MilesMapper-to-ProgramaFidelidade" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="1351.008,1151.2502,1351.9575,1142.4372,1349.6314,1146.9659,1345.1027,1144.6398,1351.008,1151.2502" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="9.9" x="1323" y="792.3274">lê</text></g><!--MD5=[664955bd07455163f22dbf71b5ec5566]
+link MilesMapper to DadosTransacao--><g id="link_MilesMapper_DadosTransacao"><path codeLine="179" d="M964.053,423.8522 C1033.236,440.8262 1104.138,472.5512 1146.6,531.2672 C1167.93,560.7602 1148.742,576.8342 1146.6,613.1672 C1142.19,687.9572 1135.17,706.1192 1126.8,780.5672 C1111.203,919.3382 1093.941,1086.1442 1087.758,1146.3182 " fill="none" id="MilesMapper-to-DadosTransacao" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="1087.263,1151.1422,1091.6555,1143.4431,1087.7133,1146.6648,1084.4916,1142.7226,1087.263,1151.1422" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="60.3" x="1127.7" y="792.3274">cria (Core)</text></g><!--MD5=[4926aab7b92746586197bfdbbbaebf65]
+link MilesMapper to SessaoResultDTO--><g id="link_MilesMapper_SessaoResultDTO"><path codeLine="180" d="M880.137,320.5052 C898.821,306.8612 917.478,293.2442 934.065,281.1302 " fill="none" id="MilesMapper-to-SessaoResultDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="937.8,278.4032,929.1357,280.2742,934.1663,281.0576,933.3828,286.0881,937.8,278.4032" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="20.7" x="919.8" y="303.6274">cria</text></g><!--MD5=[60d9d9c0e5a51dc7d60da2b26ff648fb]
+link SessaoResultDTO to MilesMapper--><!--MD5=[8802ca724a284940a8b41ec0384e0922]
+link MilesMapper to TransacaoSummaryDTO--><g id="link_MilesMapper_TransacaoSummaryDTO"><path codeLine="181" d="M567.621,417.9572 C399.24,431.2952 172.827,457.0622 94.5,502.4672 C51.066,527.6492 55.656,565.6922 72,613.1672 C76.797,627.0902 84.852,640.0772 94.257,651.7502 " fill="none" id="MilesMapper-to-TransacaoSummaryDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="97.218,655.3232,94.8168,646.7907,94.3447,651.8599,89.2755,651.3879,97.218,655.3232" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="20.7" x="72.9" y="576.3274">cria</text></g><!--MD5=[a56fd72683d6cc637ccdeb1b423451f3]
+link TransacaoSummaryDTO to MilesMapper--><!--MD5=[1c316453855f7d439445333c9dd3e794]
+link MilesMapper to CartaoSummaryDTO--><g id="link_MilesMapper_CartaoSummaryDTO"><path codeLine="182" d="M656.019,489.1472 C650.25,493.6382 644.553,498.0932 639,502.4672 C628.578,510.6752 617.517,519.5582 606.96,528.1172 " fill="none" id="MilesMapper-to-CartaoSummaryDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="603.396,531.0062,611.9527,528.6924,606.8885,528.1685,607.4124,523.1044,603.396,531.0062" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="20.7" x="639.9" y="514.2274">cria</text></g><!--MD5=[7fd4d302869ab3fc63f4d01d3534dfac]
+link MilesMapper to ProgramaSummaryDTO--><g id="link_MilesMapper_ProgramaSummaryDTO"><path codeLine="183" d="M679.869,489.2462 C676.836,493.5842 673.992,497.9942 671.4,502.4672 C645.741,546.7202 663.291,567.6722 639.9,613.1672 C628.803,634.7492 612.513,656.1332 597.735,673.3232 " fill="none" id="MilesMapper-to-ProgramaSummaryDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="594.414,677.1482,602.4491,673.4057,597.37,673.7552,597.0204,668.6761,594.414,677.1482" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="20.7" x="660.6" y="576.3274">cria</text></g><!--MD5=[1fc25c451178da505b93352a459d9f9f]
+link MilesMapper to DashboardDetailsDTO--><g id="link_MilesMapper_DashboardDetailsDTO"><path codeLine="184" d="M567.756,474.5042 C513.711,493.2692 456.822,513.0152 408.627,529.7552 " fill="none" id="MilesMapper-to-DashboardDetailsDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="404.28,531.2582,413.1135,531.9922,408.5294,529.7773,410.7442,525.1932,404.28,531.2582" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="20.7" x="486" y="514.2274">cria</text></g><!--MD5=[9027e01e0c5a6f2d2ec08fc370feed75]
+link AuthService to SessaoResultDTO--><g id="link_AuthService_SessaoResultDTO"><path codeLine="185" d="M710.64,203.6402 C768.789,193.0562 835.047,182.7782 895.95,177.5672 C905.913,176.7122 909.018,174.2372 918.45,177.5672 C928.692,181.1852 938.565,186.8732 947.583,193.3442 " fill="none" id="AuthService-to-SessaoResultDTO" style="stroke:#181818;stroke-width:0.9;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="951.399,196.1612,947.0173,188.456,947.7775,193.49,942.7435,194.2503,951.399,196.1612" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="20.7" x="896.85" y="179.4274">cria</text></g><!--MD5=[1011ae1391c590530cc2dd9527c30dee]
+reverse link DashboardDetailsDTO to TransacaoSummaryDTO--><g id="link_DashboardDetailsDTO_TransacaoSummaryDTO"><path codeLine="188" d="M244.278,622.0772 C234.414,632.8952 223.911,644.4242 213.849,655.4582 " fill="none" id="DashboardDetailsDTO-backto-TransacaoSummaryDTO" style="stroke:#181818;stroke-width:0.9;"/><polygon fill="none" points="252.378,613.1852,246.0803,614.7532,245.1055,621.1696,251.4032,619.6016,252.378,613.1852" style="stroke:#181818;stroke-width:0.9;"/><text fill="#000000" font-family="sans-serif" font-size="11.7" lengthAdjust="spacing" textLength="73.8" x="238.5" y="638.4274">compõe lista</text></g><!--MD5=[4ede56ac036a2c661d0c6e4011481908]
+link TransacaoSummaryDTO to __APP_BOTTOM_ANCHOR__--><!--MD5=[b16b7b6cd35d04a36e290715f7a86fcf]
+link __APP_BOTTOM_ANCHOR__ to TransacaoService--><!--MD5=[88fe62c93009337ad2993a00f732e0fc]
+link MilesMapper to IDashboardFacade--><!--MD5=[ce70f81a422512566c74e905e2ded328]
+link CartaoSummaryDTO to ProgramaSummaryDTO--><!--MD5=[092cadb1068ec9eeb9e1599392d02585]
+link AuthService to CartaoSummaryDTO--><!--MD5=[945b445d9ef341ffccba7dd9a9a40070]
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide circle
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 30
+scale 0.90
+skinparam class<<invisible>> {
+  BorderColor transparent
+  BackgroundColor transparent
+  FontColor transparent
+  StereotypeFontColor transparent
+}
+
+title Diagrama de Classes Unificado - Miles.Application (Completo)
+
+' =========================================
+' 1. MILES.CORE (Dependências e Entidades)
+' =========================================
+package "Miles.Core (Referências)" #DDDDDD {
+    
+    ' Interfaces (Contratos do Domínio)
+    interface IUsuarioRepository
+    interface ITransacaoRepository
+    interface ICartaoRepository
+    interface IProgramaRepository
+    interface ITransacaoFactory
+    interface ICalculoPontosStrategy
+    
+    ' Entidades e Value Objects
+    class Usuario
+    class Transacao
+    class Cartao
+    class ProgramaFidelidade
+    class DadosTransacao
+}
+
+' =========================================
+' 2. MILES.APPLICATION
+' =========================================
+package "Miles.Application" {
+
+    ' - - - 2.1. DTOs (Dados Completos) - - -
+    class __APP_BOTTOM_ANCHOR__ <<invisible>>
+    class LoginInputDTO {
+        +Email: string
+        +Senha: string
+    }
+    
+    class SessaoResultDTO {
+        +Token: string
+        +NomeUsuario: string
+        +UsuarioId: int
+    }
+    
+    class TransacaoInputDTO {
+        +Valor: decimal
+        +Data: DateTime
+        +Descricao: string
+        +CartaoId: int
+    }
+    
+    class TransacaoSummaryDTO {
+        +Id: int
+        +DataFormatada: string
+        +Descricao: string
+        +ValorFormatado: string
+        +Pontos: int
+    }
+    
+    class CartaoSummaryDTO {
+        +Id: int
+        +Nome: string
+        +UltimosDigitos: string
+    }
+    
+    class ProgramaSummaryDTO {
+        +Id: int
+        +Nome: string
+    }
+    
+    class DashboardDetailsDTO {
+        +TotalPontos: int
+        +TotalGastoMes: decimal
+        +UltimasTransacoes: List<TransacaoSummaryDTO>
+    }
+    
+
+    ' - - - 2.2. Interfaces (Contratos do Application) - - -
+    interface IAuthService <<Interface>> {
+        + Autenticar(input: LoginInputDTO): SessaoResultDTO
+    }
+
+    interface ITransacaoService <<Interface>> {
+        + Registrar(input: TransacaoInputDTO): void
+    }
+
+    interface IDashboardFacade <<Interface>> {
+        + ObterDetalhes(userId: int): DashboardDetailsDTO
+    }
+
+    ' - - - 2.3. Implementações (Concrete Services) - - -
+    class AuthService {
+        - _usuarioRepo: IUsuarioRepository
+        - -
+        + Autenticar(input: LoginInputDTO): SessaoResultDTO
+    }
+
+    class TransacaoService {
+        - _repo: ITransacaoRepository
+        - _factory: ITransacaoFactory
+        - _strategy: ICalculoPontosStrategy
+        - -
+        + Registrar(input: TransacaoInputDTO): void
+    }
+
+    class DashboardFacade {
+        - _transacaoRepo: ITransacaoRepository
+        - _cartaoRepo: ICartaoRepository
+        - _programaRepo: IProgramaRepository
+        - -
+        + ObterDetalhes(userId: int): DashboardDetailsDTO
+    }
+
+    ' - - - 2.4. Mapper (Centralizador de Conversão) - - -
+    class MilesMapper <<static>> {
+        ' Criação de Core Objects
+        + {static} ToCore(dto: TransacaoInputDTO): DadosTransacao
+        
+        ' Criação de DTOs de Resultado/Detalhe
+        + {static} ToResult(u: Usuario, token: string): SessaoResultDTO
+        + {static} ToDetails(t: List<Transacao>, ...): DashboardDetailsDTO
+        
+        ' Criação de DTOs de Resumo (Overloads)
+        + {static} ToSummary(t: Transacao): TransacaoSummaryDTO
+        + {static} ToSummary(c: Cartao): CartaoSummaryDTO
+        + {static} ToSummary(p: ProgramaFidelidade): ProgramaSummaryDTO
+    }
+}
+
+' =========================================
+' 3. RELACIONAMENTOS UNIFICADOS
+' =========================================
+
+' 3.1. Realização de Interfaces (Arquitetura)
+IAuthService <|.. AuthService : implementa
+ITransacaoService <|.. TransacaoService : implementa
+IDashboardFacade <|.. DashboardFacade : implementa
+
+' 3.2. Dependências Externas (Injeção no Construtor)
+AuthService - -> IUsuarioRepository : injeta
+TransacaoService - -> ITransacaoRepository : injeta
+TransacaoService - -> ITransacaoFactory : injeta
+TransacaoService - -> ICalculoPontosStrategy : injeta
+DashboardFacade - -> ITransacaoRepository : injeta
+DashboardFacade - -> ICartaoRepository : injeta
+DashboardFacade - -> IProgramaRepository : injeta
+
+' 3.3. Fluxo de Dados (Uso de DTOs nos Serviços)
+IAuthService .> LoginInputDTO : consome
+IAuthService .> SessaoResultDTO : retorna
+ITransacaoService .> TransacaoInputDTO : consome
+IDashboardFacade .> DashboardDetailsDTO : retorna
+AuthService .> LoginInputDTO : consome
+
+' 3.4. Relacionamentos do Mapper (Leitura e Criação)
+' Serviços usam o Mapper
+TransacaoService ..> MilesMapper : usa
+DashboardFacade ..> MilesMapper : usa
+AuthService ..> MilesMapper : usa
+
+' Mapper lê Entidades do Core
+MilesMapper ..> Usuario : lê
+MilesMapper ..> Transacao : lê
+MilesMapper ..> Cartao : lê
+MilesMapper ..> ProgramaFidelidade : lê
+
+' Mapper cria Objetos (Core e DTOs)
+MilesMapper ..> DadosTransacao : cria (Core)
+MilesMapper ..> SessaoResultDTO : cria
+MilesMapper ..> TransacaoSummaryDTO : cria
+MilesMapper ..> CartaoSummaryDTO : cria
+MilesMapper ..> ProgramaSummaryDTO : cria
+MilesMapper ..> DashboardDetailsDTO : cria
+AuthService .> SessaoResultDTO : cria
+
+' 3.5. Composição de DTOs
+DashboardDetailsDTO o- - TransacaoSummaryDTO : compõe lista
+
+TransacaoSummaryDTO -[hidden]->  __APP_BOTTOM_ANCHOR__
+TransacaoSummaryDTO -[hidden]->  MilesMapper
+
+__APP_BOTTOM_ANCHOR__ -[hidden]-> TransacaoService
+MilesMapper -[hidden]-> TransacaoService
+MilesMapper -[hidden]-> DashboardFacade
+MilesMapper -[hidden]-> IDashboardFacade
+IAuthService -[hidden]-> SessaoResultDTO
+
+SessaoResultDTO -[hidden]-> MilesMapper
+CartaoSummaryDTO -[hidden]-> ProgramaSummaryDTO
+AuthService -[hidden]-> CartaoSummaryDTO
+@enduml
+
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide circle
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 30
+scale 0.90
+skinparam class<<invisible>> {
+  BorderColor transparent
+  BackgroundColor transparent
+  FontColor transparent
+  StereotypeFontColor transparent
+}
+
+title Diagrama de Classes Unificado - Miles.Application (Completo)
+
+package "Miles.Core (Referências)" #DDDDDD {
+    
+    interface IUsuarioRepository
+    interface ITransacaoRepository
+    interface ICartaoRepository
+    interface IProgramaRepository
+    interface ITransacaoFactory
+    interface ICalculoPontosStrategy
+    
+    class Usuario
+    class Transacao
+    class Cartao
+    class ProgramaFidelidade
+    class DadosTransacao
+}
+
+package "Miles.Application" {
+
+    class __APP_BOTTOM_ANCHOR__ <<invisible>>
+    class LoginInputDTO {
+        +Email: string
+        +Senha: string
+    }
+    
+    class SessaoResultDTO {
+        +Token: string
+        +NomeUsuario: string
+        +UsuarioId: int
+    }
+    
+    class TransacaoInputDTO {
+        +Valor: decimal
+        +Data: DateTime
+        +Descricao: string
+        +CartaoId: int
+    }
+    
+    class TransacaoSummaryDTO {
+        +Id: int
+        +DataFormatada: string
+        +Descricao: string
+        +ValorFormatado: string
+        +Pontos: int
+    }
+    
+    class CartaoSummaryDTO {
+        +Id: int
+        +Nome: string
+        +UltimosDigitos: string
+    }
+    
+    class ProgramaSummaryDTO {
+        +Id: int
+        +Nome: string
+    }
+    
+    class DashboardDetailsDTO {
+        +TotalPontos: int
+        +TotalGastoMes: decimal
+        +UltimasTransacoes: List<TransacaoSummaryDTO>
+    }
+    
+
+    interface IAuthService <<Interface>> {
+        + Autenticar(input: LoginInputDTO): SessaoResultDTO
+    }
+
+    interface ITransacaoService <<Interface>> {
+        + Registrar(input: TransacaoInputDTO): void
+    }
+
+    interface IDashboardFacade <<Interface>> {
+        + ObterDetalhes(userId: int): DashboardDetailsDTO
+    }
+
+    class AuthService {
+        - _usuarioRepo: IUsuarioRepository
+        - -
+        + Autenticar(input: LoginInputDTO): SessaoResultDTO
+    }
+
+    class TransacaoService {
+        - _repo: ITransacaoRepository
+        - _factory: ITransacaoFactory
+        - _strategy: ICalculoPontosStrategy
+        - -
+        + Registrar(input: TransacaoInputDTO): void
+    }
+
+    class DashboardFacade {
+        - _transacaoRepo: ITransacaoRepository
+        - _cartaoRepo: ICartaoRepository
+        - _programaRepo: IProgramaRepository
+        - -
+        + ObterDetalhes(userId: int): DashboardDetailsDTO
+    }
+
+    class MilesMapper <<static>> {
+        + {static} ToCore(dto: TransacaoInputDTO): DadosTransacao
+        
+        + {static} ToResult(u: Usuario, token: string): SessaoResultDTO
+        + {static} ToDetails(t: List<Transacao>, ...): DashboardDetailsDTO
+        
+        + {static} ToSummary(t: Transacao): TransacaoSummaryDTO
+        + {static} ToSummary(c: Cartao): CartaoSummaryDTO
+        + {static} ToSummary(p: ProgramaFidelidade): ProgramaSummaryDTO
+    }
+}
+
+
+IAuthService <|.. AuthService : implementa
+ITransacaoService <|.. TransacaoService : implementa
+IDashboardFacade <|.. DashboardFacade : implementa
+
+AuthService - -> IUsuarioRepository : injeta
+TransacaoService - -> ITransacaoRepository : injeta
+TransacaoService - -> ITransacaoFactory : injeta
+TransacaoService - -> ICalculoPontosStrategy : injeta
+DashboardFacade - -> ITransacaoRepository : injeta
+DashboardFacade - -> ICartaoRepository : injeta
+DashboardFacade - -> IProgramaRepository : injeta
+
+IAuthService .> LoginInputDTO : consome
+IAuthService .> SessaoResultDTO : retorna
+ITransacaoService .> TransacaoInputDTO : consome
+IDashboardFacade .> DashboardDetailsDTO : retorna
+AuthService .> LoginInputDTO : consome
+
+TransacaoService ..> MilesMapper : usa
+DashboardFacade ..> MilesMapper : usa
+AuthService ..> MilesMapper : usa
+
+MilesMapper ..> Usuario : lê
+MilesMapper ..> Transacao : lê
+MilesMapper ..> Cartao : lê
+MilesMapper ..> ProgramaFidelidade : lê
+
+MilesMapper ..> DadosTransacao : cria (Core)
+MilesMapper ..> SessaoResultDTO : cria
+MilesMapper ..> TransacaoSummaryDTO : cria
+MilesMapper ..> CartaoSummaryDTO : cria
+MilesMapper ..> ProgramaSummaryDTO : cria
+MilesMapper ..> DashboardDetailsDTO : cria
+AuthService .> SessaoResultDTO : cria
+
+DashboardDetailsDTO o- - TransacaoSummaryDTO : compõe lista
+
+TransacaoSummaryDTO -[hidden]->  __APP_BOTTOM_ANCHOR__
+TransacaoSummaryDTO -[hidden]->  MilesMapper
+
+__APP_BOTTOM_ANCHOR__ -[hidden]-> TransacaoService
+MilesMapper -[hidden]-> TransacaoService
+MilesMapper -[hidden]-> DashboardFacade
+MilesMapper -[hidden]-> IDashboardFacade
+IAuthService -[hidden]-> SessaoResultDTO
+
+SessaoResultDTO -[hidden]-> MilesMapper
+CartaoSummaryDTO -[hidden]-> ProgramaSummaryDTO
+AuthService -[hidden]-> CartaoSummaryDTO
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 17:01:30 UTC 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

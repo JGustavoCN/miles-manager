@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="821.95px" preserveAspectRatio="none" style="width:1093px;height:821px;background:#FFFFFF;" version="1.1" viewBox="0 0 1093 821" width="1093.95px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="22.3523" id="_title" style="stroke:none;stroke-width:0.85;" width="311.95" x="385.305" y="4.25"/><text fill="#000000" font-family="sans-serif" font-size="11.9" font-weight="bold" lengthAdjust="spacing" textLength="303.45" x="389.555" y="19.5458">Diagrama de Classes de Domínio (Miles.Core)</text><!--MD5=[35b95e0ff435a005abee9323eff4fbaf]
+cluster Miles.Core--><g id="cluster_Miles.Core"><rect fill="none" height="779.45" rx="2.125" ry="2.125" style="stroke:#000000;stroke-width:1.275;" width="1070.15" x="19.21" y="37.6523"/><text fill="#000000" font-family="sans-serif" font-size="11.9" font-weight="bold" lengthAdjust="spacing" textLength="70.55" x="519.01" y="50.3982">Miles.Core</text></g><!--MD5=[35a64b983c79880384a2fd9b61f0c24b]
+class Usuario--><g id="elem_Usuario"><rect codeLine="16" fill="#F1F1F1" height="103.2352" id="Usuario" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="118.15" x="926.585" y="169.4023"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="41.65" x="964.835" y="183.1202">«Entity»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="44.2" x="963.56" y="196.5716">Usuario</text><line style="stroke:#181818;stroke-width:0.425;" x1="927.435" x2="1043.885" y1="203.6281" y2="203.6281"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="32.3" x="931.685" y="218.074">Id: int</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="75.65" x="931.685" y="231.9263">Nome: string</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="71.4" x="931.685" y="245.7787">Email: string</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="107.95" x="931.685" y="259.631">SenhaHash: string</text><line style="stroke:#181818;stroke-width:0.425;" x1="927.435" x2="1043.885" y1="265.8375" y2="265.8375"/></g><!--MD5=[bccb4c1d67246c2b8cf92958961a97de]
+class ProgramaFidelidade--><g id="elem_ProgramaFidelidade"><rect codeLine="23" fill="#F1F1F1" height="117.0875" id="ProgramaFidelidade" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="120.7" x="745.96" y="510.2523"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="41.65" x="785.485" y="523.9702">«Entity»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="115.6" x="748.51" y="537.4216">ProgramaFidelidade</text><line style="stroke:#181818;stroke-width:0.425;" x1="746.81" x2="865.81" y1="544.4781" y2="544.4781"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="32.3" x="751.06" y="558.924">Id: int</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="75.65" x="751.06" y="572.7763">Nome: string</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="78.2" x="751.06" y="586.6287">Banco: string</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="76.5" x="751.06" y="600.481">UsuarioId: int</text><line style="stroke:#181818;stroke-width:0.85;" x1="746.81" x2="865.81" y1="606.6875" y2="606.6875"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="79.9" x="751.06" y="621.1333">Validar(): bool</text></g><!--MD5=[a13ca1da61a66d544daddca6fa0a1a30]
+class Cartao--><g id="elem_Cartao"><rect codeLine="32" fill="#F1F1F1" height="144.7922" id="Cartao" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="155.55" x="465.035" y="312.2023"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="41.65" x="521.985" y="325.9202">«Entity»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="38.25" x="523.685" y="339.3716">Cartao</text><line style="stroke:#181818;stroke-width:0.425;" x1="465.885" x2="619.735" y1="346.4281" y2="346.4281"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="32.3" x="470.135" y="360.874">Id: int</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="75.65" x="470.135" y="374.7263">Nome: string</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="86.7" x="470.135" y="388.5787">Limite: decimal</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="145.35" x="470.135" y="402.431">FatorConversao: decimal</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="76.5" x="470.135" y="416.2833">UsuarioId: int</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="88.4" x="470.135" y="430.1357">ProgramaId: int</text><line style="stroke:#181818;stroke-width:0.85;" x1="465.885" x2="619.735" y1="436.3422" y2="436.3422"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="79.9" x="470.135" y="450.788">Validar(): bool</text></g><!--MD5=[2de463454f7588e20c9a29e8d111f9cc]
+class Transacao--><g id="elem_Transacao"><rect codeLine="43" fill="#F1F1F1" height="144.7922" id="Transacao" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="328.1" x="229.16" y="496.6523"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="41.65" x="372.385" y="510.3702">«Entity»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="61.2" x="362.61" y="523.8216">Transacao</text><line style="stroke:#181818;stroke-width:0.425;" x1="230.01" x2="556.41" y1="530.8781" y2="530.8781"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="32.3" x="234.26" y="545.324">Id: int</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="91.8" x="234.26" y="559.1763">Data: DateTime</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="81.6" x="234.26" y="573.0287">Valor: decimal</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="124.95" x="234.26" y="586.881">PontosEstimados: int</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="70.55" x="234.26" y="600.7333">CartaoId: int</text><line style="stroke:#181818;stroke-width:0.85;" x1="230.01" x2="556.41" y1="606.9398" y2="606.9398"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="317.9" x="234.26" y="621.3857">CalcularPontos(strategy: ICalculoPontosStrategy): void</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="107.1" x="234.26" y="635.238">ValidarValor(): void</text></g><!--MD5=[fd822ee2f7e292bca8747da3d250eb99]
+class DadosTransacao--><g id="elem_DadosTransacao"><rect codeLine="54" fill="#F1F1F1" height="103.2352" id="DadosTransacao" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="109.65" x="338.385" y="333.0273"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="79.05" x="353.685" y="346.7452">«Value Object»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="99.45" x="343.485" y="360.1966">DadosTransacao</text><line style="stroke:#181818;stroke-width:0.425;" x1="339.235" x2="447.185" y1="367.2531" y2="367.2531"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="81.6" x="343.485" y="381.699">Valor: decimal</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="91.8" x="343.485" y="395.5513">Data: DateTime</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="99.45" x="343.485" y="409.4037">Descricao: string</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="70.55" x="343.485" y="423.256">CartaoId: int</text><line style="stroke:#181818;stroke-width:0.425;" x1="339.235" x2="447.185" y1="429.4625" y2="429.4625"/></g><!--MD5=[a160cbe32fb273f795fc554267a49ac0]
+class IUsuarioRepository--><g id="elem_IUsuarioRepository"><rect codeLine="64" fill="#F1F1F1" height="75.5305" id="IUsuarioRepository" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="225.25" x="850.085" y="67.4023"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="59.5" x="932.96" y="81.1202">«Interface»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" font-style="italic" lengthAdjust="spacing" textLength="109.65" x="907.885" y="94.5716">IUsuarioRepository</text><line style="stroke:#181818;stroke-width:0.425;" x1="850.935" x2="1074.485" y1="101.6281" y2="101.6281"/><line style="stroke:#181818;stroke-width:0.425;" x1="850.935" x2="1074.485" y1="108.4281" y2="108.4281"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="188.7" x="855.185" y="122.874">Adicionar(usuario: Usuario): void</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="215.05" x="855.185" y="136.7263">ObterPorEmail(email: string): Usuario</text></g><!--MD5=[67ebacf0dca4b5ed55355db12e047e22]
+class IProgramaRepository--><g id="elem_IProgramaRepository"><rect codeLine="69" fill="#F1F1F1" height="89.3828" id="IProgramaRepository" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="337.45" x="637.585" y="339.8273"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="59.5" x="776.56" y="353.5452">«Interface»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" font-style="italic" lengthAdjust="spacing" textLength="121.55" x="745.535" y="366.9966">IProgramaRepository</text><line style="stroke:#181818;stroke-width:0.425;" x1="638.435" x2="974.185" y1="374.0531" y2="374.0531"/><line style="stroke:#181818;stroke-width:0.425;" x1="638.435" x2="974.185" y1="380.8531" y2="380.8531"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="272.85" x="642.685" y="395.299">Adicionar(programa: ProgramaFidelidade): void</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="327.25" x="642.685" y="409.1513">ObterPorUsuario(userId: int): List&lt;ProgramaFidelidade&gt;</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="226.95" x="642.685" y="423.0037">ObterPorId(id: int): ProgramaFidelidade</text></g><!--MD5=[9ed9880ab1a847ba7376a76aabd09c63]
+class ICartaoRepository--><g id="elem_ICartaoRepository"><rect codeLine="75" fill="#F1F1F1" height="75.5305" id="ICartaoRepository" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="260.1" x="412.76" y="183.0023"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="59.5" x="513.06" y="196.7202">«Interface»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" font-style="italic" lengthAdjust="spacing" textLength="103.7" x="490.96" y="210.1716">ICartaoRepository</text><line style="stroke:#181818;stroke-width:0.425;" x1="413.61" x2="672.01" y1="217.2281" y2="217.2281"/><line style="stroke:#181818;stroke-width:0.425;" x1="413.61" x2="672.01" y1="224.0281" y2="224.0281"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="175.95" x="417.86" y="238.474">Adicionar(cartao: Cartao): void</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="249.9" x="417.86" y="252.3263">ObterPorUsuario(userId: int): List&lt;Cartao&gt;</text></g><!--MD5=[94577ad630aacadfcf72cecd32dcd6ae]
+class ITransacaoRepository--><g id="elem_ITransacaoRepository"><rect codeLine="80" fill="#F1F1F1" height="75.5305" id="ITransacaoRepository" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="270.3" x="51.51" y="346.6273"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="59.5" x="156.91" y="360.3452">«Interface»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" font-style="italic" lengthAdjust="spacing" textLength="126.65" x="123.335" y="373.7966">ITransacaoRepository</text><line style="stroke:#181818;stroke-width:0.425;" x1="52.36" x2="320.96" y1="380.8531" y2="380.8531"/><line style="stroke:#181818;stroke-width:0.425;" x1="52.36" x2="320.96" y1="387.6531" y2="387.6531"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="220.15" x="56.61" y="402.099">Adicionar(transacao: Transacao): void</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="260.1" x="56.61" y="415.9513">ObterExtrato(cartaoId: int): List&lt;Transacao&gt;</text></g><!--MD5=[d38b7d91589a912b23fba6e2f44c50f1]
+class ICalculoPontosStrategy--><g id="elem_ICalculoPontosStrategy"><rect codeLine="85" fill="#F1F1F1" height="61.6781" id="ICalculoPontosStrategy" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="284.75" x="250.835" y="667.5023"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="56.95" x="364.735" y="681.2202">«Strategy»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" font-style="italic" lengthAdjust="spacing" textLength="135.15" x="325.635" y="694.6716">ICalculoPontosStrategy</text><line style="stroke:#181818;stroke-width:0.425;" x1="251.685" x2="534.735" y1="701.7281" y2="701.7281"/><line style="stroke:#181818;stroke-width:0.425;" x1="251.685" x2="534.735" y1="708.5281" y2="708.5281"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="274.55" x="255.935" y="722.974">Calcular(valorReais: decimal, fator: decimal): int</text></g><!--MD5=[313ba3a844c03017492c0d446c25ca44]
+class ITransacaoFactory--><g id="elem_ITransacaoFactory"><rect codeLine="89" fill="#F1F1F1" height="61.6781" id="ITransacaoFactory" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="286.45" x="71.485" y="189.8023"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="51" x="189.21" y="203.5202">«Factory»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" font-style="italic" lengthAdjust="spacing" textLength="106.25" x="161.585" y="216.9716">ITransacaoFactory</text><line style="stroke:#181818;stroke-width:0.425;" x1="72.335" x2="357.085" y1="224.0281" y2="224.0281"/><line style="stroke:#181818;stroke-width:0.425;" x1="72.335" x2="357.085" y1="230.8281" y2="230.8281"/><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="276.25" x="76.585" y="245.274">CriarNova(dados: DadosTransacao): Transacao</text></g><!--MD5=[02de4f364d5c008e4bb30f8586ae79e3]
+class DomainException--><g id="elem_DomainException"><rect codeLine="96" fill="#F1F1F1" height="47.8258" id="DomainException" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="107.95" x="878.135" y="755.9023"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="63.75" x="900.235" y="769.6202">«Exception»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="102.85" x="880.685" y="783.0716">DomainException</text><line style="stroke:#181818;stroke-width:0.425;" x1="878.985" x2="985.235" y1="790.1281" y2="790.1281"/><line style="stroke:#181818;stroke-width:0.425;" x1="878.985" x2="985.235" y1="796.9281" y2="796.9281"/></g><!--MD5=[99b73e4b778bd63ab40e110b35d577d8]
+class ValorInvalidoException--><g id="elem_ValorInvalidoException"><rect codeLine="97" fill="#F1F1F1" height="47.8258" id="ValorInvalidoException" rx="2.125" ry="2.125" style="stroke:#181818;stroke-width:0.425;" width="135.15" x="774.435" y="674.7273"/><text fill="#000000" font-family="sans-serif" font-size="10.2" font-style="italic" lengthAdjust="spacing" textLength="63.75" x="810.135" y="688.4452">«Exception»</text><text fill="#000000" font-family="sans-serif" font-size="11.9" lengthAdjust="spacing" textLength="130.05" x="776.985" y="701.8966">ValorInvalidoException</text><line style="stroke:#181818;stroke-width:0.425;" x1="775.285" x2="908.735" y1="708.9531" y2="708.9531"/><line style="stroke:#181818;stroke-width:0.425;" x1="775.285" x2="908.735" y1="715.7531" y2="715.7531"/></g><!--MD5=[cf2b8c7eeaa942e3e91ac39d1092f0ae]
+link ValorInvalidoException to DomainException--><g id="link_ValorInvalidoException_DomainException"><path codeLine="99" d="M868.071,722.3613 C875.8485,729.2208 884.544,736.8963 892.9675,744.3253 " fill="none" id="ValorInvalidoException-to-DomainException" style="stroke:#181818;stroke-width:0.85;"/><polygon fill="none" points="896.9795,739.9308,905.794,755.6388,889.1085,748.8558,896.9795,739.9308" style="stroke:#181818;stroke-width:0.85;"/></g><!--MD5=[a047d5b5dd58431c79dab65eb923deca]
+reverse link Usuario to Cartao--><g id="link_Usuario_Cartao"><path codeLine="104" d="M915.382,230.2538 C841.1345,241.3888 722.211,265.2398 629.51,312.2023 C626.552,313.6983 623.6025,315.3133 620.6785,317.0218 " fill="none" id="Usuario-backto-Cartao" style="stroke:#181818;stroke-width:0.85;"/><polygon fill="#181818" points="926.449,228.6388,920.9129,226.008,916.3551,230.1064,921.8913,232.7373,926.449,228.6388" style="stroke:#181818;stroke-width:0.85;"/><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="34.85" x="684.76" y="296.1092">possui</text><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="6.8" x="912.8009" y="226.2879">1</text><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="19.55" x="627.3887" y="308.8711">0..*</text></g><!--MD5=[437a54b931d07a7775a296dc42b646d8]
+reverse link Usuario to ProgramaFidelidade--><g id="link_Usuario_ProgramaFidelidade"><path codeLine="105" d="M1000.671,283.4298 C1009.3495,333.3843 1013.4465,403.8663 983.96,456.7023 C958.987,501.4378 907.7745,530.6438 866.728,547.8733 " fill="none" id="Usuario-backto-ProgramaFidelidade" style="stroke:#181818;stroke-width:0.85;"/><polygon fill="#181818" points="998.6395,272.4648,996.2277,278.0998,1000.5016,282.4934,1002.9134,276.8584,998.6395,272.4648" style="stroke:#181818;stroke-width:0.85;"/><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="46.75" x="1007.76" y="388.3342">gerencia</text><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="6.8" x="993.007" y="289.7754">1</text><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="19.55" x="873.4183" y="542.7838">0..*</text></g><!--MD5=[03724dc1fb7be3e9e5bca37d37a1ac58]
+link Cartao to ProgramaFidelidade--><g id="link_Cartao_ProgramaFidelidade"><path codeLine="107" d="M620.67,450.1828 C623.628,452.4098 626.586,454.5943 629.51,456.7023 C665.686,482.8313 707.9225,509.5553 742.033,530.2783 " fill="none" id="Cartao-to-ProgramaFidelidade" style="stroke:#181818;stroke-width:0.85;"/><polygon fill="#181818" points="745.7305,532.5223,740.9469,525.6521,742.0948,530.3214,737.4255,531.4693,745.7305,532.5223" style="stroke:#181818;stroke-width:0.85;"/><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="59.5" x="667.76" y="480.5592">pontua em</text><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="19.55" x="627.3796" y="452.2272">0..*</text><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="6.8" x="732.3326" y="525.6369">1</text></g><!--MD5=[b5a84ccf1371c97bbbe234051f8ae711]
+reverse link Cartao to Transacao--><g id="link_Cartao_Transacao"><path codeLine="108" d="M477.2835,465.3553 C468.8345,475.6743 460.224,486.1888 451.894,496.3633 " fill="none" id="Cartao-backto-Transacao" style="stroke:#181818;stroke-width:0.85;"/><polygon fill="#181818" points="484.33,456.7448,478.469,458.539,477.871,464.6392,483.7319,462.845,484.33,456.7448" style="stroke:#181818;stroke-width:0.85;"/><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="24.65" x="473.11" y="480.5592">gera</text><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="6.8" x="472.0188" y="474">1</text><text fill="#000000" font-family="sans-serif" font-size="11.05" lengthAdjust="spacing" textLength="19.55" x="436.3943" y="487.3277">0..*</text></g><!--MD5=[66d8785cb36b3e0e49d7c2f1092fd1bc]
+link IUsuarioRepository to Usuario--><g id="link_IUsuarioRepository_Usuario"><path codeLine="113" d="M970.1645,143.0608 C971.55,149.9458 973.029,157.2728 974.4995,164.5743 " fill="none" id="IUsuarioRepository-to-Usuario" style="stroke:#181818;stroke-width:0.85;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="975.409,169.1048,977.2335,160.9346,974.5708,164.9383,970.5671,162.2756,975.409,169.1048" style="stroke:#181818;stroke-width:0.85;"/></g><!--MD5=[607aab07961d7b67929691cc0f9ef676]
+link IProgramaRepository to ProgramaFidelidade--><g id="link_IProgramaRepository_ProgramaFidelidade"><path codeLine="114" d="M806.31,429.3068 C806.31,452.1718 806.31,480.5023 806.31,505.5943 " fill="none" id="IProgramaRepository-to-ProgramaFidelidade" style="stroke:#181818;stroke-width:0.85;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="806.31,509.9123,809.71,502.2623,806.31,505.6623,802.91,502.2623,806.31,509.9123" style="stroke:#181818;stroke-width:0.85;"/></g><!--MD5=[1516712dc4b999554ce15192b1823621]
+link ICartaoRepository to Cartao--><g id="link_ICartaoRepository_Cartao"><path codeLine="115" d="M542.81,258.8223 C542.81,273.3743 542.81,290.6208 542.81,307.5783 " fill="none" id="ICartaoRepository-to-Cartao" style="stroke:#181818;stroke-width:0.85;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="542.81,311.8793,546.21,304.2293,542.81,307.6293,539.41,304.2293,542.81,311.8793" style="stroke:#181818;stroke-width:0.85;"/></g><!--MD5=[94642bda8c4506e03d9fdf339eb5ab1f]
+link ITransacaoRepository to Transacao--><g id="link_ITransacaoRepository_Transacao"><path codeLine="116" d="M228.4545,422.2858 C251.566,442.7283 281.129,468.8913 308.822,493.3883 " fill="none" id="ITransacaoRepository-to-Transacao" style="stroke:#181818;stroke-width:0.85;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="312.188,496.3633,308.7147,488.7463,309.0062,493.5458,304.2067,493.8373,312.188,496.3633" style="stroke:#181818;stroke-width:0.85;"/></g><!--MD5=[8666e1d2ca0092636fa47b11f1e0da4d]
+link Transacao to ICalculoPontosStrategy--><g id="link_Transacao_ICalculoPontosStrategy"><path codeLine="118" d="M393.21,641.1948 C393.21,648.6323 393.21,655.9423 393.21,662.6913 " fill="none" id="Transacao-to-ICalculoPontosStrategy" style="stroke:#181818;stroke-width:0.85;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="393.21,667.2813,396.61,659.6313,393.21,663.0313,389.81,659.6313,393.21,667.2813" style="stroke:#181818;stroke-width:0.85;"/></g><!--MD5=[649eadae9b041d3ce28fced1825354e2]
+link ITransacaoFactory to Transacao--><g id="link_ITransacaoFactory_Transacao"><path codeLine="119" d="M115.3365,251.8523 C87.0145,265.5628 59.415,285.0108 43.01,312.2023 C9.8345,367.1973 5.1,404.8608 43.01,456.7023 C65.994,488.1353 146.6845,514.9018 224.8165,534.3158 " fill="none" id="ITransacaoFactory-to-Transacao" style="stroke:#181818;stroke-width:0.85;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="229.007,535.3528,222.3958,530.2173,224.8811,534.3335,220.7648,536.8188,229.007,535.3528" style="stroke:#181818;stroke-width:0.85;"/></g><!--MD5=[4f8614515c9b8cc8635a74b000f76a47]
+link ITransacaoFactory to DadosTransacao--><g id="link_ITransacaoFactory_DadosTransacao"><path codeLine="120" d="M257.159,251.9628 C279.7095,268.7673 307.411,290.5953 330.31,312.2023 C336.09,317.6593 341.9125,323.5838 347.565,329.6018 " fill="none" id="ITransacaoFactory-to-DadosTransacao" style="stroke:#181818;stroke-width:0.85;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="350.693,332.9593,347.9743,325.0416,347.7992,329.8467,342.9941,329.6716,350.693,332.9593" style="stroke:#181818;stroke-width:0.85;"/></g><!--MD5=[e424441ef7652547f1c50ca587c30925]
+link Transacao to ValorInvalidoException--><g id="link_Transacao_ValorInvalidoException"><path codeLine="122" d="M557.464,616.5703 C630.5215,637.3953 712.759,660.8383 769.964,677.1413 " fill="none" id="Transacao-to-ValorInvalidoException" style="stroke:#181818;stroke-width:0.85;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="774.384,678.3993,767.9435,673.0513,770.2934,677.2462,766.0985,679.5962,774.384,678.3993" style="stroke:#181818;stroke-width:0.85;"/></g><!--MD5=[f14cd74774cd726f87e0cf26f87b0064]
+link DomainException to Usuario--><!--MD5=[4dcff09a2a24e1f875e5fba9af43119b]
+link DadosTransacao to Transacao--><!--MD5=[77930abe7356b705d9e092949e105a21]
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide circle
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 30
+scale 0.85
+
+title Diagrama de Classes de Domínio (Miles.Core)
+
+package "Miles.Core" {
+
+    ' =========================
+    ' Entidades (Domínio)
+    ' =========================
+    class Usuario <<Entity>> {
+        Id: int
+        Nome: string
+        Email: string
+        SenhaHash: string
+    }
+
+    class ProgramaFidelidade <<Entity>> {
+        Id: int
+        Nome: string
+        Banco: string
+        UsuarioId: int
+        - -
+        Validar(): bool
+    }
+
+    class Cartao <<Entity>> {
+        Id: int
+        Nome: string
+        Limite: decimal
+        FatorConversao: decimal
+        UsuarioId: int
+        ProgramaId: int
+        - -
+        Validar(): bool
+    }
+
+    class Transacao <<Entity>> {
+        Id: int
+        Data: DateTime
+        Valor: decimal
+        PontosEstimados: int
+        CartaoId: int
+        - -
+        CalcularPontos(strategy: ICalculoPontosStrategy): void
+        ValidarValor(): void
+    }
+
+    class DadosTransacao <<Value Object>> {
+        Valor: decimal
+        Data: DateTime
+        Descricao: string
+        CartaoId: int
+    }
+
+    ' =========================
+    ' Interfaces (Contratos)
+    ' =========================
+    interface IUsuarioRepository <<Interface>> {
+        Adicionar(usuario: Usuario): void
+        ObterPorEmail(email: string): Usuario
+    }
+
+    interface IProgramaRepository <<Interface>> {
+        Adicionar(programa: ProgramaFidelidade): void
+        ObterPorUsuario(userId: int): List<ProgramaFidelidade>
+        ObterPorId(id: int): ProgramaFidelidade
+    }
+
+    interface ICartaoRepository <<Interface>> {
+        Adicionar(cartao: Cartao): void
+        ObterPorUsuario(userId: int): List<Cartao>
+    }
+
+    interface ITransacaoRepository <<Interface>> {
+        Adicionar(transacao: Transacao): void
+        ObterExtrato(cartaoId: int): List<Transacao>
+    }
+
+    interface ICalculoPontosStrategy <<Strategy>> {
+        Calcular(valorReais: decimal, fator: decimal): int
+    }
+
+    interface ITransacaoFactory <<Factory>> {
+        CriarNova(dados: DadosTransacao): Transacao
+    }
+
+    ' =========================
+    ' Exceptions de Domínio
+    ' =========================
+    class DomainException <<Exception>>
+    class ValorInvalidoException <<Exception>>
+
+    ValorInvalidoException - -|> DomainException
+
+    ' =========================
+    ' Relacionamentos Estruturais
+    ' =========================
+    Usuario "1" *- - "0..*" Cartao : possui
+    Usuario "1" *- - "0..*" ProgramaFidelidade : gerencia
+
+    Cartao "0..*" - -> "1" ProgramaFidelidade : pontua em
+    Cartao "1" *- - "0..*" Transacao : gera
+
+    ' =========================
+    ' Dependências
+    ' =========================
+    IUsuarioRepository ..> Usuario
+    IProgramaRepository ..> ProgramaFidelidade
+    ICartaoRepository ..> Cartao
+    ITransacaoRepository ..> Transacao
+
+    Transacao ..> ICalculoPontosStrategy
+    ITransacaoFactory ..> Transacao
+    ITransacaoFactory ..> DadosTransacao
+
+    Transacao ..> ValorInvalidoException
+
+    ' =========================
+    ' Força de Layout (invisível)
+    ' =========================
+    DomainException -[hidden]-> Usuario
+    DadosTransacao -[hidden]-> Transacao
+}
+@enduml
+
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide circle
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 30
+scale 0.85
+
+title Diagrama de Classes de Domínio (Miles.Core)
+
+package "Miles.Core" {
+
+    class Usuario <<Entity>> {
+        Id: int
+        Nome: string
+        Email: string
+        SenhaHash: string
+    }
+
+    class ProgramaFidelidade <<Entity>> {
+        Id: int
+        Nome: string
+        Banco: string
+        UsuarioId: int
+        - -
+        Validar(): bool
+    }
+
+    class Cartao <<Entity>> {
+        Id: int
+        Nome: string
+        Limite: decimal
+        FatorConversao: decimal
+        UsuarioId: int
+        ProgramaId: int
+        - -
+        Validar(): bool
+    }
+
+    class Transacao <<Entity>> {
+        Id: int
+        Data: DateTime
+        Valor: decimal
+        PontosEstimados: int
+        CartaoId: int
+        - -
+        CalcularPontos(strategy: ICalculoPontosStrategy): void
+        ValidarValor(): void
+    }
+
+    class DadosTransacao <<Value Object>> {
+        Valor: decimal
+        Data: DateTime
+        Descricao: string
+        CartaoId: int
+    }
+
+    interface IUsuarioRepository <<Interface>> {
+        Adicionar(usuario: Usuario): void
+        ObterPorEmail(email: string): Usuario
+    }
+
+    interface IProgramaRepository <<Interface>> {
+        Adicionar(programa: ProgramaFidelidade): void
+        ObterPorUsuario(userId: int): List<ProgramaFidelidade>
+        ObterPorId(id: int): ProgramaFidelidade
+    }
+
+    interface ICartaoRepository <<Interface>> {
+        Adicionar(cartao: Cartao): void
+        ObterPorUsuario(userId: int): List<Cartao>
+    }
+
+    interface ITransacaoRepository <<Interface>> {
+        Adicionar(transacao: Transacao): void
+        ObterExtrato(cartaoId: int): List<Transacao>
+    }
+
+    interface ICalculoPontosStrategy <<Strategy>> {
+        Calcular(valorReais: decimal, fator: decimal): int
+    }
+
+    interface ITransacaoFactory <<Factory>> {
+        CriarNova(dados: DadosTransacao): Transacao
+    }
+
+    class DomainException <<Exception>>
+    class ValorInvalidoException <<Exception>>
+
+    ValorInvalidoException - -|> DomainException
+
+    Usuario "1" *- - "0..*" Cartao : possui
+    Usuario "1" *- - "0..*" ProgramaFidelidade : gerencia
+
+    Cartao "0..*" - -> "1" ProgramaFidelidade : pontua em
+    Cartao "1" *- - "0..*" Transacao : gera
+
+    IUsuarioRepository ..> Usuario
+    IProgramaRepository ..> ProgramaFidelidade
+    ICartaoRepository ..> Cartao
+    ITransacaoRepository ..> Transacao
+
+    Transacao ..> ICalculoPontosStrategy
+    ITransacaoFactory ..> Transacao
+    ITransacaoFactory ..> DadosTransacao
+
+    Transacao ..> ValorInvalidoException
+
+    DomainException -[hidden]-> Usuario
+    DadosTransacao -[hidden]-> Transacao
+}
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 17:01:30 UTC 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

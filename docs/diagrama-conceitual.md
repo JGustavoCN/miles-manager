@@ -1,77 +1,111 @@
 ### Diagrama Conceitual
 
-O Diagrama Conceitual ilustra os conceitos fundamentais do domínio do problema sob a ótica do analista de negócios. Conforme as melhores práticas de Análise Orientada a Objetos, este diagrama representa "coisas do mundo real" e não componentes de software, servindo como um vocabulário comum para alinhar o entendimento entre desenvolvedores e stakeholders.
+O Diagrama Conceitual ilustra os conceitos fundamentais do domínio do problema sob a ótica do analista de negócios. Em conformidade com as melhores práticas de Análise Orientada a Objetos (AOO), este artefato representa "coisas do mundo real" e não componentes de software, servindo como um vocabulário comum para alinhar o entendimento entre desenvolvedores e _stakeholders_.
 
-Diferentemente do Diagrama de Classes de Projeto — que detalhará a arquitetura, padrões de projeto e métodos específicos da implementação em C# —, o foco desta etapa é garantir a integridade das regras de negócio e a persistência correta dos dados financeiros.
+Diferentemente do Diagrama de Classes de Projeto — que será apresentado posteriormente detalhando a arquitetura, padrões de projeto e implementação em C# —, o foco desta etapa é garantir a integridade das regras de negócio, a correta persistência dos dados financeiros e a definição das relações entre os conceitos, abstraindo-se de detalhes tecnológicos como autenticação ou banco de dados.
 
-Abaixo, apresenta-se o diagrama modelado para o sistema **Miles Manager**:
+A Figura apresenta o diagrama conceitual modelado para o sistema _Miles Manager_.
 
 ```mermaid
----
-config:
-  layout: dagre
----
-classDiagram
-    direction TB
+classDiagram-v2
+%% ============================================
+%% MODELO CONCEITUAL - MILES MANAGER
+%% ============================================
 
-    %% Entidades (Conceitos)
-    class Usuario {
-        String nome
-        String email
-        String senha
-    }
+%% ENTIDADES
+class Usuario {
+    nome
+    email
+}
 
-    class Cartao {
-        String nome
-        String bandeira
-        Double limite
-        Integer diaVencimento
-        Double fatorConversao
-    }
+class ProgramaFidelidade {
+    nome
+    bancoOuEmpresa
+}
 
-    class ProgramaFidelidade {
-        String nome
-        String bancoResponsavel
-    }
+class Cartao {
+    nome
+    bandeira
+    limite
+    diaVencimento
+    fatorConversao
+}
 
-    class Transacao {
-        Date data
-        Double valor
-        String descricao
-        String categoria
-        Double cotacaoDolar
-        Integer pontosEstimados
-    }
+class Transacao {
+    data
+    valor
+    descricao
+    categoria
+    cotacaoDolar
+    pontosEstimados
+}
 
-    %% Notas Explicativas
-    note for Cartao "Atributo chave para o cálculo:<br/>Define quantos pontos ganha por Dólar."
-    note for Transacao "Armazena o snapshot do momento:<br/>1. Dólar do dia (Auditoria)<br/>2. Pontos calculados (RF-006)"
+%% RELACIONAMENTOS
+Usuario "1" --> "0..*" Cartao : possui >
+Usuario "1" --> "0..*" ProgramaFidelidade : participa de >
+Cartao "0..*" --> "1" ProgramaFidelidade : pontua em >
+Cartao "1" --> "0..*" Transacao : gera >
 
-    %% Relacionamentos
-    Usuario "1" -- "0..*" Cartao : possui
-    Cartao "0..*" -- "1" ProgramaFidelidade : pontua em
-    Cartao "1" -- "0..*" Transacao : gera
+%% NOTAS DE NEGÓCIO (multilinha com <br/>)
+note for ProgramaFidelidade "Usuário gerencia seus programas<br/>(ex: Smiles, Latam)<br/>independente de cartões."
+note for Transacao "Registro imutável.<br/>Guarda cotação e pontos<br/>do momento da compra (Snapshot)."
+note for Cartao "Taxa de conversão (pts/USD)<br/>pertence ao cartão<br/>(regra simplificada do MVP)."
+
 
 ```
 
-#### Análise das Entidades e Decisões de Modelagem
+<center> Diagrama Conceitual do Sistema Miles Manager</center>
 
-Para atender aos requisitos de integridade financeira e cálculo automático (RF-006) descritos no estudo de caso, as seguintes decisões estruturais foram tomadas neste modelo:
+#### Decisões de Modelagem e Abstração
 
-1. **Auditoria e Imutabilidade (Entidade Transacao):**
-   A entidade `Transacao` foi projetada para armazenar um "snapshot" (retrato) do momento da compra. Incluiu-se o atributo `cotacaoDolar` além do `pontosEstimados`.
-   - _Justificativa:_ Isso garante a auditabilidade do sistema. Mesmo que a cotação do dólar varie ou a regra do cartão mude no futuro, o registro histórico da transação preserva os valores originais utilizados no cálculo, garantindo a consistência dos dados.
+Para atender aos requisitos funcionais e não funcionais descritos no estudo de caso, bem como respeitar as diretrizes teóricas de modelagem conceitual, foram adotadas as seguintes decisões estruturais sobre as entidades:
 
-2. **Simplificação da Regra de Negócio (Entidade Cartao):**
-   O atributo `fatorConversao` foi alocado diretamente na entidade `Cartao`.
-   - _Justificativa:_ Para o escopo deste MVP, assume-se que cada cartão possui uma regra de pontuação fixa (ex: 2.0 pontos por dólar). Essa abordagem reduz a complexidade inicial, evitando a criação de tabelas abstratas de regras, sem ferir os requisitos funcionais.
+**1. Abstração de Implementação (Entidade Usuario)**
+Na entidade `Usuario`, optou-se por modelar estritamente os atributos que identificam a pessoa no domínio do problema (`nome` e `email`).
 
-3. **Cálculo sob Demanda (Ausência de atributo 'Saldo'):**
-   Não foi incluído um atributo de "Saldo Total" nas entidades `Usuario` ou `ProgramaFidelidade`.
-   - _Justificativa:_ Em sistemas financeiros robustos, o saldo deve ser derivado do somatório das transações (cálculo em tempo de execução) para evitar inconsistências entre o valor armazenado e o histórico real de movimentações. O Dashboard (RF-007) será responsável por realizar essa agregação na camada de aplicação.
+- _Justificativa:_ Atributos como `senha`, `token` ou `salt` foram deliberadamente omitidos nesta etapa. Conforme a teoria de Análise Orientada a Objetos (AOO), a senha é um mecanismo de segurança da solução de software e não uma característica intrínseca do conceito de "Usuário" no mundo real.
 
-4. **Relacionamentos:**
+**2. Auditoria e Imutabilidade (Entidade Transacao)**
+A entidade `Transacao` foi projetada para funcionar como um _"snapshot"_ (retrato) do momento da compra, incluindo os atributos `cotacaoDolar` e `pontosEstimados`.
 
-- Um **Usuario** é o detentor central dos dados.
-- O **Cartao** atua como o gerador de pontos e está vinculado a um único **ProgramaFidelidade** (ex: um cartão _co-branded_ que pontua diretamente na companhia aérea).
-- A **Transacao** é o evento financeiro atômico gerado pelo uso do cartão.
+- _Justificativa:_ Essa decisão garante a auditabilidade do sistema. Mesmo que a cotação do dólar varie ou a regra do cartão mude, o registro histórico preserva os valores originais, assegurando a consistência financeira.
+
+**3. Simplificação da Regra de Negócio (Entidade Cartao)**
+O atributo `fatorConversao` foi alocado diretamente na entidade `Cartao`.
+
+- _Justificativa:_ Para o escopo deste MVP, assume-se que cada cartão possui uma regra de pontuação fixa. Essa abordagem evita a complexidade de tabelas de regras dinâmicas sem comprometer a precisão dos cálculos.
+
+**4. Cálculo sob Demanda (Ausência de Saldo)**
+Não foi incluído um atributo de "Saldo Total" nas entidades persistentes.
+
+- _Justificativa:_ O saldo deve ser uma informação derivada do somatório das transações válidas. Isso evita o problema de "furo de caixa" (inconsistência entre valor armazenado e histórico real).
+
+#### Análise dos Relacionamentos (Associações)
+
+A estrutura de relacionamentos do diagrama reflete as interações do mundo real entre os conceitos. Abaixo, detalham-se as conexões de cada entidade principal:
+
+**A. Cartão (3 Relacionamentos)**
+O Cartão atua como o elemento conector do sistema, possuindo três vínculos essenciais:
+
+1. **Com Usuário (Posse):** Todo cartão pertence obrigatoriamente a um titular (`1 Usuario`).
+2. **Com Programa (Pontuação):** Todo cartão deve saber para onde enviar os pontos gerados. Ele se vincula a `1 ProgramaFidelidade` (representando parcerias ou cartões _co-branded_).
+3. **Com Transação (Geração):** O cartão é a origem dos eventos financeiros, podendo gerar `0..* Transações` ao longo de sua vida útil.
+
+**B. Usuário (2 Relacionamentos)**
+O Usuário é o centro da gestão e possui duas conexões de propriedade direta:
+
+1. **Com Cartão (Instrumento):** O usuário possui `0..* Cartões` de crédito para uso.
+2. **Com Programa (Ativo):** O usuário mantém cadastro em `0..* Programas de Fidelidade` (ex: Smiles, Latam Pass).
+
+- _Nota:_ Este vínculo direto é crucial pois permite ao usuário gerenciar seus programas mesmo que ainda não tenha cartões vinculados a eles.
+
+**C. Programa de Fidelidade (2 Relacionamentos)**
+O Programa atua como o destino dos pontos e se relaciona de duas formas:
+
+1. **Com Usuário (Participação):** O programa tem `1 Usuário` titular da conta.
+2. **Com Cartão (Fonte):** O programa recebe pontos de `0..* Cartões` que estejam configurados para pontuar nele.
+
+**D. Transação (1 Relacionamento)**
+A Transação é a entidade mais dependente do modelo (evento):
+
+1. **Com Cartão (Origem):** Uma transação não existe por conta própria; ela é gerada exclusivamente por `1 Cartão`. Isso estabelece uma dependência forte, onde o histórico de compras está intrinsecamente ligado ao instrumento utilizado.
