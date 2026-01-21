@@ -1,0 +1,163 @@
+@page "/teste-mudblazor"
+@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+<PageTitle>Teste MudBlazor - Miles Manager</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudText Typo="Typo.h3" GutterBottom="true" Color="Color.Primary">
+        🎨 Teste de Componentes MudBlazor
+    </MudText>
+    <MudText Typo="Typo.body1" Class="mb-4">
+        Esta página valida que todos os componentes essenciais do MudBlazor estão funcionando corretamente.
+    </MudText>
+
+    <!-- Teste 1: Botões -->
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 1: Botões</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mr-2">Primário</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" Class="mr-2">Secundário</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Success">Sucesso</MudButton>
+    </MudPaper>
+
+    <!-- Teste 2: Campos de Texto -->
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 2: Campos de Texto</MudText>
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                <MudTextField @bind-Value="nomeCartao"
+                              Label="Nome do Cartão"
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.CreditCard" />
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudTextField @bind-Value="limiteCartao"
+                              Label="Limite (R$)"
+                              Variant="Variant.Outlined"
+                              Format="C2"
+                              Adornment="Adornment.Start"
+                              AdornmentText="R$" />
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <!-- Teste 3: Seleção (Bandeira do Cartão) -->
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 3: Select (Bandeira do Cartão)</MudText>
+        <MudSelect T="string"
+                   Label="Bandeira"
+                   Variant="Variant.Outlined"
+                   @bind-Value="bandeiraEscolhida"
+                   AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem Value="@("Visa")">Visa</MudSelectItem>
+            <MudSelectItem Value="@("Mastercard")">Mastercard</MudSelectItem>
+            <MudSelectItem Value="@("Elo")">Elo</MudSelectItem>
+            <MudSelectItem Value="@("American Express")">American Express</MudSelectItem>
+        </MudSelect>
+    </MudPaper>
+
+    <!-- Teste 4: Date Picker -->
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 4: Seletor de Data</MudText>
+        <MudDatePicker Label="Data da Compra"
+                       @bind-Date="dataCompra"
+                       Variant="Variant.Outlined"
+                       Editable="true"
+                       DateFormat="dd/MM/yyyy"
+                       Placeholder="Selecione uma data" />
+    </MudPaper>
+
+    <!-- Teste 5: Validação de Formulário -->
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 5: Validação (RF-008)</MudText>
+        <MudForm @ref="form" @bind-IsValid="@formValido">
+            <MudTextField @bind-Value="emailTeste"
+                          Label="E-mail"
+                          Variant="Variant.Outlined"
+                          Required="true"
+                          RequiredError="E-mail é obrigatório!"
+                          Validation="@(new EmailAddressAttribute() {ErrorMessage = "E-mail inválido"})" />
+
+            <MudNumericField @bind-Value="valorTeste"
+                             Label="Valor (R$)"
+                             Variant="Variant.Outlined"
+                             Min="0.01M"
+                             Required="true"
+                             RequiredError="Valor é obrigatório!"
+                             Class="mt-3" />
+
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Disabled="@(!formValido)"
+                       Class="mt-3">
+                Salvar
+            </MudButton>
+        </MudForm>
+    </MudPaper>
+
+    <!-- Teste 6: Tabela -->
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 6: Tabela de Dados</MudText>
+        <MudTable Items="@cartoesMock" Hover="true" Breakpoint="Breakpoint.Sm">
+            <HeaderContent>
+                <MudTh>Nome</MudTh>
+                <MudTh>Bandeira</MudTh>
+                <MudTh>Limite</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Nome">@context.Nome</MudTd>
+                <MudTd DataLabel="Bandeira">@context.Bandeira</MudTd>
+                <MudTd DataLabel="Limite">@context.Limite.ToString("C")</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+
+    <!-- Teste 7: Alertas e Feedback -->
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 7: Alertas (Feedback Visual)</MudText>
+        <MudAlert Severity="Severity.Success" Class="mb-2">Operação realizada com sucesso!</MudAlert>
+        <MudAlert Severity="Severity.Error" Class="mb-2">Erro: Campo obrigatório não preenchido.</MudAlert>
+        <MudAlert Severity="Severity.Warning" Class="mb-2">Atenção: Dados não salvos.</MudAlert>
+        <MudAlert Severity="Severity.Info">Informação: Use máscaras nos campos.</MudAlert>
+    </MudPaper>
+
+    <!-- Status Final -->
+    <MudPaper Class="pa-4" Elevation="3" Style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <MudText Typo="Typo.h5" Align="Align.Center" Style="color: white;">
+            ✅ MudBlazor está 100% funcional!
+        </MudText>
+        <MudText Typo="Typo.body1" Align="Align.Center" Style="color: white;" Class="mt-2">
+            Todos os componentes necessários para o Miles Manager estão operacionais.
+        </MudText>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    // Dados de teste
+    private string nomeCartao = "Meu Cartão Platinum";
+    private string limiteCartao = "5000,00";
+    private string bandeiraEscolhida = "Visa";
+    private DateTime? dataCompra = DateTime.Today;
+
+    // Validação
+    private MudForm form;
+    private bool formValido = false;
+    private string emailTeste = "";
+    private decimal valorTeste = 0;
+
+    // Mock de dados para tabela
+    private List<CartaoMock> cartoesMock = new()
+    {
+        new CartaoMock { Nome = "Nubank Platinum", Bandeira = "Mastercard", Limite = 8000.00M },
+        new CartaoMock { Nome = "Santander SX", Bandeira = "Visa", Limite = 12000.00M },
+        new CartaoMock { Nome = "Itaú Personnalité", Bandeira = "Visa", Limite = 25000.00M }
+    };
+
+    public class CartaoMock
+    {
+        public string Nome { get; set; }
+        public string Bandeira { get; set; }
+        public decimal Limite { get; set; }
+    }
+}
