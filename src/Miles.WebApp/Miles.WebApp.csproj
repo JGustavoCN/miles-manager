@@ -5,6 +5,10 @@
     <ProjectReference Include="..\Miles.Core\Miles.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="8.15.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
