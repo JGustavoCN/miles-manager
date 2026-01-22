@@ -1,0 +1,27 @@
+# --- PADRONIZAÇÃO DE FIM DE LINHA ---
+# Garante que o Git converta tudo para LF no repositório (padrão Unix/Linux)
+# Mas converte para o padrão do SO do usuário quando ele baixa (checkout).
+* text=auto
+
+# Arquivos de código .NET forçados
+*.cs text diff=csharp
+*.razor text
+*.cshtml text
+*.sln text eol=crlf
+*.csproj text
+
+# Arquivos de configuração e scripts
+*.json text
+*.md text
+*.css text
+*.js text
+.gitignore text
+.editorconfig text
+
+# Binários (Nunca tocar neles)
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
+*.dll binary
+*.pdb binary
