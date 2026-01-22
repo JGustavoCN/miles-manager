@@ -1,4 +1,4 @@
-﻿namespace Miles.Core;
+namespace Miles.Core;
 
 public class Class1
 {

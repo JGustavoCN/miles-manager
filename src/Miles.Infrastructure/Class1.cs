@@ -1,4 +1,4 @@
-﻿namespace Miles.Infrastructure;
+namespace Miles.Infrastructure;
 
 public class Class1
 {

@@ -9,10 +9,12 @@
   // --- C# & BLAZOR (Novo!) ---
   // Garante que o C# Dev Kit formate o código seguindo o .editorconfig
   "[csharp]": {
-    "editor.defaultFormatter": "ms-dotnettools.csharp"
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.formatOnSave": true
   },
   "[razor]": {
-    "editor.defaultFormatter": "ms-dotnettools.csharp"
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.formatOnSave": true
   },
 
   // --- MARKDOWN ---
