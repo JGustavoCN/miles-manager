@@ -26,13 +26,14 @@ Após análise das opções viáveis (MudBlazor, Radzen, FluentUI), escolhemos *
 
 #### 🆚 Comparação com Alternativas
 
-| Critério               | MudBlazor | Radzen        | FluentUI     |
-|------------------------|-----------|---------------|--------------|
-| Máscaras de Entrada    | ✅ Nativo | ⚠️ Manual     | ⚠️ Manual    |
-| Validação de Formulário| ✅ Ótima  | ✅ Boa        | ⚠️ Limitada  |
-| Documentação PT-BR     | ❌ Não    | ❌ Não        | ❌ Não       |
-| Licença Comercial      | ✅ MIT    | 🔶 Comercial | ✅ MIT       |
-| Curva de Aprendizado   | 🟢 Baixa  | 🟡 Média      | 🟡 Média     |
+| Critério                | MudBlazor | Radzen       | FluentUI    |
+| ----------------------- | --------- | ------------ | ----------- |
+| Máscaras de Entrada     | ✅ Nativo | ⚠️ Manual    | ⚠️ Manual   |
+| Validação de Formulário | ✅ Ótima  | ✅ Boa       | ⚠️ Limitada |
+| Documentação PT-BR      | ❌ Não    | ❌ Não       | ❌ Não      |
+| Licença Comercial       | ✅ MIT    | 🔶 Comercial | ✅ MIT      |
+| Curva de Aprendizado    | 🟢 Baixa  | 🟡 Média     | 🟡 Média    |
+
 ---
 
 ### 📦 Componentes Disponíveis
@@ -74,10 +75,8 @@ A seguir, apresentamos as capturas de tela da página de smoke test em execuçã
 
 ![Smoke Test - Parte 1: Componentes Básicos](assets/testMudBlazor1.png)
 
-
-
-
 #### ✅ Teste 1: Botões (MudButton)
+
 - **Botão Primário:** Renderizado em azul com variante `Filled`, usado para ações principais como "Salvar"
 - **Botão Secundário:** Renderizado em roxo com variante `Outlined`, usado para ações secundárias como "Cancelar"
 - **Botão Sucesso:** Renderizado em verde com variante `Text`, usado para ações de confirmação
@@ -85,11 +84,11 @@ A seguir, apresentamos as capturas de tela da página de smoke test em execuçã
 **Aplicação no Projeto:** Estes botões serão utilizados nos formulários de cadastro de cartões ([UC-03](casos-de-uso/UC-03.md)) e registro de transações ([UC-02](casos-de-uso/UC-02.md)).
 
 #### ✅ Teste 2: Campos de Texto (MudTextField)
-- **Campo "Nome do Cartão":** 
+
+- **Campo "Nome do Cartão":**
   - Possui ícone de cartão de crédito (`CreditCard`)
   - Variante `Outlined` para melhor separação visual
   - Valor pré-preenchido: "Meu Cartão Platinum"
-  
 - **Campo "Limite (R$)":**
   - Possui prefixo "R$" para contexto monetário
   - Formato adequado para valores em Reais
@@ -98,6 +97,7 @@ A seguir, apresentamos as capturas de tela da página de smoke test em execuçã
 **Aplicação no Projeto:** Implementa o **RF-003** (Manter Cartões) e **RF-008** (Validação de Dados).
 
 #### ✅ Teste 3: Seleção (MudSelect)
+
 - **Dropdown "Bandeira do Cartão":**
   - Lista suspensa com 4 opções: Visa, Mastercard, Elo, American Express
   - Valor pré-selecionado: "Visa"
@@ -106,6 +106,7 @@ A seguir, apresentamos as capturas de tela da página de smoke test em execuçã
 **Aplicação no Projeto:** Essencial para o cadastro de cartões ([UC-03](casos-de-uso/UC-03.md)).
 
 #### ✅ Teste 4: Seletor de Data (MudDatePicker)
+
 - **Campo "Data da Compra":**
   - Formato brasileiro: `dd/MM/yyyy`
   - Calendário interativo funcional
@@ -115,10 +116,10 @@ A seguir, apresentamos as capturas de tela da página de smoke test em execuçã
 **Aplicação no Projeto:** Implementa o **RF-005** (Registrar Transação) com validação de datas.
 
 #### ✅ Teste 5: Validação de Formulário (MudForm)
+
 - **Campo E-mail:**
   - Validação de formato usando `EmailAddressAttribute`
   - Mensagens de erro personalizadas: "E-mail é obrigatório!" e "E-mail inválido"
-  
 - **Campo Valor (R$):**
   - Validação de valor mínimo: `Min="0.01M"`
   - Mensagem de erro: "Valor é obrigatório!"
@@ -136,20 +137,18 @@ A seguir, apresentamos as capturas de tela da página de smoke test em execuçã
 
 ![Smoke Test - Parte 2: Componentes Avançados](assets/testMudBlazor2.png)
 
-
-
-
 #### ✅ Teste 6: Tabela de Dados (MudTable)
 
 A tabela exibe 3 registros mockados de cartões de crédito:
 
-| Nome                | Bandeira   | Limite        |
-|---------------------|------------|---------------|
-| Nubank Platinum     | Mastercard | R$ 8.000,00   |
-| Santander SX        | Visa       | R$ 12.000,00  |
-| Itaú Personnalité   | Visa       | R$ 25.000,00  |
+| Nome              | Bandeira   | Limite       |
+| ----------------- | ---------- | ------------ |
+| Nubank Platinum   | Mastercard | R$ 8.000,00  |
+| Santander SX      | Visa       | R$ 12.000,00 |
+| Itaú Personnalité | Visa       | R$ 25.000,00 |
 
 **Características Validadas:**
+
 - ✅ Formatação monetária brasileira (`ToString("C")`)
 - ✅ Hover effect nas linhas (melhora UX)
 - ✅ Responsividade com `Breakpoint.Sm`
@@ -157,6 +156,7 @@ A tabela exibe 3 registros mockados de cartões de crédito:
 - ✅ Dados dinâmicos via `@context`
 
 **Aplicação no Projeto:** Será utilizada para listar:
+
 - Cartões cadastrados ([UC-03](casos-de-uso/UC-03.md))
 - Transações registradas ([UC-02](casos-de-uso/UC-02.md))
 - Programas de fidelidade ([UC-04](casos-de-uso/UC-04.md))

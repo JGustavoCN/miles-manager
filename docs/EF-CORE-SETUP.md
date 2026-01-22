@@ -6,8 +6,6 @@ Este documento detalha a implementação da camada de acesso a dados utilizando 
 
 ---
 
-
-
 ## 🏗️ Arquitetura Implementada
 
 ### Separação de Responsabilidades
@@ -233,4 +231,3 @@ Migrations serão usadas para controlar evolução do banco.
 - [Connection Resiliency](https://learn.microsoft.com/ef/core/miscellaneous/connection-resiliency)
 - [Migrations Overview](https://learn.microsoft.com/ef/core/managing-schemas/migrations/)
 - [Clean Architecture - Jason Taylor](https://github.com/jasontaylordev/CleanArchitecture)
- 

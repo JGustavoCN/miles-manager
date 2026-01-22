@@ -9,13 +9,11 @@ Bem-vindo ao repositório! Este documento explica como nossa equipe trabalha, co
 Para garantir a estabilidade do projeto, configuramos algumas travas no GitHub ("Branch Protection Rules"). **É importante que você saiba como elas afetam seu dia a dia:**
 
 1. **A `main` é Sagrada:**
-
    - A branch `main` está **bloqueada** para pushes diretos.
    - _O que acontece se tentar:_ O Git retornará um erro (`GH006: Protected branch update failed`).
    - _Solução:_ Todo código deve vir via **Pull Request (PR)**.
 
 2. **Code Review Obrigatório:**
-
    - Nenhum PR pode ser mergeado sem aprovação.
    - **Regra:** É necessário **1 aprovação** de outro membro da equipe.
    - _Nota:_ Você não pode aprovar seu próprio PR.

@@ -28,6 +28,8 @@
     }
   },
 
+  "markdown.extension.print.onFileSave": false,
+  "markdownlint.run": "onSave",
   // --- JSON ---
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
