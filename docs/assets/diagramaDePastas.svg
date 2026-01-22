@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="607px" preserveAspectRatio="none" style="width:1402px;height:607px;background:#FFFFFF;" version="1.1" viewBox="0 0 1402 607" width="1402px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="26.2969" id="_title" style="stroke:none;stroke-width:1.0;" width="496" x="446" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="486" x="451" y="22.9951">Arquitetura de Software - Clean Architecture (Miles Manager)</text><!--MD5=[c508366c0bed897aa097ae1fc449f7e3]
+cluster Apresentação (UI)--><g id="cluster_Apresentação (UI)"><rect fill="none" height="115" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="600" x="7" y="44.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="142" x="236" y="59.292">Apresentação (UI)</text></g><!--MD5=[bea9183264cba62b8c9a5e1224027178]
+cluster Aplicação--><g id="cluster_Aplicação"><rect fill="none" height="115" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="706" x="356" y="183.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="75" x="671.5" y="198.292">Aplicação</text></g><!--MD5=[a0f88ce1c2159d809d9f3b8e4d311b51]
+cluster Núcleo (Domínio)--><g id="cluster_Núcleo (Domínio)"><rect fill="none" height="115" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="545.5" x="850.5" y="397.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="134" x="1056.25" y="412.292">Núcleo (Domínio)</text></g><!--MD5=[8a63cbc2f1c780ddf3e229d615ddd269]
+cluster Infraestrutura--><g id="cluster_Infraestrutura"><rect fill="none" height="190" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="260" x="339.5" y="322.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="110" x="414.5" y="337.292">Infraestrutura</text></g><!--MD5=[ed05b4b62fc63017e649bfedb1046e43]
+entity WebApp--><g id="elem_WebApp"><rect fill="#F1F1F1" height="62.5938" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="149" x="23" y="79.7969"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="152" y="84.7969"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="150" y="86.7969"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="150" y="90.7969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="97" x="38" y="112.792">Miles.WebApp</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="38" y="129.0889">«Blazor Server»</text></g><g id="elem_GMN370"><path d="M348,83.7969 L348,107.2969 L172.04,111.2969 L348,115.2969 L348,139.1953 A0,0 0 0 0 348,139.1953 L591,139.1953 A0,0 0 0 0 591,139.1953 L591,93.7969 L581,83.7969 L348,83.7969 A0,0 0 0 0 348,83.7969 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M581,83.7969 L581,93.7969 L591,93.7969 L581,83.7969 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="157" x="354" y="100.8638">Interface com o Usuário.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="222" x="354" y="115.9966">Configura Injeção de Dependência.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="205" x="354" y="131.1294">Captura Exceptions de Domínio.</text></g><!--MD5=[e5b7da8fa23ec8cac7d321a34f6e9ee1]
+entity Application--><g id="elem_Application"><rect fill="#F1F1F1" height="62.5938" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="195" x="372" y="218.7969"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="547" y="223.7969"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="545" y="225.7969"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="545" y="229.7969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="114" x="387" y="251.792">Miles.Application</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="387" y="268.0889">«Application Services»</text></g><g id="elem_GMN375"><path d="M799,222.7969 L799,246.2969 L567.25,250.2969 L799,254.2969 L799,278.1953 A0,0 0 0 0 799,278.1953 L1046,278.1953 A0,0 0 0 0 1046,278.1953 L1046,232.7969 L1036,222.7969 L799,222.7969 A0,0 0 0 0 799,222.7969 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1036,222.7969 L1036,232.7969 L1046,232.7969 L1036,222.7969 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="179" x="805" y="239.8638">Orquestra os Casos de Uso.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="100" x="805" y="254.9966">Converte DTOs.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="226" x="805" y="270.1294">Coordena Domínio e Infraestrutura.</text></g><!--MD5=[82f4cbc36554b3e8e13bf55fbb33759a]
+entity Core--><g id="elem_Core"><rect fill="#F1F1F1" height="62.5938" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="112" x="866.5" y="432.7969"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="958.5" y="437.7969"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="956.5" y="439.7969"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="956.5" y="443.7969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="72" x="881.5" y="465.792">Miles.Core</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="71" x="881.5" y="482.0889">«Domain»</text></g><g id="elem_GMN380"><path d="M1109,436.7969 L1109,460.2969 L978.51,464.2969 L1109,468.2969 L1109,492.1953 A0,0 0 0 0 1109,492.1953 L1380,492.1953 A0,0 0 0 0 1380,492.1953 L1380,446.7969 L1370,436.7969 L1109,436.7969 A0,0 0 0 0 1109,436.7969 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1370,436.7969 L1370,446.7969 L1380,446.7969 L1370,436.7969 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="146" x="1115" y="453.8638">Entidades e Interfaces.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="250" x="1115" y="468.9966">Domain Exceptions (Erros de Negócio).</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="188" x="1115" y="484.1294">Zero dependências externas.</text></g><!--MD5=[625fed884dd9f0f64d754593d4b59540]
+entity Infrastructure--><g id="elem_Infrastructure"><rect fill="#F1F1F1" height="62.5938" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="171" x="384" y="432.7969"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="535" y="437.7969"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="533" y="439.7969"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="533" y="443.7969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131" x="399" y="465.792">Miles.Infrastructure</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="72" x="399" y="482.0889">«EF Core»</text></g><g id="elem_GMN385"><path d="M355.5,357.2969 L355.5,397.5625 A0,0 0 0 0 355.5,397.5625 L465.5,397.5625 L469.5,432.6869 L473.5,397.5625 L583.5,397.5625 A0,0 0 0 0 583.5,397.5625 L583.5,367.2969 L573.5,357.2969 L355.5,357.2969 A0,0 0 0 0 355.5,357.2969 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M573.5,357.2969 L573.5,367.2969 L583.5,367.2969 L573.5,357.2969 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="168" x="361.5" y="374.3638">Implementações técnicas.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="207" x="361.5" y="389.4966">Persistência de dados (EF Core).</text></g><!--MD5=[88b3f78b84b3f41985d45c434e9c1765]
+link WebApp to Application--><g id="link_WebApp_Application"><path d="M172.04,138.9169 C231.71,161.3369 316.04,193.0169 379.51,216.8669 " fill="none" id="WebApp-to-Application" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="384.43,218.7069,377.4145,211.7944,379.7501,216.9466,374.598,219.2822,384.43,218.7069" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="79" x="220.5" y="149.3638">usa serviços</text></g><!--MD5=[7a0580b97fcc3f2f7df9f919bcd22ca7]
+link WebApp to Infrastructure--><g id="link_WebApp_Infrastructure"><path d="M114.86,143.0769 C147.82,204.1169 227.94,338.3769 331.5,414.2969 C345.78,424.7569 362.48,433.2369 379.21,440.0369 " fill="none" id="WebApp-to-Infrastructure" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="383.93,441.9069,377.0332,434.876,379.2808,440.0671,374.0896,442.3148,383.93,441.9069" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="114" x="203" y="277.3638">referencia para DI</text></g><!--MD5=[9d5d3a4aa03ef65f76f2b075c22cc07a]
+link WebApp to Core--><g id="link_WebApp_Core"><path d="M102.97,142.9369 C117.17,229.2469 170.29,466.4669 331.5,529.2969 C514.57,600.6369 752.22,529.6469 861.6,488.7769 " fill="none" id="WebApp-to-Core" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="866.39,486.9669,856.558,486.3916,861.7101,488.7272,859.3745,493.8794,866.39,486.9669" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="169" x="385" y="525.3638">refere (Exceptions/Enums)</text></g><!--MD5=[b449e2fe8ffb6a3999b9a33a1e671cff]
+link Application to Core--><g id="link_Application_Core"><path d="M537.05,281.8669 C624.7,323.4669 777.55,395.9869 861.7,435.9169 " fill="none" id="Application-to-Core" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="866.4,438.1469,859.9848,430.6739,861.8831,436.0028,856.5542,437.901,866.4,438.1469" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="684.5" y="322.3638">usa</text></g><!--MD5=[f19ab37e8593f6e59ef0fde038ced434]
+link Infrastructure to Core--><g id="link_Infrastructure_Core"><path d="M555.06,464.2969 C638.86,464.2969 765.98,464.2969 846.34,464.2969 " fill="none" id="Infrastructure-to-Core" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="846.45,457.2969,866.45,464.2969,846.45,471.2969,846.45,457.2969" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="144" x="624" y="460.3638">implementa interfaces</text></g><!--MD5=[2f4c02b9f40be170599a74f8912a735f]
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+left to right direction
+
+title Arquitetura de Software - Clean Architecture (Miles Manager)
+
+package "Apresentação (UI)" {
+    [Miles.WebApp\n<<Blazor Server>>] as WebApp
+    note right of WebApp
+      Interface com o Usuário.
+      Configura Injeção de Dependência.
+      Captura Exceptions de Domínio.
+    end note
+}
+
+package "Aplicação" {
+    [Miles.Application\n<<Application Services>>] as Application
+    note right of Application
+      Orquestra os Casos de Uso.
+      Converte DTOs.
+      Coordena Domínio e Infraestrutura.
+    end note
+}
+
+package "Núcleo (Domínio)" {
+    [Miles.Core\n<<Domain>>] as Core
+    note right of Core
+      Entidades e Interfaces.
+      Domain Exceptions (Erros de Negócio).
+      Zero dependências externas.
+    end note
+}
+
+package "Infraestrutura" {
+    [Miles.Infrastructure\n<<EF Core>>] as Infrastructure
+    note bottom of Infrastructure
+      Implementações técnicas.
+      Persistência de dados (EF Core).
+    end note
+}
+
+' Dependências
+WebApp ..> Application : usa serviços
+WebApp ..> Infrastructure : referencia para DI
+WebApp ..> Core : refere (Exceptions/Enums)
+
+Application - -> Core : usa
+Infrastructure ..|> Core : implementa interfaces
+@enduml
+
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+left to right direction
+
+title Arquitetura de Software - Clean Architecture (Miles Manager)
+
+package "Apresentação (UI)" {
+    [Miles.WebApp\n<<Blazor Server>>] as WebApp
+    note right of WebApp
+      Interface com o Usuário.
+      Configura Injeção de Dependência.
+      Captura Exceptions de Domínio.
+    end note
+}
+
+package "Aplicação" {
+    [Miles.Application\n<<Application Services>>] as Application
+    note right of Application
+      Orquestra os Casos de Uso.
+      Converte DTOs.
+      Coordena Domínio e Infraestrutura.
+    end note
+}
+
+package "Núcleo (Domínio)" {
+    [Miles.Core\n<<Domain>>] as Core
+    note right of Core
+      Entidades e Interfaces.
+      Domain Exceptions (Erros de Negócio).
+      Zero dependências externas.
+    end note
+}
+
+package "Infraestrutura" {
+    [Miles.Infrastructure\n<<EF Core>>] as Infrastructure
+    note bottom of Infrastructure
+      Implementações técnicas.
+      Persistência de dados (EF Core).
+    end note
+}
+
+WebApp ..> Application : usa serviços
+WebApp ..> Infrastructure : referencia para DI
+WebApp ..> Core : refere (Exceptions/Enums)
+
+Application - -> Core : usa
+Infrastructure ..|> Core : implementa interfaces
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 17:01:30 UTC 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>
