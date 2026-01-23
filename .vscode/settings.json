@@ -9,10 +9,15 @@
   // --- C# & BLAZOR (Novo!) ---
   // Garante que o C# Dev Kit formate o código seguindo o .editorconfig
   "[csharp]": {
-    "editor.defaultFormatter": "ms-dotnettools.csharp"
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
   },
   "[razor]": {
-    "editor.defaultFormatter": "ms-dotnettools.csharp"
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.formatOnSave": true
   },
 
   // --- MARKDOWN ---
@@ -26,6 +31,8 @@
     }
   },
 
+  "markdown.extension.print.onFileSave": false,
+  "markdownlint.run": "onSave",
   // --- JSON ---
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

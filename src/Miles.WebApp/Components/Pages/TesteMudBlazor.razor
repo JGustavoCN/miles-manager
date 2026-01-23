@@ -1,6 +1,7 @@
 @page "/teste-mudblazor"
 @using System.ComponentModel.DataAnnotations
 @rendermode InteractiveServer
+@inject ISnackbar Snackbar
 
 <PageTitle>Teste MudBlazor - Miles Manager</PageTitle>
 
@@ -25,19 +26,14 @@
         <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 2: Campos de Texto</MudText>
         <MudGrid>
             <MudItem xs="12" md="6">
-                <MudTextField @bind-Value="nomeCartao"
-                              Label="Nome do Cartão"
-                              Variant="Variant.Outlined"
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Filled.CreditCard" />
+                <MudTextField @bind-Value="nomeCartao" Label="Nome do Cartão" Variant="Variant.Outlined"
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CreditCard"
+                    UserAttributes="@(new Dictionary<string, object> { { "id", "input-nome-cartao" }, { "name", "cardName" }, { "autocomplete", "cc-name" } })" />
             </MudItem>
             <MudItem xs="12" md="6">
-                <MudTextField @bind-Value="limiteCartao"
-                              Label="Limite (R$)"
-                              Variant="Variant.Outlined"
-                              Format="C2"
-                              Adornment="Adornment.Start"
-                              AdornmentText="R$" />
+                <MudTextField @bind-Value="limiteCartao" Label="Limite (R$)" Variant="Variant.Outlined" Format="C2"
+                    Adornment="Adornment.Start" AdornmentText="R$"
+                    UserAttributes="@(new Dictionary<string, object> { { "id", "input-limite-cartao" }, { "name", "limit" } })" />
             </MudItem>
         </MudGrid>
     </MudPaper>
@@ -45,11 +41,8 @@
     <!-- Teste 3: Seleção (Bandeira do Cartão) -->
     <MudPaper Class="pa-4 mb-4" Elevation="2">
         <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 3: Select (Bandeira do Cartão)</MudText>
-        <MudSelect T="string"
-                   Label="Bandeira"
-                   Variant="Variant.Outlined"
-                   @bind-Value="bandeiraEscolhida"
-                   AnchorOrigin="Origin.BottomCenter">
+        <MudSelect T="string" Label="Bandeira" Variant="Variant.Outlined" @bind-Value="bandeiraEscolhida"
+            AnchorOrigin="Origin.BottomCenter">
             <MudSelectItem Value="@("Visa")">Visa</MudSelectItem>
             <MudSelectItem Value="@("Mastercard")">Mastercard</MudSelectItem>
             <MudSelectItem Value="@("Elo")">Elo</MudSelectItem>
@@ -60,37 +53,25 @@
     <!-- Teste 4: Date Picker -->
     <MudPaper Class="pa-4 mb-4" Elevation="2">
         <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 4: Seletor de Data</MudText>
-        <MudDatePicker Label="Data da Compra"
-                       @bind-Date="dataCompra"
-                       Variant="Variant.Outlined"
-                       Editable="true"
-                       DateFormat="dd/MM/yyyy"
-                       Placeholder="Selecione uma data" />
+        <MudDatePicker Label="Data da Compra" @bind-Date="dataCompra" Variant="Variant.Outlined" Editable="true"
+            DateFormat="dd/MM/yyyy" Placeholder="Selecione uma data" />
     </MudPaper>
 
     <!-- Teste 5: Validação de Formulário -->
     <MudPaper Class="pa-4 mb-4" Elevation="2">
         <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 5: Validação (RF-008)</MudText>
         <MudForm @ref="form" @bind-IsValid="@formValido">
-            <MudTextField @bind-Value="emailTeste"
-                          Label="E-mail"
-                          Variant="Variant.Outlined"
-                          Required="true"
-                          RequiredError="E-mail é obrigatório!"
-                          Validation="@(new EmailAddressAttribute() {ErrorMessage = "E-mail inválido"})" />
+            <MudTextField @bind-Value="emailTeste" Label="E-mail" Variant="Variant.Outlined" Required="true"
+                RequiredError="E-mail é obrigatório!"
+                Validation="@(new EmailAddressAttribute() { ErrorMessage = "E-mail inválido" })"
+                UserAttributes="@(new Dictionary<string, object> { { "id", "input-email" }, { "name", "email" }, { "autocomplete", "email" } })" />
 
-            <MudNumericField @bind-Value="valorTeste"
-                             Label="Valor (R$)"
-                             Variant="Variant.Outlined"
-                             Min="0.01M"
-                             Required="true"
-                             RequiredError="Valor é obrigatório!"
-                             Class="mt-3" />
 
-            <MudButton Variant="Variant.Filled"
-                       Color="Color.Primary"
-                       Disabled="@(!formValido)"
-                       Class="mt-3">
+            <MudNumericField @bind-Value="valorTeste" Label="Valor (R$)" Variant="Variant.Outlined" Min="0.01M"
+                Required="true" RequiredError="Valor é obrigatório!" Class="mt-3"
+                UserAttributes="@(new Dictionary<string, object> { { "id", "input-valor" }, { "name", "amount" } })" />
+
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!formValido)" Class="mt-3">
                 Salvar
             </MudButton>
         </MudForm>
@@ -122,6 +103,119 @@
         <MudAlert Severity="Severity.Info">Informação: Use máscaras nos campos.</MudAlert>
     </MudPaper>
 
+
+
+    <MudPaper Class="pa-4 mb-4" Elevation="2" Style="border: 1px solid red;">
+        <MudText Typo="Typo.h6" GutterBottom="true" Color="Color.Error">⚠️ Teste 8: Zona de Perigo</MudText>
+        <MudText Typo="Typo.body2" Class="mb-2">
+            Este botão lança uma exceção não tratada para testar o 'blazor-error-boundary'.
+        </MudText>
+
+        <MudButton Variant="Variant.Filled" Color="Color.Error"
+            OnClick="@(() => throw new Exception("💥 Erro de teste forçado!"))">
+            Quebrar Aplicação
+        </MudButton>
+    </MudPaper>
+
+
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 9: Dashboard (Distribuição de Pontos)</MudText>
+        <MudGrid>
+            <MudItem xs="12" sm="6" Class="d-flex align-center justify-center">
+                <MudChart ChartType="ChartType.Donut" Width="200px" Height="200px" InputData="@dataGrafico"
+                    InputLabels="@labelsGrafico">
+                    <CustomGraphics>
+                        <text class="donut-inner-text" x="50%" y="40%" dominant-baseline="middle" text-anchor="middle"
+                            fill="black" font-family="Roboto" font-size="18">Total</text>
+                        <text class="donut-inner-text" x="50%" y="55%" dominant-baseline="middle" text-anchor="middle"
+                            fill="black" font-family="Roboto" font-size="30">@dataGrafico.Sum().ToString("N0")</text>
+                    </CustomGraphics>
+                </MudChart>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudText Typo="Typo.body1" Class="mb-2"><b>Análise Rápida:</b></MudText>
+                <MudList T="string" Dense="true">
+                    <MudListItem Icon="@Icons.Material.Filled.Circle" IconColor="Color.Primary">
+                        Livelo (Visa): 45% da carteira
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.Circle" IconColor="Color.Secondary">
+                        Esfera (Master): 30% da carteira
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.TrendingUp">
+                        Potencial de venda: R$ 4.200,00
+                    </MudListItem>
+                </MudList>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 10: Histórico de Atividades (Timeline)</MudText>
+        <MudTimeline TimelinePosition="TimelinePosition.Start">
+            <MudTimelineItem Color="Color.Success" Size="Size.Small">
+                <ItemContent>
+                    <MudText Color="Color.Success" Typo="Typo.button">Compra Aprovada</MudText>
+                    <MudText Typo="Typo.body2">Iphone 15 Pro - Casas Bahia (10pts/R$)</MudText>
+                    <MudText Typo="Typo.caption">Hoje, 10:30</MudText>
+                </ItemContent>
+            </MudTimelineItem>
+            <MudTimelineItem Color="Color.Info" Size="Size.Small">
+                <ItemContent>
+                    <MudText Color="Color.Info" Typo="Typo.button">Milhas Creditadas</MudText>
+                    <MudText Typo="Typo.body2">+5.000 Pontos (Bônus de Adesão)</MudText>
+                    <MudText Typo="Typo.caption">Ontem, 14:00</MudText>
+                </ItemContent>
+            </MudTimelineItem>
+            <MudTimelineItem Color="Color.Warning" Size="Size.Small">
+                <ItemContent>
+                    <MudText Color="Color.Warning" Typo="Typo.button">Alerta de Expiração</MudText>
+                    <MudText Typo="Typo.body2">2.500 pontos expiram em 5 dias</MudText>
+                </ItemContent>
+            </MudTimelineItem>
+        </MudTimeline>
+    </MudPaper>
+
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 11: Upload (Anexar Comprovante)</MudText>
+        <MudStack Row="true" AlignItems="AlignItems.Center">
+            <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+                <ActivatorContent>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.CloudUpload">
+                        Selecionar Comprovante
+                    </MudButton>
+                </ActivatorContent>
+            </MudFileUpload>
+
+            @if (arquivoSelecionado != null)
+            {
+                <MudChip T="string" Color="Color.Info"
+                    OnClose="@(async () => { await Task.Delay(1); arquivoSelecionado = null; })">
+                    @arquivoSelecionado.Name
+                </MudChip>
+            }
+        </MudStack>
+    </MudPaper>
+
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">✅ Teste 12: Notificações (Snackbar)</MudText>
+        <MudText Typo="Typo.body2" Class="mb-2">Teste o provedor de notificações flutuantes (configurado no MainLayout).
+        </MudText>
+
+        <MudButton Variant="Variant.Filled" Color="Color.Success"
+            OnClick="@(() => MostrarNotificacao("Salvo com sucesso!", Severity.Success))">
+            Sucesso
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error"
+            OnClick="@(() => MostrarNotificacao("Falha na conexão!", Severity.Error))">
+            Erro
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Warning"
+            OnClick="@(() => MostrarNotificacao("Atenção: Pontos expirando.", Severity.Warning))">
+            Aviso
+        </MudButton>
+    </MudPaper>
+
     <!-- Status Final -->
     <MudPaper Class="pa-4" Elevation="3" Style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
         <MudText Typo="Typo.h5" Align="Align.Center" Style="color: white;">
@@ -141,23 +235,46 @@
     private DateTime? dataCompra = DateTime.Today;
 
     // Validação
-    private MudForm form;
+    private MudForm form = null!;
     private bool formValido = false;
     private string emailTeste = "";
     private decimal valorTeste = 0;
 
     // Mock de dados para tabela
     private List<CartaoMock> cartoesMock = new()
-    {
-        new CartaoMock { Nome = "Nubank Platinum", Bandeira = "Mastercard", Limite = 8000.00M },
-        new CartaoMock { Nome = "Santander SX", Bandeira = "Visa", Limite = 12000.00M },
-        new CartaoMock { Nome = "Itaú Personnalité", Bandeira = "Visa", Limite = 25000.00M }
-    };
+{
+new CartaoMock { Nome = "Nubank Platinum", Bandeira = "Mastercard", Limite = 8000.00M },
+new CartaoMock { Nome = "Santander SX", Bandeira = "Visa", Limite = 12000.00M },
+new CartaoMock { Nome = "Itaú Personnalité", Bandeira = "Visa", Limite = 25000.00M }
+};
 
     public class CartaoMock
     {
-        public string Nome { get; set; }
-        public string Bandeira { get; set; }
+        public required string Nome { get; set; }
+        public required string Bandeira { get; set; }
         public decimal Limite { get; set; }
+    }
+
+    // Dados para o Gráfico (Dashboard)
+    public double[] dataGrafico = { 45000, 30000, 15000, 10000 };
+    public string[] labelsGrafico = { "Livelo", "Esfera", "Latam", "Azul" };
+    // Variável para o Upload
+    private IBrowserFile? arquivoSelecionado;
+
+    private void UploadFiles(IBrowserFile file)
+    {
+        arquivoSelecionado = file;
+        // Simula um upload e avisa
+        Snackbar.Add($"Arquivo {file.Name} carregado!", Severity.Info);
+    }
+
+    // Função para chamar o Snackbar
+    private void MostrarNotificacao(string mensagem, Severity severity)
+    {
+        Snackbar.Add(mensagem, severity, config =>
+        {
+            config.ShowCloseIcon = true;
+            config.VisibleStateDuration = 3000; // 3 segundos
+        });
     }
 }

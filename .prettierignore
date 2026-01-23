@@ -1,0 +1,6 @@
+# Ignorar arquivos do .NET
+**/*.cs
+**/*.razor
+**/*.cshtml
+**/bin
+**/obj

@@ -16,6 +16,9 @@ trim_trailing_whitespace = true
 # Blazor (.razor) mistura C# e HTML. O padrão do VS é 4 espaços.
 [*.{cs,razor}]
 indent_size = 4
+csharp_style_namespace_declarations = file_scoped:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
 
 # 3. Arquivos Web "Puros" e Configurações (JSON, YAML, HTML estático)
 # Frontend moderno geralmente usa 2 espaços
