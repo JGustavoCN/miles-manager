@@ -423,6 +423,108 @@ package "Miles.Core" {
 
 </details>
 
+#### Diagrama de Objetos (Snapshot)
+
+Para validar o modelo de classes e fornecer uma referência visual de dados reais, apresentamos um **diagrama de objetos** que captura um cenário específico de uso do sistema.
+
+**Cenário:** O usuário José utiliza seu cartão Nubank Ultravioleta (vinculado ao programa Livelo) para realizar uma compra de R$ 100,00 na Amazon, classificada como "Educação".
+
+Este snapshot demonstra como as instâncias das entidades se relacionam em tempo de execução, servindo também como base para a criação de dados de teste (_seed data_) no banco de dados.
+
+![Diagrama de Objetos](assets/diagramaDeObjetos.svg)
+
+<details><summary>Mostrar código PlantUML</summary>
+
+```UML
+@startuml
+skinparam objectAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+scale 0.95
+
+title Diagrama de Objetos - Cenário: Compra na Amazon com Cartão Nubank
+
+' =========================
+' Instâncias dos Objetos
+' =========================
+
+object "u1 : Usuario" as u1 {
+    Id = 1
+    Nome = "José"
+    Email = "jose@email.com"
+    SenhaHash = "hash_seguro_123"
+}
+
+object "p1 : ProgramaFidelidade" as p1 {
+    Id = 1
+    Nome = "Livelo"
+    Banco = "Bradesco"
+    UsuarioId = 1
+}
+
+object "c1 : Cartao" as c1 {
+    Id = 1
+    Nome = "Nubank Ultravioleta"
+    Limite = 5000.00
+    FatorConversao = 1.0
+    UsuarioId = 1
+    ProgramaId = 1
+}
+
+object "t1 : Transacao" as t1 {
+    Id = 1
+    Data = 2024-01-15
+    Valor = 100.00
+    Descricao = "Amazon - Livro"
+    Categoria = "Educação"
+    PontosEstimados = 100
+    CartaoId = 1
+}
+
+' =========================
+' Relacionamentos (Links)
+' =========================
+
+u1 --> c1 : possui
+u1 --> p1 : gerencia
+c1 --> p1 : pontua em
+c1 --> t1 : gera
+
+note right of t1
+  **Cálculo Automático (RF-006):**
+  
+  Valor: R$ 100,00
+  Cotação USD: R$ 5,00
+  Valor em USD: $20,00
+  Fator Conversão: 1.0
+  
+  → Pontos = 20 × 1.0 = **20 pontos**
+  
+  (Exemplo simplificado)
+end note
+
+note left of u1
+  **Contexto do Cenário:**
+  José possui um cartão Nubank
+  vinculado ao programa Livelo.
+  
+  Ao registrar uma compra,
+  os pontos são calculados
+  automaticamente.
+end note
+
+@enduml
+```
+
+</details><br/>
+
+**Observações sobre o Diagrama:**
+
+- **Valores Realistas:** Os objetos contêm dados representativos de um caso de uso real, facilitando a compreensão do fluxo de dados.
+- **Links (Associações em Runtime):** As setas indicam as referências concretas entre os objetos, refletindo as multiplicidades definidas no diagrama de classes.
+- **Validação do Modelo:** Este snapshot confirma que o modelo de classes é capaz de suportar o cenário proposto, incluindo o relacionamento entre `Usuario`, `Cartao`, `ProgramaFidelidade` e `Transacao`.
+- **Base para Seed Data:** Os valores apresentados podem ser utilizados diretamente na criação de dados iniciais para testes de integração e demonstração do sistema.
+
 ### Camada de Aplicação (Application Services)
 
 A camada de Aplicação (`Miles.Application`) atua como a orquestradora dos fluxos de trabalho do sistema. Ela serve como fronteira entre a interface do usuário (WebApp) e o núcleo do domínio (Core). Sua responsabilidade não é aplicar regras de negócio fundamentais — que residem nas Entidades —, mas sim coordenar a recepção de dados, a invocação de comportamentos do domínio e a persistência através de contratos.
