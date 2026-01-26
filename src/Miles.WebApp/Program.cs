@@ -1,15 +1,15 @@
-// using Miles.WebApp.Components;
-//  using Miles.Infrastructure.Data;
+using Miles.WebApp.Components;
+using MudBlazor.Services;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+// TODO: Configurar Entity Framework Core quando necessário
+// using Miles.Infrastructure.Data;
 // using Microsoft.EntityFrameworkCore;
-// using MudBlazor.Services;
-
-// var builder = WebApplication.CreateBuilder(args);
-
-// // Add services to the container.
-// builder.Services.AddRazorComponents()
-//     .AddInteractiveServerComponents();
-
-// // Configuração do Entity Framework Core com SQL Server
 // builder.Services.AddDbContext<AppDbContext>(options =>
 //     options.UseSqlServer(
 //         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -21,26 +21,26 @@
 //     )
 // );
 
-// // Registrar serviços do MudBlazor
-// builder.Services.AddMudServices();
+// Registrar serviços do MudBlazor
+builder.Services.AddMudServices();
 
-// var app = builder.Build();
+var app = builder.Build();
 
-// // Configure the HTTP request pipeline.
-// if (!app.Environment.IsDevelopment())
-// {
-//     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-//     app.UseHsts();
-// }
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseHsts();
+}
 
-// app.UseStatusCodePagesWithReExecute("/Error");
-// app.UseHttpsRedirection();
+app.UseStatusCodePagesWithReExecute("/Error");
+app.UseHttpsRedirection();
 
-// app.UseAntiforgery();
+app.UseAntiforgery();
 
-// app.MapStaticAssets();
-// app.MapRazorComponents<App>()
-//     .AddInteractiveServerRenderMode();
+app.MapStaticAssets();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
 
-// app.Run();
+app.Run();
 

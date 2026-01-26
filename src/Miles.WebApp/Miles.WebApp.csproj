@@ -1,4 +1,4 @@
-<!-- <Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
     <ProjectReference Include="..\Miles.Infrastructure\Miles.Infrastructure.csproj" />
@@ -16,4 +16,4 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
   </PropertyGroup>
 
-</Project> -->
+</Project>
