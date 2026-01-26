@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Miles.Core.Enums;
 
 namespace Miles.Core.Entities;
+
+/// Representa um cartão de crédito vinculado a um programa de fidelidade (RF-003)
 
 public class Cartao
 {
@@ -11,8 +12,9 @@ public class Cartao
     [MaxLength(100)]
     public string Nome { get; set; } = string.Empty;
 
-    [Required]
-    public BandeiraCartao Bandeira { get; set; }
+    [Required(ErrorMessage = "Bandeira é obrigatória")]
+    [MaxLength(50)]
+    public string Bandeira { get; set; } = string.Empty;
 
     [Range(0.01, double.MaxValue, ErrorMessage = "Limite deve ser maior que zero")]
     public decimal Limite { get; set; }
@@ -33,9 +35,11 @@ public class Cartao
     // Relacionamento (1:N)
     public virtual ICollection<Transacao> Transacoes { get; set; } = new List<Transacao>();
 
+    /// Valida os dados do cartão (RF-008)
     public bool Validar()
     {
         return !string.IsNullOrWhiteSpace(Nome) &&
+               !string.IsNullOrWhiteSpace(Bandeira) &&
                Limite > 0 &&
                DiaVencimento is >= 1 and <= 31 &&
                FatorConversao > 0 &&

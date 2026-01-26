@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Miles.Core.Entities;
 
-/// Representa o usuário do sistema (RF-002).
-/// Ator principal que possui cartões e gerencia programas de fidelidade.
+/// Representa o usuário do sistema (RF-002)
+/// Ator principal que possui cartões e gerencia programas de fidelidade
 public class Usuario
 {
     public int Id { get; set; }
@@ -25,7 +25,7 @@ public class Usuario
     public virtual ICollection<Cartao> Cartoes { get; set; } = new List<Cartao>();
     public virtual ICollection<ProgramaFidelidade> Programas { get; set; } = new List<ProgramaFidelidade>();
 
-    /// Valida se os dados essenciais do usuário estão preenchidos.
+    /// Valida se os dados essenciais do usuário estão preenchidos (RF-008)
     public bool Validar()
     {
         return !string.IsNullOrWhiteSpace(Nome) &&
