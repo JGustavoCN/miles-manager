@@ -1,8 +1,13 @@
 namespace Miles.Core.Exceptions;
 
-/// Exceção lançada quando valores financeiros ou numéricos são inválidos.
-/// Exemplos: Valor negativo, cotação inválida, limite zerado.
+/// Exceção lançada quando valores de domínio são inválidos (RF-008).
 public class ValorInvalidoException : DomainException
 {
-    public ValorInvalidoException(string message) : base(message) { }
+    public ValorInvalidoException(string mensagem) : base(mensagem)
+    {
+    }
+
+    public ValorInvalidoException(string mensagem, Exception inner) : base(mensagem, inner)
+    {
+    }
 }
