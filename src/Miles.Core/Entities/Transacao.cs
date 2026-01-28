@@ -4,8 +4,8 @@ using Miles.Core.Interfaces;
 
 namespace Miles.Core.Entities;
 
-/// Representa uma transação financeira que gera pontos (RF-005)
-/// Funciona como snapshot auditável (cotação e pontos são congelados)
+/// Representa uma transação financeira que gera pontos (RF-005).
+/// Funciona como snapshot auditável (cotação e pontos são congelados).
 public class Transacao
 {
     public int Id { get; set; }
@@ -32,7 +32,6 @@ public class Transacao
     public int CartaoId { get; set; }
     public virtual Cartao Cartao { get; set; } = null!;
 
-    /// Valida valores financeiros antes de cálculos (RF-008)
     private void ValidarValor()
     {
         if (Valor <= 0)
@@ -45,16 +44,17 @@ public class Transacao
             throw new ValorInvalidoException("Cotação do dólar deve ser maior que zero");
         }
     }
-
-    /// Calcula pontos usando Strategy Pattern (RF-006)
-    /// Fórmula: (Valor em R$ / Cotação USD) * Fator do Cartão
-    public void CalcularPontos(ICalculoPontosStrategy strategy)
+    public void CalcularPontos(ICalculoPontosStrategy strategy, decimal fatorConversao)
     {
         ValidarValor();
-        PontosEstimados = strategy.Calcular(Valor, CotacaoDolar, Cartao.FatorConversao);
+
+        var valorEmDolares = Valor / CotacaoDolar;
+
+        PontosEstimados = strategy.Calcular(valorEmDolares, fatorConversao);
     }
 
-    /// Valida todos os campos obrigatórios (RF-008)
+    /// Valida todos os campos obrigatórios (RF-008).
+    /// <exception cref="ValorInvalidoException">Lançada quando dados são inválidos</exception>
     public void Validar()
     {
         ValidarValor();
