@@ -1,0 +1,166 @@
+@using MudBlazor
+@page "/configuracoes"
+
+<PageTitle>Configurações - Miles Manager</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">
+    <MudIcon Icon="@Icons.Material.Filled.Settings" Class="mr-2" />
+    Configurações do Sistema
+</MudText>
+
+<MudText Typo="Typo.body1" Class="mb-4">
+    Personalize as preferências do sistema e gerencie sua conta.
+</MudText>
+
+<MudGrid>
+    <MudItem xs="12" md="6">
+        <MudPaper Elevation="3" Class="pa-4">
+            <MudText Typo="Typo.h6" GutterBottom="true">
+                <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-2" />
+                Perfil do Usuário
+            </MudText>
+            <MudDivider Class="mb-4" />
+
+            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-3">
+                <MudText Typo="Typo.body2">
+                    👤 Funcionalidade de edição de perfil será implementada em breve.
+                </MudText>
+                <MudText Typo="Typo.caption" Class="mt-2">
+                    <strong>Você poderá editar:</strong>
+                </MudText>
+                <div class="mt-2 ml-4">
+                    <MudText Typo="Typo.body2">
+                        <MudIcon Icon="@Icons.Material.Filled.Badge" Size="Size.Small" /> Nome completo
+                    </MudText>
+                    <MudText Typo="Typo.body2">
+                        <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" /> E-mail (login)
+                    </MudText>
+                    <MudText Typo="Typo.body2">
+                        <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" /> Senha de acesso
+                    </MudText>
+                </div>
+            </MudAlert>
+
+            <MudAlert Severity="Severity.Warning" Dense="true" Variant="Variant.Filled">
+                <MudText Typo="Typo.caption">
+                    ⚠️ <strong>RF-002:</strong> Atende ao requisito de "Manter Usuário (CRUD)".
+                </MudText>
+            </MudAlert>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="6">
+        <MudPaper Elevation="3" Class="pa-4">
+            <MudText Typo="Typo.h6" GutterBottom="true">
+                <MudIcon Icon="@Icons.Material.Filled.Palette" Class="mr-2" />
+                Preferências do Sistema
+            </MudText>
+            <MudDivider Class="mb-4" />
+
+            <MudStack Spacing="3">
+                <div class="d-flex justify-space-between align-center pa-2">
+                    <div>
+                        <MudText Typo="Typo.body1">
+                            <MudIcon Icon="@Icons.Material.Filled.DarkMode" Class="mr-2" />
+                            Tema Claro/Escuro
+                        </MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                            Use o botão no cabeçalho para alternar
+                        </MudText>
+                    </div>
+                    <MudText Typo="Typo.caption" Color="Color.Success"><strong>✓ Ativo</strong></MudText>
+                </div>
+
+                <MudDivider />
+
+                <div class="d-flex justify-space-between align-center pa-2">
+                    <div>
+                        <MudText Typo="Typo.body1">
+                            <MudIcon Icon="@Icons.Material.Filled.Notifications" Class="mr-2" />
+                            Notificações
+                        </MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                            Alertas de vencimento e pontos
+                        </MudText>
+                    </div>
+                    <MudText Typo="Typo.caption" Color="Color.Default">Em breve</MudText>
+                </div>
+
+                <MudDivider />
+
+                <div class="d-flex justify-space-between align-center pa-2">
+                    <div>
+                        <MudText Typo="Typo.body1">
+                            <MudIcon Icon="@Icons.Material.Filled.Download" Class="mr-2" />
+                            Exportação de Dados
+                        </MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                            PDF e CSV dos extratos
+                        </MudText>
+                    </div>
+                    <MudText Typo="Typo.caption" Color="Color.Default">Em breve</MudText>
+                </div>
+
+                <MudDivider />
+
+                <div class="d-flex justify-space-between align-center pa-2">
+                    <div>
+                        <MudText Typo="Typo.body1">
+                            <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Class="mr-2" />
+                            Cotação do Dólar
+                        </MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                            Configurar fonte de cotação (manual ou API)
+                        </MudText>
+                    </div>
+                    <MudText Typo="Typo.caption" Color="Color.Default">Em breve</MudText>
+                </div>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudPaper Class="pa-4 mt-4" Elevation="2">
+    <MudText Typo="Typo.h6" GutterBottom="true">
+        <MudIcon Icon="@Icons.Material.Filled.Security" Class="mr-2" />
+        Segurança e Privacidade
+    </MudText>
+    <MudDivider Class="mb-3" />
+
+    <MudGrid>
+        <MudItem xs="12" md="4">
+            <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Dense="true">
+                <MudText Typo="Typo.body2">
+                    <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" />
+                    <strong> RF-001:</strong> Autenticação segura
+                </MudText>
+            </MudAlert>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                <MudText Typo="Typo.body2">
+                    <MudIcon Icon="@Icons.Material.Filled.VerifiedUser" Size="Size.Small" />
+                    <strong> RF-008:</strong> Validação de dados
+                </MudText>
+            </MudAlert>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+            <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
+                <MudText Typo="Typo.body2">
+                    <MudIcon Icon="@Icons.Material.Filled.ExitToApp" Size="Size.Small" />
+                    <strong> RF-009:</strong> Logout seguro
+                </MudText>
+            </MudAlert>
+        </MudItem>
+    </MudGrid>
+
+    <MudText Typo="Typo.caption" Class="mt-3 mud-text-secondary">
+        🔒 Seus dados são armazenados com segurança e criptografia. Senhas são hasheadas e nunca armazenadas em texto plano.
+    </MudText>
+</MudPaper>
+
+@code {
+    // Lógica de configurações virá aqui quando necessário
+}
