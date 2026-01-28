@@ -1,0 +1,78 @@
+@using MudBlazor
+
+@page "/cartoes"
+<PageTitle>Cartões - Miles Manager</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">
+    <MudIcon Icon="@Icons.Material.Filled.CreditCard" Class="mr-2" />
+    Meus Cartões de Crédito
+</MudText>
+
+<MudText Typo="Typo.body1" Class="mb-4">
+    Gerencie aqui seus cartões de crédito e configure o fator de conversão de pontos/milhas.
+</MudText>
+
+<MudGrid>
+    <MudItem xs="12" md="8">
+        <MudPaper Elevation="3" Class="pa-4">
+            <div class="d-flex justify-space-between align-center mb-4">
+                <MudText Typo="Typo.h6">
+                    <MudIcon Icon="@Icons.Material.Filled.List" Class="mr-2" />
+                    Lista de Cartões
+                </MudText>
+                <MudButton Variant="Variant.Filled"
+                          Color="Color.Primary"
+                          StartIcon="@Icons.Material.Filled.Add"
+                          Disabled="true">
+                    Adicionar Cartão
+                </MudButton>
+            </div>
+
+            <MudDivider Class="mb-4" />
+
+            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
+                <MudText Typo="Typo.body2">
+                    📋 Nenhum cartão cadastrado ainda.
+                </MudText>
+                <MudText Typo="Typo.caption" Class="mt-2">
+                    A funcionalidade de CRUD (Criar, Ler, Atualizar, Deletar) será implementada na <strong>Milestone 1</strong>.
+                </MudText>
+            </MudAlert>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="4">
+        <MudPaper Elevation="3" Class="pa-4">
+            <MudText Typo="Typo.h6" GutterBottom="true">
+                <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-2" />
+                Sobre os Cartões
+            </MudText>
+            <MudDivider Class="mb-3" />
+
+<div class="mt-2 ml-2">
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Cadastre múltiplos cartões
+                </MudText>
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Configure fator de conversão
+                </MudText>
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Vincule a programas de fidelidade
+                </MudText>
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Acompanhe limites e vencimentos
+                </MudText>
+            </div>
+
+            <MudAlert Severity="Severity.Warning" Dense="true" Class="mt-3" Variant="Variant.Filled">
+                <MudText Typo="Typo.caption">
+                    ⚠️ <strong>RF-003:</strong> Esta funcionalidade atende ao requisito funcional de "Manter Cartões (CRUD)".
+                </MudText>
+            </MudAlert>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    // Lógica de CRUD virá aqui na Milestone 1
+}

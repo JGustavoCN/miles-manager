@@ -1,103 +1,127 @@
+/* App Bar customizada */
+.app-bar-custom {
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.brand-title {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.theme-toggle-btn {
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+  transform: rotate(180deg);
+}
+
+/* Drawer customizado */
+.custom-drawer {
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Main Content */
+.main-content-custom {
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.02) 0%, rgba(139, 92, 246, 0.01) 100%);
+  min-height: 100vh;
+}
+
+/* Error Boundary */
+.error-boundary-custom {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 2px solid #fecaca;
+}
+
+/* Animação de fade-in para transições */
 .page {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  animation: fadeInUp 0.4s ease-out;
 }
 
-main {
-  flex: 1;
-}
-
-.sidebar {
-  background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-}
-
-.top-row {
-  background-color: #f7f7f7;
-  border-bottom: 1px solid #d6d5d5;
-  justify-content: flex-end;
-  height: 3.5rem;
-  display: flex;
-  align-items: center;
-}
-
-.top-row ::deep a,
-.top-row ::deep .btn-link {
-  white-space: nowrap;
-  margin-left: 1.5rem;
-  text-decoration: none;
-}
-
-.top-row ::deep a:hover,
-.top-row ::deep .btn-link:hover {
-  text-decoration: underline;
-}
-
-.top-row ::deep a:first-child {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-@media (max-width: 640.98px) {
-  .top-row {
-    justify-content: space-between;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
 
-  .top-row ::deep a,
-  .top-row ::deep .btn-link {
-    margin-left: 0;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (min-width: 641px) {
-  .page {
-    flex-direction: row;
-  }
-
-  .sidebar {
-    width: 250px;
-    height: 100vh;
-    position: sticky;
-    top: 0;
-  }
-
-  .top-row {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
-
-  .top-row.auth ::deep a:first-child {
-    flex: 1;
-    text-align: right;
-    width: 0;
-  }
-
-  .top-row,
-  article {
-    padding-left: 2rem !important;
-    padding-right: 1.5rem !important;
-  }
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+/* Blazor Error UI */
 #blazor-error-ui {
   color-scheme: light only;
-  background: lightyellow;
-  color: black;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  color: #991b1b;
   bottom: 0;
-  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
-  box-sizing: border-box;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   display: none;
   left: 0;
-  padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+  padding: 1rem 2rem;
   position: fixed;
   width: 100%;
   z-index: 1000;
+  border-top: 3px solid #ef4444;
 }
 
 #blazor-error-ui .dismiss {
   cursor: pointer;
   position: absolute;
-  right: 0.75rem;
-  top: 0.5rem;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #991b1b;
+  font-weight: bold;
+}
+
+/* Responsividade para Mobile */
+@media (max-width: 960px) {
+  .brand-title {
+    font-size: 1.25rem;
+  }
+
+  .main-content-custom {
+    padding: 1rem 0.5rem;
+  }
+}
+
+/* Modo Escuro - Ajustes adicionais */
+@media (prefers-color-scheme: dark) {
+  .app-bar-custom {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .custom-drawer {
+    border-right-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .main-content-custom {
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.03) 100%);
+  }
 }
