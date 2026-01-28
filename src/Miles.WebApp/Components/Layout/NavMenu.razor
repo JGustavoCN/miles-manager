@@ -1,36 +1,82 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Miles.WebApp</a>
+﻿<div class="nav-menu-custom">
+    <div class="nav-header">
+        <MudIcon Icon="@Icons.Material.Filled.Dashboard" Color="Color.Primary" Size="Size.Large" Class="mr-3" />
+        <div>
+            <MudText Typo="Typo.subtitle1" Class="nav-title">Navegação</MudText>
+            <MudText Typo="Typo.caption" Class="mud-text-secondary">Miles Manager</MudText>
+        </div>
     </div>
-</div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+    <MudDivider Class="my-4" />
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+    <MudNavMenu Class="nav-menu-items">
+        <MudNavLink Href="/"
+                    Match="NavLinkMatch.All"
+                    Icon="@Icons.Material.Filled.Home"
+                    Class="nav-link-custom">
+            <div class="nav-link-content">
+                <MudText Typo="Typo.body1">Dashboard</MudText>
+                <MudText Typo="Typo.caption" Class="mud-text-secondary">Visão geral</MudText>
+            </div>
+        </MudNavLink>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
+        <MudNavLink Href="/cartoes"
+                    Match="NavLinkMatch.Prefix"
+                    Icon="@Icons.Material.Filled.CreditCard"
+                    Class="nav-link-custom">
+            <div class="nav-link-content">
+                <MudText Typo="Typo.body1">Cartões</MudText>
+                <MudText Typo="Typo.caption" Class="mud-text-secondary">Gerencie seus cartões</MudText>
+            </div>
+        </MudNavLink>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
+        <MudNavLink Href="/compras"
+                    Match="NavLinkMatch.Prefix"
+                    Icon="@Icons.Material.Filled.Receipt"
+                    Class="nav-link-custom">
+            <div class="nav-link-content">
+                <MudText Typo="Typo.body1">Compras</MudText>
+                <MudText Typo="Typo.caption" Class="mud-text-secondary">Extrato e transações</MudText>
+            </div>
+        </MudNavLink>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="teste-mudblazor">
-                <MudIcon Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Class="me-2" ViewBox="0 0 24 24" />
+        <MudNavLink Href="/programas"
+                    Match="NavLinkMatch.Prefix"
+                    Icon="@Icons.Material.Filled.CardGiftcard"
+                    Class="nav-link-custom">
+            <div class="nav-link-content">
+                <MudText Typo="Typo.body1">Programas</MudText>
+                <MudText Typo="Typo.caption" Class="mud-text-secondary">Fidelidade e milhas</MudText>
+            </div>
+        </MudNavLink>
+
+        <MudDivider Class="my-4" />
+
+        <MudNavLink Href="/configuracoes"
+                    Match="NavLinkMatch.Prefix"
+                    Icon="@Icons.Material.Filled.Settings"
+                    Class="nav-link-custom">
+            <div class="nav-link-content">
+                <MudText Typo="Typo.body1">Configurações</MudText>
+                <MudText Typo="Typo.caption" Class="mud-text-secondary">Preferências</MudText>
+            </div>
+        </MudNavLink>
+
+        <MudDivider Class="my-4" />
+
+        <MudNavGroup Title="Desenvolvimento"
+                     Icon="@Icons.Material.Filled.Code"
+                     Expanded="false"
+                     Class="nav-group-custom">
+            <MudNavLink Href="/counter" Icon="@Icons.Material.Filled.Add">
+                Counter (Demo)
+            </MudNavLink>
+            <MudNavLink Href="/weather" Icon="@Icons.Material.Filled.Cloud">
+                Weather (Demo)
+            </MudNavLink>
+            <MudNavLink Href="/teste-mudblazor" Icon="@Icons.Custom.Brands.MudBlazor">
                 Teste MudBlazor
-            </NavLink>
-        </div>
-    </nav>
+            </MudNavLink>
+        </MudNavGroup>
+    </MudNavMenu>
 </div>
