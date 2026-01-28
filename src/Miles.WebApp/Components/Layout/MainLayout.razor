@@ -8,56 +8,28 @@
 
 <MudLayout>
     <MudAppBar Elevation="0" Class="app-bar-custom">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu"
-                       Color="Color.Inherit"
-                       Edge="Edge.Start"
-                       OnClick="@ToggleDrawer" />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+            OnClick="@ToggleDrawer" />
         <MudIcon Icon="@Icons.Material.Filled.FlightTakeoff" Size="Size.Large" Class="mr-2" />
         <MudText Typo="Typo.h5" Class="brand-title">
             Miles Manager
         </MudText>
         <MudSpacer />
         <MudTooltip Text="Alternar tema">
-            <MudIconButton Icon="@DarkLightModeButtonIcon"
-                           Color="Color.Inherit"
-                           OnClick="@ToggleTheme"
-                           Class="theme-toggle-btn" />
+            <MudIconButton Icon="@DarkLightModeButtonIcon" Color="Color.Inherit" OnClick="@ToggleTheme"
+                Class="theme-toggle-btn" />
         </MudTooltip>
     </MudAppBar>
 
-    <MudDrawer @bind-Open="_drawerOpen"
-               Elevation="0"
-               ClipMode="DrawerClipMode.Always"
-               Class="custom-drawer">
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="0" ClipMode="DrawerClipMode.Always" Class="custom-drawer">
         <NavMenu />
     </MudDrawer>
 
     <MudMainContent Class="main-content-custom">
         <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6">
-            <ErrorBoundary>
-                <ChildContent>
-                    @Body
-                </ChildContent>
-                <ErrorContent Context="exception">
-                    <MudPaper Elevation="0" Class="pa-6 rounded-lg error-boundary-custom">
-                        <div class="d-flex align-center mb-4">
-                            <MudIcon Icon="@Icons.Material.Filled.ErrorOutline"
-                                     Color="Color.Error"
-                                     Size="Size.Large"
-                                     Class="mr-3" />
-                            <MudText Typo="Typo.h5" Color="Color.Error">
-                                Ops! Algo deu errado
-                            </MudText>
-                        </div>
-                        <MudText Typo="Typo.body1" Class="mb-2">
-                            Não foi possível carregar o conteúdo solicitado.
-                        </MudText>
-                        <MudText Typo="Typo.body2" Class="mud-text-secondary">
-                            @exception.Message
-                        </MudText>
-                    </MudPaper>
-                </ErrorContent>
-            </ErrorBoundary>
+            <MainErrorBoundary>
+                @Body
+            </MainErrorBoundary>
         </MudContainer>
     </MudMainContent>
 </MudLayout>
@@ -65,7 +37,6 @@
 @code {
     private bool _drawerOpen = true;
     private bool _isDarkMode = false;
-
     private MudTheme _theme = new MudTheme()
     {
         PaletteLight = new PaletteLight()
@@ -114,8 +85,8 @@
     };
 
     private string DarkLightModeButtonIcon => _isDarkMode
-        ? Icons.Material.Rounded.LightMode
-        : Icons.Material.Outlined.DarkMode;
+    ? Icons.Material.Rounded.LightMode
+    : Icons.Material.Outlined.DarkMode;
 
     private void ToggleDrawer()
     {

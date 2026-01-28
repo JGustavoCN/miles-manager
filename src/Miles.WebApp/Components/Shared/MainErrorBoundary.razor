@@ -1,0 +1,40 @@
+@inherits ErrorBoundary
+@using MudBlazor
+
+@if (CurrentException is null)
+{
+    @ChildContent
+}
+else
+{
+    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex justify-center align-center mt-10">
+        <MudPaper Elevation="0" Class="pa-8 rounded-xl error-boundary-custom d-flex flex-column align-center text-center">
+
+            @* Ícone maior e com fundo suave *@
+            <div class="d-flex justify-center align-center mb-4 pa-4 rounded-circle"
+                style="background-color: var(--mud-palette-error-hover);">
+                <MudIcon Icon="@Icons.Material.Filled.ErrorOutline" Color="Color.Error" Style="font-size: 3rem;" />
+            </div>
+
+            <MudText Typo="Typo.h5" Color="Color.Error" Class="mb-2">
+                <b>Ops! Algo deu errado.</b>
+            </MudText>
+
+            <MudText Typo="Typo.body1" Class="mud-text-secondary mb-1">
+                Não foi possível carregar este conteúdo.
+            </MudText>
+
+            @* Exibe a mensagem de erro de forma discreta *@
+            <MudAlert Severity="Severity.Error" Variant="Variant.Text" NoIcon="true" Class="my-4 py-2">
+                @CurrentException.Message
+            </MudAlert>
+
+            @* Botão com margem superior (mt-4) para afastar do texto *@
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" OnClick="Recover"
+                Class="mt-4 px-8 rounded-pill" StartIcon="@Icons.Material.Filled.Refresh">
+                Tentar Novamente
+            </MudButton>
+
+        </MudPaper>
+    </MudContainer>
+}

@@ -19,7 +19,7 @@ public class DadosTransacao
 
     public string Categoria { get; set; } = string.Empty;
 
-        public decimal CotacaoDolar { get; set; }
+    public decimal CotacaoDolar { get; set; }
 
-       public int CartaoId { get; set; }
+    public int CartaoId { get; set; }
 }

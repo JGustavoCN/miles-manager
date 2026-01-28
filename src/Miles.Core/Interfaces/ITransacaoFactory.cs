@@ -12,6 +12,6 @@ namespace Miles.Core.Interfaces;
 /// - Evita construtores com muitos parâmetros (Code Smell: Long Parameter List)
 public interface ITransacaoFactory
 {
-    
+
     Transacao CriarNova(DadosTransacao dados);
 }
