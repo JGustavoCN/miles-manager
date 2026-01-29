@@ -2,7 +2,11 @@ using Miles.WebApp.Components;
 using Miles.WebApp.Middleware;
 using MudBlazor.Services;
 using Serilog;
+using Miles.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
+// Configuração inicial do Serilog (Bootstrap Logger)
+// Isso permite logar erros críticos antes mesmo do Host ser construído
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
@@ -13,40 +17,37 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    // Substituir o sistema de logging padrão do ASP.NET Core pelo Serilog
-    // Lê a configuração completa do appsettings.json
+    // 1. Configuração do Serilog para substituir o logger padrão
     builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext());
 
-    // Add services to the container.
+    // 2. Serviços do Blazor
     builder.Services.AddRazorComponents()
         .AddInteractiveServerComponents();
 
-    // TODO: Configurar Entity Framework Core quando necessário
-    // using Miles.Infrastructure.Data;
-    // using Microsoft.EntityFrameworkCore;
-    // builder.Services.AddDbContext<AppDbContext>(options =>
-    //     options.UseSqlServer(
-    //         builder.Configuration.GetConnectionString("DefaultConnection"),
-    //         sqlOptions => sqlOptions.EnableRetryOnFailure(
-    //             maxRetryCount: 5,
-    //             maxRetryDelay: TimeSpan.FromSeconds(30),
-    //             errorNumbersToAdd: null
-    //         )
-    //     )
-    // );
+    // 3. Configuração do Banco de Dados (Vindo da MAIN)
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(
+            builder.Configuration.GetConnectionString("DefaultConnection"),
+            sqlOptions => sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null
+            )
+        )
+    );
 
-    // Registrar serviços do MudBlazor
+    // 4. Serviços do MudBlazor
     builder.Services.AddMudServices();
 
     var app = builder.Build();
 
-    // Middleware de tratamento global de exceções
+    // 5. Middleware de tratamento global de exceções (Vindo da FEAT)
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-    // Adicionar logging de requisições HTTP (Request Logging do Serilog)
+    // 6. Logging de requisições HTTP (Request Logging do Serilog)
     app.UseSerilogRequestLogging(options =>
     {
         options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} respondeu {StatusCode} em {Elapsed:0.0000} ms";
@@ -60,8 +61,6 @@ try
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
-        // Em produção, usar página de erro customizada
-        // O ExceptionHandlingMiddleware já trata exceções, mas mantemos como fallback
         app.UseExceptionHandler("/Error", createScopeForErrors: true);
         app.UseHsts();
     }
@@ -80,6 +79,7 @@ try
 }
 catch (Exception ex)
 {
+    // Captura erros fatais de inicialização (ex: falha na conexão com banco ao iniciar)
     Log.Fatal(ex, "A aplicação falhou ao iniciar");
     throw;
 }
@@ -87,4 +87,3 @@ finally
 {
     Log.CloseAndFlush();
 }
-
