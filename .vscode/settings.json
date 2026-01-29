@@ -20,6 +20,11 @@
     "editor.formatOnSave": true
   },
 
+  "[aspnetcorerazor]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.formatOnSave": true
+  },
+
   // --- MARKDOWN ---
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
