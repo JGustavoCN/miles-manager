@@ -7,6 +7,7 @@ namespace Miles.Core.Interfaces;
 
 public interface ICartaoRepository
 {
+    Task<List<Cartao>> ObterTodosAsync();
 
     void Adicionar(Cartao cartao);
 

@@ -4,6 +4,8 @@ using MudBlazor.Services;
 using Serilog;
 using Miles.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Miles.Core.Interfaces;
+using Miles.Infrastructure.Repositories;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -36,6 +38,9 @@ try
             )
         )
     );
+
+    // 3.1. Registro de Repositórios (DI)
+    builder.Services.AddScoped<ICartaoRepository, CartaoRepository>();
 
     // 4. Serviços do MudBlazor
     builder.Services.AddMudServices();
