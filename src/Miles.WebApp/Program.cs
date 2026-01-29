@@ -3,7 +3,6 @@ using MudBlazor.Services;
 using Miles.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents()
@@ -23,6 +22,26 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddMudServices();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<AppDbContext>();
+            var logger = services.GetRequiredService<ILogger<Program>>();
+
+            DbInitializer.Initialize(context, logger);
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "❌ Erro ao popular o banco de dados com Seed Data.");
+        }
+    }
+}
 
 if (!app.Environment.IsDevelopment())
 {
