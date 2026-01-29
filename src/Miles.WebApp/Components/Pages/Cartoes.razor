@@ -1,4 +1,7 @@
 @using MudBlazor
+@using Miles.Core.Interfaces
+@using Miles.Core.Entities
+@inject ICartaoRepository Repository
 
 @page "/cartoes"
 <PageTitle>Cartões - Miles Manager</PageTitle>
@@ -30,14 +33,44 @@
 
             <MudDivider Class="mb-4" />
 
-            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
-                <MudText Typo="Typo.body2">
-                    📋 Nenhum cartão cadastrado ainda.
-                </MudText>
-                <MudText Typo="Typo.caption" Class="mt-2">
-                    A funcionalidade de CRUD (Criar, Ler, Atualizar, Deletar) será implementada na <strong>Milestone 1</strong>.
-                </MudText>
-            </MudAlert>
+            @if (cartoes == null)
+            {
+                <div class="d-flex justify-center align-center pa-8">
+                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+                </div>
+            }
+            else if (cartoes.Count == 0)
+            {
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
+                    <MudText Typo="Typo.body2">
+                        📋 Nenhum cartão cadastrado ainda.
+                    </MudText>
+                    <MudText Typo="Typo.caption" Class="mt-2">
+                        A funcionalidade de CRUD (Criar, Ler, Atualizar, Deletar) será implementada na <strong>Milestone 1</strong>.
+                    </MudText>
+                </MudAlert>
+            }
+            else
+            {
+                <MudTable Items="@cartoes" Hover="true" Striped="true" Dense="true">
+                    <HeaderContent>
+                        <MudTh>Nome</MudTh>
+                        <MudTh>Bandeira</MudTh>
+                        <MudTh>Programa</MudTh>
+                        <MudTh>Limite</MudTh>
+                        <MudTh>Vencimento</MudTh>
+                        <MudTh>Fator Conversão</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nome">@context.Nome</MudTd>
+                        <MudTd DataLabel="Bandeira">@context.Bandeira</MudTd>
+                        <MudTd DataLabel="Programa">@context.Programa?.Nome</MudTd>
+                        <MudTd DataLabel="Limite">@context.Limite.ToString("C")</MudTd>
+                        <MudTd DataLabel="Vencimento">Dia @context.DiaVencimento</MudTd>
+                        <MudTd DataLabel="Fator Conversão">@context.FatorConversao.ToString("N2")</MudTd>
+                    </RowTemplate>
+                </MudTable>
+            }
         </MudPaper>
     </MudItem>
 
@@ -74,5 +107,10 @@
 </MudGrid>
 
 @code {
-    // Lógica de CRUD virá aqui na Milestone 1
+    private List<Cartao>? cartoes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cartoes = await Repository.ObterTodosAsync();
+    }
 }
