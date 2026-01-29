@@ -2,13 +2,14 @@ using Miles.Core.Entities;
 using Miles.Core.Interfaces;
 using Miles.Core.Strategies;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Serilog;
+using Microsoft.Identity.Client;
 
 namespace Miles.Infrastructure.Data;
 
 public static class DbInitializer
 {
-    public static void Initialize(AppDbContext context, ILogger logger)
+    public static void Initialize(AppDbContext context, Serilog.ILogger Log)
     {
         try
         {
@@ -18,11 +19,11 @@ public static class DbInitializer
             // Verifica se já existem usuários (idempotência)
             if (context.Usuarios.Any())
             {
-                logger.LogInformation("Seed Data: Banco já contém dados. Operação ignorada.");
+                Log.Information("Seed Data: Banco já contém dados. Operação ignorada.");
                 return; // Banco já foi populado
             }
 
-            logger.LogInformation("Iniciando população do banco de dados (Seed Data)...");
+            Log.Information("Iniciando população do banco de dados (Seed Data)...");
 
 
             var usuario = new Usuario
@@ -34,7 +35,7 @@ public static class DbInitializer
             context.Usuarios.Add(usuario);
             context.SaveChanges();
 
-            logger.LogDebug("Usuário '{Nome}' criado (Id: {Id})", usuario.Nome, usuario.Id);
+            Log.Debug("Usuário '{Nome}' criado (Id: {Id})", usuario.Nome, usuario.Id);
 
             var programas = new[]
             {
@@ -76,7 +77,7 @@ public static class DbInitializer
             context.ProgramasFidelidade.AddRange(programas);
             context.SaveChanges();
 
-            logger.LogDebug(" {Count} programa(s) de fidelidade criado(s)", programas.Length);
+            Log.Debug(" {Count} programa(s) de fidelidade criado(s)", programas.Length);
 
             var cartoes = new[]
             {
@@ -134,7 +135,7 @@ public static class DbInitializer
             context.Cartoes.AddRange(cartoes);
             context.SaveChanges();
 
-            logger.LogDebug(" {Count} cartão(ões) criado(s)", cartoes.Length);
+            Log.Debug(" {Count} cartão(ões) criado(s)", cartoes.Length);
 
             var strategy = new CalculoPadraoStrategy(); // Instância da Strategy real
 
@@ -244,11 +245,11 @@ public static class DbInitializer
             context.Transacoes.AddRange(transacoes);
             context.SaveChanges();
 
-            logger.LogDebug("✅ {Count} transação(ões) criada(s)", transacoes.Count);
+            Log.Debug("✅ {Count} transação(ões) criada(s)", transacoes.Count);
 
             var totalPontos = transacoes.Sum(t => t.PontosEstimados);
 
-            logger.LogInformation(
+            Log.Information(
                 " Seed Data inserido com sucesso!\n" +
                 "    Estatísticas:\n" +
                 "   - {Usuarios} usuário(s)\n" +
@@ -265,7 +266,7 @@ public static class DbInitializer
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Erro ao executar Seed Data");
+            Log.Error(ex, "Erro ao executar Seed Data");
             throw;
         }
     }

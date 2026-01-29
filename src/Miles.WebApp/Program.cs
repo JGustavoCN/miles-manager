@@ -56,26 +56,25 @@ try
         };
     });
 
-  
-  if (app.Environment.IsDevelopment())
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        try
-        {
-            var context = services.GetRequiredService<AppDbContext>();
-            var logger = services.GetRequiredService<ILogger<Program>>();
 
-            DbInitializer.Initialize(context, logger);
-        }
-        catch (Exception ex)
+    if (app.Environment.IsDevelopment())
+    {
+        using (var scope = app.Services.CreateScope())
         {
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogError(ex, "❌ Erro ao popular o banco de dados com Seed Data.");
+            var services = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<AppDbContext>();
+
+                DbInitializer.Initialize(context, Log.Logger);
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                Log.Error(ex, "Erro ao popular o banco de dados com Seed Data.");
+            }
         }
     }
-}
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
