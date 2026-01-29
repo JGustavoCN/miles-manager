@@ -1,0 +1,137 @@
+@page "/test-logging"
+@using Microsoft.Extensions.Logging
+@using MudBlazor
+@inject ILogger<TestLogging> Logger
+
+<PageTitle>Teste de Logging</PageTitle>
+
+<h3>🧪 Teste de Logging e Exception Handling</h3>
+
+<MudGrid>
+    <MudItem xs="12">
+        <MudPaper Elevation="2" Class="pa-4">
+            <MudText Typo="Typo.h6" GutterBottom="true">Teste de Níveis de Log</MudText>
+            <MudStack Spacing="2">
+                <MudButton Variant="Variant.Filled" Color="Color.Info" OnClick="LogTrace">Trace</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="LogDebug">Debug</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="LogInformation">Information</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="LogWarning">Warning</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="LogError">Error</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Dark" OnClick="LogCritical">Critical</MudButton>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12">
+        <MudPaper Elevation="2" Class="pa-4">
+            <MudText Typo="Typo.h6" GutterBottom="true">Teste de Exception Handling</MudText>
+            <MudAlert Severity="Severity.Warning" Class="mb-4">
+                ⚠️ Os botões abaixo vão lançar exceções propositalmente para testar o middleware global.
+            </MudAlert>
+            <MudStack Spacing="2">
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="ThrowException">
+                    Lançar InvalidOperationException
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="ThrowArgumentException">
+                    Lançar ArgumentNullException
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="ThrowDivideByZero">
+                    Lançar DivideByZeroException
+                </MudButton>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12">
+        <MudPaper Elevation="2" Class="pa-4">
+            <MudText Typo="Typo.h6" GutterBottom="true">Logs Estruturados</MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="LogStructured">
+                Criar Log Estruturado
+            </MudButton>
+            <MudText Typo="Typo.caption" Class="mt-2">
+                Logs estruturados incluem propriedades semânticas que facilitam queries e análise.
+            </MudText>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12">
+        <MudAlert Severity="Severity.Info">
+            <MudText>
+                <strong>Como verificar os logs:</strong><br/>
+                1. <strong>Console:</strong> Veja os logs coloridos no terminal<br/>
+                2. <strong>Arquivo:</strong> Abra <code>Logs/miles-log-{Data}.txt</code><br/>
+                3. <strong>Exceções:</strong> Veja a resposta JSON no DevTools do navegador
+            </MudText>
+        </MudAlert>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private void LogTrace()
+    {
+        Logger.LogTrace("Este é um log de TRACE (mais detalhado, usado para diagnóstico profundo)");
+    }
+
+    private void LogDebug()
+    {
+        Logger.LogDebug("Este é um log de DEBUG (informações úteis durante desenvolvimento)");
+    }
+
+    private void LogInformation()
+    {
+        Logger.LogInformation("Este é um log de INFORMATION (fluxo normal da aplicação)");
+    }
+
+    private void LogWarning()
+    {
+        Logger.LogWarning("Este é um log de WARNING (algo inesperado, mas não é erro)");
+    }
+
+    private void LogError()
+    {
+        Logger.LogError("Este é um log de ERROR (erro recuperável)");
+    }
+
+    private void LogCritical()
+    {
+        Logger.LogCritical("Este é um log de CRITICAL (falha crítica que requer atenção imediata)");
+    }
+
+    private void ThrowException()
+    {
+        Logger.LogWarning("Preparando para lançar InvalidOperationException...");
+        throw new InvalidOperationException("Teste do ExceptionHandlingMiddleware - InvalidOperationException");
+    }
+
+    private void ThrowArgumentException()
+    {
+        Logger.LogWarning("Preparando para lançar ArgumentNullException...");
+        throw new ArgumentNullException("userId", "O parâmetro userId não pode ser nulo");
+    }
+
+    private void ThrowDivideByZero()
+    {
+        Logger.LogWarning("Preparando para lançar DivideByZeroException...");
+        int zero = 0;
+        int result = 10 / zero; // Vai lançar exceção
+    }
+
+    private void LogStructured()
+    {
+        // Log estruturado com propriedades semânticas
+        var userId = Guid.NewGuid();
+        var username = "john.doe@example.com";
+        var action = "TestLogin";
+        var ipAddress = "192.168.1.100";
+
+        Logger.LogInformation(
+            "Usuário {UserId} ({Username}) executou ação {Action} de {IpAddress}",
+            userId,
+            username,
+            action,
+            ipAddress
+        );
+
+        Logger.LogInformation("Log estruturado criado! Verifique o arquivo de log para ver as propriedades.");
+    }
+}
