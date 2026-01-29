@@ -5,8 +5,6 @@ using Serilog;
 using Miles.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-// Configuração inicial do Serilog (Bootstrap Logger)
-// Isso permite logar erros críticos antes mesmo do Host ser construído
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
@@ -58,6 +56,25 @@ try
         };
     });
 
+
+    if (app.Environment.IsDevelopment())
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<AppDbContext>();
+
+                DbInitializer.Initialize(context, Log.Logger);
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                Log.Error(ex, "Erro ao popular o banco de dados com Seed Data.");
+            }
+        }
+    }
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {

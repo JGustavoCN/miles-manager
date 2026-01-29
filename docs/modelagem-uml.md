@@ -492,14 +492,14 @@ c1 --> t1 : gera
 
 note right of t1
   **Cálculo Automático (RF-006):**
-  
+
   Valor: R$ 100,00
   Cotação USD: R$ 5,00
   Valor em USD: $20,00
   Fator Conversão: 1.0
-  
+
   → Pontos = 20 × 1.0 = **20 pontos**
-  
+
   (Exemplo simplificado)
 end note
 
@@ -507,7 +507,7 @@ note left of u1
   **Contexto do Cenário:**
   José possui um cartão Nubank
   vinculado ao programa Livelo.
-  
+
   Ao registrar uma compra,
   os pontos são calculados
   automaticamente.

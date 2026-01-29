@@ -1,4 +1,4 @@
-﻿<div class="nav-menu-custom">
+<div class="nav-menu-custom">
     <div class="nav-header">
         <MudIcon Icon="@Icons.Material.Filled.Dashboard" Color="Color.Primary" Size="Size.Large" Class="mr-3" />
         <div>
@@ -10,40 +10,31 @@
     <MudDivider Class="my-4" />
 
     <MudNavMenu Class="nav-menu-items">
-        <MudNavLink Href="/"
-                    Match="NavLinkMatch.All"
-                    Icon="@Icons.Material.Filled.Home"
-                    Class="nav-link-custom">
+        <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home" Class="nav-link-custom">
             <div class="nav-link-content">
                 <MudText Typo="Typo.body1">Dashboard</MudText>
                 <MudText Typo="Typo.caption" Class="mud-text-secondary">Visão geral</MudText>
             </div>
         </MudNavLink>
 
-        <MudNavLink Href="/cartoes"
-                    Match="NavLinkMatch.Prefix"
-                    Icon="@Icons.Material.Filled.CreditCard"
-                    Class="nav-link-custom">
+        <MudNavLink Href="/cartoes" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.CreditCard"
+            Class="nav-link-custom">
             <div class="nav-link-content">
                 <MudText Typo="Typo.body1">Cartões</MudText>
                 <MudText Typo="Typo.caption" Class="mud-text-secondary">Gerencie seus cartões</MudText>
             </div>
         </MudNavLink>
 
-        <MudNavLink Href="/compras"
-                    Match="NavLinkMatch.Prefix"
-                    Icon="@Icons.Material.Filled.Receipt"
-                    Class="nav-link-custom">
+        <MudNavLink Href="/compras" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Receipt"
+            Class="nav-link-custom">
             <div class="nav-link-content">
                 <MudText Typo="Typo.body1">Compras</MudText>
                 <MudText Typo="Typo.caption" Class="mud-text-secondary">Extrato e transações</MudText>
             </div>
         </MudNavLink>
 
-        <MudNavLink Href="/programas"
-                    Match="NavLinkMatch.Prefix"
-                    Icon="@Icons.Material.Filled.CardGiftcard"
-                    Class="nav-link-custom">
+        <MudNavLink Href="/programas" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.CardGiftcard"
+            Class="nav-link-custom">
             <div class="nav-link-content">
                 <MudText Typo="Typo.body1">Programas</MudText>
                 <MudText Typo="Typo.caption" Class="mud-text-secondary">Fidelidade e milhas</MudText>
@@ -52,10 +43,8 @@
 
         <MudDivider Class="my-4" />
 
-        <MudNavLink Href="/configuracoes"
-                    Match="NavLinkMatch.Prefix"
-                    Icon="@Icons.Material.Filled.Settings"
-                    Class="nav-link-custom">
+        <MudNavLink Href="/configuracoes" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Settings"
+            Class="nav-link-custom">
             <div class="nav-link-content">
                 <MudText Typo="Typo.body1">Configurações</MudText>
                 <MudText Typo="Typo.caption" Class="mud-text-secondary">Preferências</MudText>
@@ -64,10 +53,8 @@
 
         <MudDivider Class="my-4" />
 
-        <MudNavGroup Title="Desenvolvimento"
-                     Icon="@Icons.Material.Filled.Code"
-                     Expanded="false"
-                     Class="nav-group-custom">
+        <MudNavGroup Title="Desenvolvimento" Icon="@Icons.Material.Filled.Code" Expanded="false"
+            Class="nav-group-custom">
             <MudNavLink Href="/counter" Icon="@Icons.Material.Filled.Add">
                 Counter (Demo)
             </MudNavLink>
@@ -76,6 +63,10 @@
             </MudNavLink>
             <MudNavLink Href="/teste-mudblazor" Icon="@Icons.Custom.Brands.MudBlazor">
                 Teste MudBlazor
+            </MudNavLink>
+            <MudNavLink Href="/test-logging"
+                Icon="<image href='https://raw.githubusercontent.com/serilog/serilog.github.io/master/images/serilog-180px.png' x='0' y='0' height='24' width='24'/>">
+                Teste de Logging
             </MudNavLink>
         </MudNavGroup>
     </MudNavMenu>
