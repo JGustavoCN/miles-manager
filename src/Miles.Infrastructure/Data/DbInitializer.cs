@@ -30,12 +30,12 @@ public static class DbInitializer
             {
                 Nome = "Admin Teste",
                 Email = "admin@milesmanager.com",
-                SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456")
+                SenhaHash = BCrypt.Net.BCrypt.HashPassword("Admin@123")
             };
             context.Usuarios.Add(usuario);
             context.SaveChanges();
 
-            Log.Debug("Usuário '{Nome}' criado (Id: {Id}) - Senha: 123456", usuario.Nome, usuario.Id);
+            Log.Debug("Usuário '{Nome}' criado (Id: {Id}) - Senha: Admin@123", usuario.Nome, usuario.Id);
 
             var programas = new[]
             {
