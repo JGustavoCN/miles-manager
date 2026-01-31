@@ -23,11 +23,7 @@ public class AuthService : IAuthService
         // Validação: Campos obrigatórios
         if (string.IsNullOrWhiteSpace(input.Email) || string.IsNullOrWhiteSpace(input.Senha))
         {
-            return new SessaoResultDTO
-            {
-                Sucesso = false,
-                MensagemErro = "E-mail e senha são obrigatórios"
-            };
+            return MilesMapper.ToErrorResult("E-mail e senha são obrigatórios");
         }
 
         // Buscar usuário por email
@@ -37,21 +33,11 @@ public class AuthService : IAuthService
         // Verifica se usuário existe e valida senha com BCrypt
         if (usuario == null || !BCrypt.Net.BCrypt.Verify(input.Senha, usuario.SenhaHash))
         {
-            return new SessaoResultDTO
-            {
-                Sucesso = false,
-                MensagemErro = "E-mail ou senha incorretos"
-            };
+            return MilesMapper.ToErrorResult("E-mail ou senha incorretos");
         }
 
         // Autenticação bem-sucedida
-        return new SessaoResultDTO
-        {
-            Sucesso = true,
-            UsuarioId = usuario.Id,
-            Nome = usuario.Nome,
-            Email = usuario.Email
-        };
+        return MilesMapper.ToResult(usuario);
     }
 
     /// Implementação da interface IAuthService

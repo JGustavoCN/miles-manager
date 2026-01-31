@@ -55,7 +55,8 @@
 
         <AuthorizeView>
             <Authorized>
-                <MudNavLink OnClick="@HandleLogout" Icon="@Icons.Material.Filled.Logout" Class="nav-link-custom logout-link">
+                <MudNavLink OnClick="@HandleLogout" Icon="@Icons.Material.Filled.Logout"
+                    Class="nav-link-custom logout-link">
                     <div class="nav-link-content">
                         <MudText Typo="Typo.body1">Sair</MudText>
                         <MudText Typo="Typo.caption" Class="mud-text-secondary">Logout</MudText>
@@ -90,10 +91,10 @@
 @using Miles.WebApp.Auth
 
 @code {
-    private void HandleLogout()
+    private async Task HandleLogout()
     {
-        var authProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
-        authProvider.MarkUserAsLoggedOut();
-        Navigation.NavigateTo("/login", forceLoad: true);
+        var authStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+        await authStateProvider.MarkUserAsLoggedOutAsync();
+        Navigation.NavigateTo("/login", true);
     }
 }

@@ -21,7 +21,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    // 1. Configuração do Serilog para substituir o logger padrão
+    // 1. Configuração do Serilog
     builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
@@ -31,7 +31,7 @@ try
     builder.Services.AddRazorComponents()
         .AddInteractiveServerComponents();
 
-    // 3. Configuração do Banco de Dados (Vindo da MAIN)
+    // 3. Configuração do Banco de Dados
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -43,20 +43,24 @@ try
         )
     );
 
-    // 3.1. Registro de Repositórios (DI)
+    // 3.1. Registro de Repositórios
     builder.Services.AddScoped<ICartaoRepository, CartaoRepository>();
     builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
-    // 3.2. Registro de Serviços da Aplicação (UC-01)
+    // 3.2. Serviços de Aplicação
     builder.Services.AddScoped<AuthService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
 
-    // 3.3. Configuração de Autenticação e Autorização Blazor (UC-01)
+    // 3.3. Autenticação Blazor (Customizada)
     builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-    builder.Services.AddCascadingAuthenticationState();
+    // OBS: Removemos o AddCascadingAuthenticationState() daqui pois está no Routes.razor
 
-    // 3.4. Configuração de Autenticação ASP.NET Core
-    builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    // 3.4. Autenticação ASP.NET Core (Para satisfazer o [Authorize])
+    builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        })
         .AddCookie(options =>
         {
             options.LoginPath = "/login";
@@ -65,6 +69,7 @@ try
             options.ExpireTimeSpan = TimeSpan.FromHours(24);
             options.SlidingExpiration = true;
         });
+
     builder.Services.AddAuthorization();
 
     // 4. Serviços do MudBlazor
@@ -72,10 +77,10 @@ try
 
     var app = builder.Build();
 
-    // 5. Middleware de tratamento global de exceções (Vindo da FEAT)
+    // 5. Middleware de erros
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-    // 6. Logging de requisições HTTP (Request Logging do Serilog)
+    // 6. Logging HTTP
     app.UseSerilogRequestLogging(options =>
     {
         options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} respondeu {StatusCode} em {Elapsed:0.0000} ms";
@@ -86,7 +91,6 @@ try
         };
     });
 
-
     if (app.Environment.IsDevelopment())
     {
         using (var scope = app.Services.CreateScope())
@@ -95,17 +99,15 @@ try
             try
             {
                 var context = services.GetRequiredService<AppDbContext>();
-
                 DbInitializer.Initialize(context, Log.Logger);
             }
             catch (Exception ex)
             {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                Log.Error(ex, "Erro ao popular o banco de dados com Seed Data.");
+                Log.Error(ex, "Erro ao popular o banco de dados.");
             }
         }
     }
-    // Configure the HTTP request pipeline.
+
     if (!app.Environment.IsDevelopment())
     {
         app.UseExceptionHandler("/Error", createScopeForErrors: true);
@@ -115,8 +117,10 @@ try
     app.UseStatusCodePagesWithReExecute("/Error");
     app.UseHttpsRedirection();
 
+    // --- MIDDLEWARES DE AUTH (OBRIGATÓRIOS AQUI) ---
     app.UseAuthentication();
     app.UseAuthorization();
+    // -----------------------------------------------
 
     app.UseAntiforgery();
 
@@ -129,7 +133,6 @@ try
 }
 catch (Exception ex)
 {
-    // Captura erros fatais de inicialização (ex: falha na conexão com banco ao iniciar)
     Log.Fatal(ex, "A aplicação falhou ao iniciar");
     throw;
 }
