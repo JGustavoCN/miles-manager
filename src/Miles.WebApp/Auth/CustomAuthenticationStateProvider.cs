@@ -9,27 +9,26 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     private readonly ProtectedSessionStorage _sessionStorage;
     private ClaimsPrincipal _currentUser = new(new ClaimsIdentity());
 
-    // 1. Injetamos o Storage do navegador no construtor
     public CustomAuthenticationStateProvider(ProtectedSessionStorage sessionStorage)
     {
         _sessionStorage = sessionStorage;
     }
 
-    // 2. Ao iniciar, tentamos ler do navegador para recuperar a sessão
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         try
         {
-            // Tenta ler os dados salvos
+            // Tenta ler os dados do navegador
             var userSessionResult = await _sessionStorage.GetAsync<UserSession>("UserSession");
             var userSession = userSessionResult.Success ? userSessionResult.Value : null;
 
+            // Se não tiver sessão salva, retorna deslogado
             if (userSession == null)
             {
                 return await Task.FromResult(new AuthenticationState(_currentUser));
             }
 
-            // Se achou, recria o usuário logado
+            // Se achou e leu com sucesso, recria o usuário
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userSession.UserId.ToString()),
@@ -44,20 +43,21 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         }
         catch (Exception ex)
         {
+            // --- A CORREÇÃO ESTÁ AQUI ---
+            // Se der erro ao ler (ex: chave de criptografia mudou), apagamos o dado corrompido
+            // Isso permite que o usuário faça login novamente sem ficar travado
             Console.WriteLine($"Erro ao recuperar sessão: {ex.Message}");
-
-            // Se deu erro (ex: chave mudou), apaga o dado inválido para permitir novo login limpo
             await _sessionStorage.DeleteAsync("UserSession");
-            return await Task.FromResult(new AuthenticationState(_currentUser));
+
+            return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
         }
     }
 
-    // 3. Login agora é ASSÍNCRONO e salva no navegador
     public async Task MarkUserAsAuthenticatedAsync(int userId, string nome, string email)
     {
         var userSession = new UserSession { UserId = userId, Nome = nome, Email = email };
 
-        // Salva de verdade!
+        // Salva os dados no navegador
         await _sessionStorage.SetAsync("UserSession", userSession);
 
         var claims = new[]
@@ -73,7 +73,6 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
 
-    // 4. Logout apaga do navegador
     public async Task MarkUserAsLoggedOutAsync()
     {
         await _sessionStorage.DeleteAsync("UserSession");
@@ -83,7 +82,6 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     }
 }
 
-// Classe simples para guardar os dados
 public class UserSession
 {
     public int UserId { get; set; }

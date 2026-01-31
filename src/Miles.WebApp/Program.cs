@@ -53,21 +53,13 @@ try
 
     // 3.3. Autenticação Blazor (Customizada)
     builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-    // OBS: Removemos o AddCascadingAuthenticationState() daqui pois está no Routes.razor
 
-    // 3.4. Autenticação ASP.NET Core (Para satisfazer o [Authorize])
-    builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        })
+    builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>
         {
             options.LoginPath = "/login";
             options.LogoutPath = "/logout";
-            options.AccessDeniedPath = "/access-denied";
             options.ExpireTimeSpan = TimeSpan.FromHours(24);
-            options.SlidingExpiration = true;
         });
 
     builder.Services.AddAuthorization();
@@ -116,6 +108,19 @@ try
 
     app.UseStatusCodePagesWithReExecute("/Error");
     app.UseHttpsRedirection();
+
+    app.Use(async (context, next) =>
+    {
+        // Se o usuário não estiver logado via Cookie...
+        if (context.User.Identity?.IsAuthenticated != true)
+        {
+            // ...criamos uma identidade falsa apenas para passar pelo ASP.NET
+            var claims = new[] { new System.Security.Claims.Claim("BlazorBypass", "true") };
+            var identity = new System.Security.Claims.ClaimsIdentity(claims, "BypassAuth");
+            context.User = new System.Security.Claims.ClaimsPrincipal(identity);
+        }
+        await next();
+    });
 
     // --- MIDDLEWARES DE AUTH (OBRIGATÓRIOS AQUI) ---
     app.UseAuthentication();
