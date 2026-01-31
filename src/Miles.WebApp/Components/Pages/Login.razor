@@ -93,6 +93,8 @@
 
             if (resultado.Sucesso && resultado.UsuarioId.HasValue)
             {
+
+                Log.Information("Usuário {Email} autenticado com sucesso", resultado.Email);
                 // ATUALIZADO: Chama o método ASSÍNCRONO e aguarda (await) a gravação no navegador
                 var authProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
 
