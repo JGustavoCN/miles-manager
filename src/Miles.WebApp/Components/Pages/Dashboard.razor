@@ -1,0 +1,58 @@
+@page "/dashboard"
+@using Microsoft.AspNetCore.Components.Authorization
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+<PageTitle>Dashboard - Miles</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">Bem-vindo ao Dashboard!</h4>
+                        <p>Olá, <strong>@context.User.Identity?.Name</strong>!</p>
+                        <hr>
+                        <p class="mb-0">Você está autenticado com sucesso. (UC-01 ✓)</p>
+                        <p class="mb-0"><small>E-mail: @context.User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</small></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Cartões</h5>
+                            <p class="card-text">Gerencie seus cartões de crédito</p>
+                            <a href="/cartoes" class="btn btn-primary">Ver Cartões</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Programas</h5>
+                            <p class="card-text">Veja seus programas de fidelidade</p>
+                            <a href="/programas" class="btn btn-primary">Ver Programas</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Compras</h5>
+                            <p class="card-text">Registre suas transações</p>
+                            <a href="/compras" class="btn btn-primary">Ver Compras</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>

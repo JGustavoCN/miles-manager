@@ -36,6 +36,13 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
+            // Não interceptar erros do Blazor SignalR (deixar o framework lidar)
+            if (context.Request.Path.StartsWithSegments("/_blazor") ||
+                context.WebSockets.IsWebSocketRequest)
+            {
+                throw;
+            }
+
             await HandleExceptionAsync(context, ex);
         }
     }

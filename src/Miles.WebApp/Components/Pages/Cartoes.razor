@@ -4,6 +4,7 @@
 @inject ICartaoRepository Repository
 
 @page "/cartoes"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
 <PageTitle>Cartões - Miles Manager</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">

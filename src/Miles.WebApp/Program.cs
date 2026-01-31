@@ -6,6 +6,10 @@ using Miles.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Miles.Core.Interfaces;
 using Miles.Infrastructure.Repositories;
+using Miles.Application.Services;
+using Miles.WebApp.Auth;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -41,6 +45,27 @@ try
 
     // 3.1. Registro de Repositórios (DI)
     builder.Services.AddScoped<ICartaoRepository, CartaoRepository>();
+    builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+    // 3.2. Registro de Serviços da Aplicação (UC-01)
+    builder.Services.AddScoped<AuthService>();
+    builder.Services.AddScoped<IAuthService, AuthService>();
+
+    // 3.3. Configuração de Autenticação e Autorização Blazor (UC-01)
+    builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+    builder.Services.AddCascadingAuthenticationState();
+
+    // 3.4. Configuração de Autenticação ASP.NET Core
+    builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+            options.LoginPath = "/login";
+            options.LogoutPath = "/logout";
+            options.AccessDeniedPath = "/access-denied";
+            options.ExpireTimeSpan = TimeSpan.FromHours(24);
+            options.SlidingExpiration = true;
+        });
+    builder.Services.AddAuthorization();
 
     // 4. Serviços do MudBlazor
     builder.Services.AddMudServices();
@@ -89,6 +114,9 @@ try
 
     app.UseStatusCodePagesWithReExecute("/Error");
     app.UseHttpsRedirection();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     app.UseAntiforgery();
 

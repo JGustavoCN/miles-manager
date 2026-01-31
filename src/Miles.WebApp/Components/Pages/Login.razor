@@ -1,0 +1,108 @@
+@page "/login"
+@layout PublicLayout
+@using Miles.Application.DTOs
+@using Miles.Application.Services
+@using Miles.WebApp.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+@attribute [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+@inject AuthService AuthService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
+
+<PageTitle>Login - Miles</PageTitle>
+
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="row w-100">
+        <div class="col-md-6 col-lg-4 mx-auto">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-center mb-4">Login</h3>
+
+                    @if (!string.IsNullOrEmpty(mensagemErro))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @mensagemErro
+                        </div>
+                    }
+
+                    <EditForm Model="@loginInput" OnValidSubmit="@HandleLogin">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail</label>
+                            <InputText id="email" class="form-control" @bind-Value="loginInput.Email" placeholder="seu@email.com" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="senha" class="form-label">Senha</label>
+                            <InputText id="senha" type="password" class="form-control" @bind-Value="loginInput.Senha" placeholder="********" />
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary" disabled="@isLoading">
+                                @if (isLoading)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                }
+                                Entrar
+                            </button>
+                        </div>
+                    </EditForm>
+
+                    <div class="text-center mt-3">
+                        <small>
+                            Não tem conta? <a href="/cadastro">Cadastre-se</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginInputDTO loginInput = new();
+    private string? mensagemErro;
+    private bool isLoading = false;
+
+    private async Task HandleLogin()
+    {
+        isLoading = true;
+        mensagemErro = null;
+
+        try
+        {
+            var resultado = AuthService.RealizarLogin(loginInput);
+
+            if (resultado.Sucesso && resultado.UsuarioId.HasValue)
+            {
+                // Marcar usuário como autenticado
+                var authProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+                authProvider.MarkUserAsAuthenticated(
+                    resultado.UsuarioId.Value,
+                    resultado.Nome ?? "",
+                    resultado.Email ?? ""
+                );
+
+                // Aguardar um pequeno delay para garantir que o estado foi atualizado
+                await Task.Delay(100);
+
+                // Redirecionar para o Dashboard (sem forceLoad para manter o circuito Blazor)
+                Navigation.NavigateTo("/dashboard");
+            }
+            else
+            {
+                // Exibir mensagem de erro e limpar apenas o campo de senha
+                mensagemErro = resultado.MensagemErro;
+                loginInput.Senha = string.Empty;
+            }
+        }
+        catch (Exception)
+        {
+            mensagemErro = "Ocorreu um erro inesperado. Tente novamente.";
+            loginInput.Senha = string.Empty;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
