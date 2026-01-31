@@ -1,0 +1,114 @@
+@page "/exemplo-validacao"
+@using Miles.Core.Exceptions
+
+<PageTitle>Exemplo de Validação - UC-08</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">
+    <MudIcon Icon="@Icons.Material.Filled.Rule" Class="mr-2" />
+    Demonstração de Validação (UC-08)
+</MudText>
+
+<MudText Typo="Typo.body1" Class="mb-4">
+    Esta página demonstra como o componente <code>ValidationErrors</code> exibe erros de validação
+    retornados pela camada de domínio.
+</MudText>
+
+<ValidationErrors Errors="@errosValidacao" />
+
+<MudPaper Elevation="3" Class="pa-4">
+    <MudGrid>
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6" Class="mb-3">
+                Simular Erros de Validação
+            </MudText>
+        </MudItem>
+
+        <MudItem xs="12" sm="6">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SimularErroUnico"
+                StartIcon="@Icons.Material.Filled.Error" FullWidth="true">
+                Simular Erro Único
+            </MudButton>
+        </MudItem>
+
+        <MudItem xs="12" sm="6">
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="SimularMultiplosErros"
+                StartIcon="@Icons.Material.Filled.ErrorOutline" FullWidth="true">
+                Simular Múltiplos Erros
+            </MudButton>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudButton Variant="Variant.Outlined" Color="Color.Success" OnClick="LimparErros"
+                StartIcon="@Icons.Material.Filled.CheckCircle" FullWidth="true">
+                Limpar Erros
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+<MudPaper Elevation="3" Class="pa-4 mt-4">
+    <MudText Typo="Typo.h6" Class="mb-3">
+        Exemplo de Uso no Código
+    </MudText>
+
+    <MudText Typo="Typo.body2" Class="mb-2">
+        <strong>1. Capturar exceção de validação:</strong>
+    </MudText>
+
+    <MudPaper Class="pa-3 mb-3" Style="background-color: #f5f5f5;">
+        <code style="white-space: pre; display: block;">
+try
+{
+    transacao.Validar(); // UC-08
+}
+catch (ValorInvalidoException ex)
+{
+    // Separa múltiplos erros (separados por ";")
+    errosValidacao = ex.Message
+        .Split(';')
+        .Select(e => e.Trim())
+        .ToList();
+}
+        </code>
+    </MudPaper>
+
+    <MudText Typo="Typo.body2" Class="mb-2">
+        <strong>2. Usar o componente no Razor:</strong>
+    </MudText>
+
+    <MudPaper Class="pa-3" Style="background-color: #f5f5f5;">
+        <code style="white-space: pre; display: block;">
+&lt;ValidationErrors Errors="@errosValidacao" /&gt;
+        </code>
+    </MudPaper>
+</MudPaper>
+
+@code {
+    private List<string>? errosValidacao;
+
+    private void SimularErroUnico()
+    {
+        errosValidacao = new List<string>
+{
+"Data da transação não pode ser futura"
+};
+    }
+
+    private void SimularMultiplosErros()
+    {
+        errosValidacao = new List<string>
+{
+"Descrição da transação é obrigatória",
+"Categoria da transação é obrigatória",
+"Valor da transação deve ser maior que zero",
+"Cotação do dólar deve ser maior que zero",
+"Data da transação não pode ser futura",
+"Cartão vinculado é obrigatório"
+};
+    }
+
+    private void LimparErros()
+    {
+        errosValidacao = null;
+    }
+}
