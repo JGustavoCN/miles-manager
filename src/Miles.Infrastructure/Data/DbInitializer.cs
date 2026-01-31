@@ -31,12 +31,12 @@ public static class DbInitializer
             {
                 Nome = "Admin Teste",
                 Email = "admin@milesmanager.com",
-                SenhaHash = "TEMP_HASH_SENHA_123" // TODO: Implementar hash real quando AuthService estiver pronto
+                SenhaHash = BCrypt.Net.BCrypt.HashPassword("Admin@123")
             };
             context.Usuarios.Add(usuario);
             context.SaveChanges();
 
-            Log.Debug("Usuário '{Nome}' criado (Id: {Id})", usuario.Nome, usuario.Id);
+            Log.Debug("Usuário '{Nome}' criado (Id: {Id}) - Senha: Admin@123", usuario.Nome, usuario.Id);
 
             var programas = new[]
             {

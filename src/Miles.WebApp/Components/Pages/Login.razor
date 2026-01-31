@@ -1,0 +1,128 @@
+@page "/login"
+@layout PublicLayout
+@using Miles.Application.DTOs
+@using Miles.Application.Services
+@using Miles.WebApp.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+@attribute [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+@inject AuthService AuthService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
+
+<PageTitle>Login - Miles</PageTitle>
+
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="row w-100">
+        <div class="col-md-6 col-lg-4 mx-auto">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-column align-center mb-4">
+
+                        <MudIcon Icon="@Icons.Material.Filled.Lock" Color="Color.Primary" Style="font-size: 4rem;"
+                            Class="mb-2" />
+
+                        <div class="d-flex align-center justify-center">
+                            <MudIcon Icon="@Icons.Material.Filled.FlightTakeoff" Size="Size.Large" Class="mr-2" />
+                            <MudText Typo="Typo.h2" Class="fw-bold">
+                                Miles Manager
+                            </MudText>
+                        </div>
+
+                        <MudText Typo="Typo.body1" Class="mt-2">
+                            Faça login para gerenciar seus pontos
+                        </MudText>
+
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(mensagemErro))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @mensagemErro
+                        </div>
+                    }
+
+                    <EditForm Model="@loginInput" OnValidSubmit="@HandleLogin">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail</label>
+                            <InputText id="email" class="form-control" @bind-Value="loginInput.Email"
+                                placeholder="seu@email.com" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="senha" class="form-label">Senha</label>
+                            <InputText id="senha" type="password" class="form-control" @bind-Value="loginInput.Senha"
+                                placeholder="********" />
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary" disabled="@isLoading">
+                                @if (isLoading)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status"
+                                        aria-hidden="true"></span>
+                                }
+                                Entrar
+                            </button>
+                        </div>
+                    </EditForm>
+
+                    <div class="text-center mt-3">
+                        <small>
+                            Não tem conta? <a href="/cadastro">Cadastre-se</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginInputDTO loginInput = new();
+    private string? mensagemErro;
+    private bool isLoading = false;
+
+    private async Task HandleLogin()
+    {
+        isLoading = true;
+        mensagemErro = null;
+
+        try
+        {
+            var resultado = AuthService.RealizarLogin(loginInput);
+
+            if (resultado.Sucesso && resultado.UsuarioId.HasValue)
+            {
+
+                Log.Information("Usuário {Email} autenticado com sucesso", resultado.Email);
+                // ATUALIZADO: Chama o método ASSÍNCRONO e aguarda (await) a gravação no navegador
+                var authProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+
+                await authProvider.MarkUserAsAuthenticatedAsync(
+                resultado.UsuarioId.Value,
+                resultado.Nome ?? "",
+                resultado.Email ?? ""
+                );
+
+                // O delay pode ser removido pois o await acima já garante a espera
+                // await Task.Delay(100);
+
+                Navigation.NavigateTo("/dashboard");
+            }
+            else
+            {
+                mensagemErro = resultado.MensagemErro;
+                loginInput.Senha = string.Empty;
+            }
+        }
+        catch (Exception)
+        {
+            mensagemErro = "Ocorreu um erro inesperado. Tente novamente.";
+            loginInput.Senha = string.Empty;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

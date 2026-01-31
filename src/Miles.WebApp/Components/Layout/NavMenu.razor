@@ -53,6 +53,20 @@
 
         <MudDivider Class="my-4" />
 
+        <AuthorizeView>
+            <Authorized>
+                <MudNavLink OnClick="@HandleLogout" Icon="@Icons.Material.Filled.Logout"
+                    Class="nav-link-custom logout-link">
+                    <div class="nav-link-content">
+                        <MudText Typo="Typo.body1">Sair</MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">Logout</MudText>
+                    </div>
+                </MudNavLink>
+            </Authorized>
+        </AuthorizeView>
+
+        <MudDivider Class="my-4" />
+
         <MudNavGroup Title="Desenvolvimento" Icon="@Icons.Material.Filled.Code" Expanded="false"
             Class="nav-group-custom">
             <MudNavLink Href="/counter" Icon="@Icons.Material.Filled.Add">
@@ -71,3 +85,16 @@
         </MudNavGroup>
     </MudNavMenu>
 </div>
+
+@inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
+@using Miles.WebApp.Auth
+
+@code {
+    private async Task HandleLogout()
+    {
+        var authStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+        await authStateProvider.MarkUserAsLoggedOutAsync();
+        Navigation.NavigateTo("/login", true);
+    }
+}
