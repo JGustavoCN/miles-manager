@@ -1,0 +1,29 @@
+/* Estilos customizados para a página de Login (UC-01) */
+
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.card {
+    border-radius: 10px;
+    border: none;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #333;
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.btn-primary {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+}

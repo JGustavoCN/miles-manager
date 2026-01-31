@@ -6,6 +6,10 @@ using Miles.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Miles.Core.Interfaces;
 using Miles.Infrastructure.Repositories;
+using Miles.Application.Services;
+using Miles.WebApp.Auth;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -17,7 +21,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    // 1. Configuração do Serilog para substituir o logger padrão
+    // 1. Configuração do Serilog
     builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
@@ -27,7 +31,7 @@ try
     builder.Services.AddRazorComponents()
         .AddInteractiveServerComponents();
 
-    // 3. Configuração do Banco de Dados (Vindo da MAIN)
+    // 3. Configuração do Banco de Dados
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -39,18 +43,36 @@ try
         )
     );
 
-    // 3.1. Registro de Repositórios (DI)
+    // 3.1. Registro de Repositórios
     builder.Services.AddScoped<ICartaoRepository, CartaoRepository>();
+    builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+    // 3.2. Serviços de Aplicação
+    builder.Services.AddScoped<AuthService>();
+    builder.Services.AddScoped<IAuthService, AuthService>();
+
+    // 3.3. Autenticação Blazor (Customizada)
+    builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+    builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+            options.LoginPath = "/login";
+            options.LogoutPath = "/logout";
+            options.ExpireTimeSpan = TimeSpan.FromHours(24);
+        });
+
+    builder.Services.AddAuthorization();
 
     // 4. Serviços do MudBlazor
     builder.Services.AddMudServices();
 
     var app = builder.Build();
 
-    // 5. Middleware de tratamento global de exceções (Vindo da FEAT)
+    // 5. Middleware de erros
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-    // 6. Logging de requisições HTTP (Request Logging do Serilog)
+    // 6. Logging HTTP
     app.UseSerilogRequestLogging(options =>
     {
         options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} respondeu {StatusCode} em {Elapsed:0.0000} ms";
@@ -61,7 +83,6 @@ try
         };
     });
 
-
     if (app.Environment.IsDevelopment())
     {
         using (var scope = app.Services.CreateScope())
@@ -70,17 +91,15 @@ try
             try
             {
                 var context = services.GetRequiredService<AppDbContext>();
-
                 DbInitializer.Initialize(context, Log.Logger);
             }
             catch (Exception ex)
             {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                Log.Error(ex, "Erro ao popular o banco de dados com Seed Data.");
+                Log.Error(ex, "Erro ao popular o banco de dados.");
             }
         }
     }
-    // Configure the HTTP request pipeline.
+
     if (!app.Environment.IsDevelopment())
     {
         app.UseExceptionHandler("/Error", createScopeForErrors: true);
@@ -89,6 +108,24 @@ try
 
     app.UseStatusCodePagesWithReExecute("/Error");
     app.UseHttpsRedirection();
+
+    app.Use(async (context, next) =>
+    {
+        // Se o usuário não estiver logado via Cookie...
+        if (context.User.Identity?.IsAuthenticated != true)
+        {
+            // ...criamos uma identidade falsa apenas para passar pelo ASP.NET
+            var claims = new[] { new System.Security.Claims.Claim("BlazorBypass", "true") };
+            var identity = new System.Security.Claims.ClaimsIdentity(claims, "BypassAuth");
+            context.User = new System.Security.Claims.ClaimsPrincipal(identity);
+        }
+        await next();
+    });
+
+    // --- MIDDLEWARES DE AUTH (OBRIGATÓRIOS AQUI) ---
+    app.UseAuthentication();
+    app.UseAuthorization();
+    // -----------------------------------------------
 
     app.UseAntiforgery();
 
@@ -101,7 +138,6 @@ try
 }
 catch (Exception ex)
 {
-    // Captura erros fatais de inicialização (ex: falha na conexão com banco ao iniciar)
     Log.Fatal(ex, "A aplicação falhou ao iniciar");
     throw;
 }
