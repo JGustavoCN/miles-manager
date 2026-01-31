@@ -1,0 +1,45 @@
+@* UC-08: Componente para exibição padronizada de erros de validação *@
+
+@if (Errors != null && Errors.Any())
+{
+    <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Class="mb-4" Icon="@Icon" Elevation="2">
+        <MudText Typo="Typo.h6" Class="mb-2">
+            <strong>Erros de Validação Detectados</strong>
+        </MudText>
+        <MudDivider Class="my-2" DividerType="DividerType.Middle" />
+        <MudStack Spacing="1" Class="mt-2">
+            @foreach (var erro in Errors)
+            {
+                <MudStack Row="true" AlignItems="AlignItems.Start" Spacing="1">
+                    <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Size="Size.Small" />
+                    <MudText Typo="Typo.body2">@erro</MudText>
+                </MudStack>
+            }
+        </MudStack>
+    </MudAlert>
+}
+
+@code {
+    /// Lista de mensagens de erro retornadas pela camada de domínio (UC-08 FE-01).
+    /// Exemplo: exception.Message.Split(';').Select(e => e.Trim()).ToList()
+    [Parameter]
+    public List<string>? Errors { get; set; }
+
+    /// Permite personalizar o ícone do alerta.
+    /// Default: Icons.Material.Filled.Error
+    [Parameter]
+    public string Icon { get; set; } = Icons.Material.Filled.Error;
+
+    /// Callback chamado quando o componente é exibido.
+    /// Útil para analytics ou scroll automático.
+    [Parameter]
+    public EventCallback OnErrorsDisplayed { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Errors != null && Errors.Any() && OnErrorsDisplayed.HasDelegate)
+        {
+            await OnErrorsDisplayed.InvokeAsync();
+        }
+    }
+}

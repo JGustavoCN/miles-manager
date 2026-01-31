@@ -22,9 +22,30 @@ public class ProgramaFidelidade
     // Relacionamento (1:N) - Um programa pode receber pontos de vários cartões
     public virtual ICollection<Cartao> Cartoes { get; set; } = new List<Cartao>();
 
-    /// Valida os dados do programa (RF-008)
-    public bool Validar()
+    /// <summary>
+    /// Valida os dados do programa conforme UC-08 (RF-008)
+    /// </summary>
+    /// <exception cref="Miles.Core.Exceptions.ValorInvalidoException">Lançada quando dados são inválidos</exception>
+    public void Validar()
     {
-        return !string.IsNullOrWhiteSpace(Nome) && UsuarioId > 0;
+        var erros = new List<string>();
+
+        // UC-08: Verificação de Campos Obrigatórios
+        if (string.IsNullOrWhiteSpace(Nome))
+        {
+            erros.Add("Nome do programa de fidelidade é obrigatório");
+        }
+
+        // UC-08: Verificação de Foreign Key
+        if (UsuarioId <= 0)
+        {
+            erros.Add("Usuário vinculado é obrigatório");
+        }
+
+        // Se houver erros, lança exceção com todas as mensagens
+        if (erros.Any())
+        {
+            throw new Miles.Core.Exceptions.ValorInvalidoException(string.Join("; ", erros));
+        }
     }
 }

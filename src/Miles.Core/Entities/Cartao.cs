@@ -35,15 +35,58 @@ public class Cartao
     // Relacionamento (1:N)
     public virtual ICollection<Transacao> Transacoes { get; set; } = new List<Transacao>();
 
-    /// Valida os dados do cartão (RF-008)
-    public bool Validar()
+    /// <summary>
+    /// Valida os dados do cartão conforme UC-08 (RF-008)
+    /// </summary>
+    /// <exception cref="Miles.Core.Exceptions.ValorInvalidoException">Lançada quando dados são inválidos</exception>
+    public void Validar()
     {
-        return !string.IsNullOrWhiteSpace(Nome) &&
-               !string.IsNullOrWhiteSpace(Bandeira) &&
-               Limite > 0 &&
-               DiaVencimento is >= 1 and <= 31 &&
-               FatorConversao > 0 &&
-               UsuarioId > 0 &&
-               ProgramaId > 0;
+        var erros = new List<string>();
+
+        // UC-08: Verificação de Campos Obrigatórios
+        if (string.IsNullOrWhiteSpace(Nome))
+        {
+            erros.Add("Nome do cartão é obrigatório");
+        }
+
+        if (string.IsNullOrWhiteSpace(Bandeira))
+        {
+            erros.Add("Bandeira do cartão é obrigatória");
+        }
+
+        // UC-08: Verificação de Valores Monetários (Limite deve ser positivo)
+        if (Limite <= 0)
+        {
+            erros.Add("Limite do cartão deve ser maior que zero");
+        }
+
+        // UC-08: Verificação de Dia de Vencimento
+        if (DiaVencimento < 1 || DiaVencimento > 31)
+        {
+            erros.Add("Dia de vencimento deve estar entre 1 e 31");
+        }
+
+        // UC-08: Verificação de Fator de Conversão
+        if (FatorConversao <= 0)
+        {
+            erros.Add("Fator de conversão deve ser maior que zero");
+        }
+
+        // UC-08: Verificação de Foreign Keys
+        if (UsuarioId <= 0)
+        {
+            erros.Add("Usuário vinculado é obrigatório");
+        }
+
+        if (ProgramaId <= 0)
+        {
+            erros.Add("Programa de fidelidade vinculado é obrigatório");
+        }
+
+        // Se houver erros, lança exceção com todas as mensagens
+        if (erros.Any())
+        {
+            throw new Miles.Core.Exceptions.ValorInvalidoException(string.Join("; ", erros));
+        }
     }
 }

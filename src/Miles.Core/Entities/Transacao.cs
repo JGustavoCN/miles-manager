@@ -32,41 +32,81 @@ public class Transacao
     public int CartaoId { get; set; }
     public virtual Cartao Cartao { get; set; } = null!;
 
-    private void ValidarValor()
+    /// <summary>
+    /// Executa o cálculo de pontos usando Strategy Pattern (UC-09 / RF-006).
+    /// </summary>
+    /// <param name="strategy">Strategy de cálculo injetada</param>
+    /// <param name="fatorConversao">Fator do cartão</param>
+    public void CalcularPontos(ICalculoPontosStrategy strategy, decimal fatorConversao)
     {
+        if (strategy == null)
+        {
+            throw new ArgumentNullException(nameof(strategy), "Strategy de cálculo não pode ser nula");
+        }
+
+        if (fatorConversao <= 0)
+        {
+            throw new ValorInvalidoException("Fator de conversão deve ser maior que zero");
+        }
+
+        // UC-09: Validação pré-cálculo (evita divisão por zero)
+        if (Valor <= 0 || CotacaoDolar <= 0)
+        {
+            PontosEstimados = 0;
+            return;
+        }
+
+        // UC-09: Execução da fórmula matemática
+        var valorEmDolares = Valor / CotacaoDolar;
+        PontosEstimados = strategy.Calcular(valorEmDolares, fatorConversao);
+    }
+
+    /// <summary>
+    /// Valida todos os campos obrigatórios conforme UC-08 (RF-008).
+    /// </summary>
+    /// <exception cref="ValorInvalidoException">Lançada quando dados são inválidos</exception>
+    public void Validar()
+    {
+        var erros = new List<string>();
+
+        // UC-08: Verificação de Campos Obrigatórios
+        if (string.IsNullOrWhiteSpace(Descricao))
+        {
+            erros.Add("Descrição da transação é obrigatória");
+        }
+
+        if (string.IsNullOrWhiteSpace(Categoria))
+        {
+            erros.Add("Categoria da transação é obrigatória");
+        }
+
+        // UC-08: Verificação de Valores Monetários
         if (Valor <= 0)
         {
-            throw new ValorInvalidoException("Valor da transação deve ser maior que zero");
+            erros.Add("Valor da transação deve ser maior que zero");
         }
 
         if (CotacaoDolar <= 0)
         {
-            throw new ValorInvalidoException("Cotação do dólar deve ser maior que zero");
-        }
-    }
-    public void CalcularPontos(ICalculoPontosStrategy strategy, decimal fatorConversao)
-    {
-        ValidarValor();
-
-        var valorEmDolares = Valor / CotacaoDolar;
-
-        PontosEstimados = strategy.Calcular(valorEmDolares, fatorConversao);
-    }
-
-    /// Valida todos os campos obrigatórios (RF-008).
-    /// <exception cref="ValorInvalidoException">Lançada quando dados são inválidos</exception>
-    public void Validar()
-    {
-        ValidarValor();
-
-        if (string.IsNullOrWhiteSpace(Descricao))
-        {
-            throw new ValorInvalidoException("Descrição da transação é obrigatória");
+            erros.Add("Cotação do dólar deve ser maior que zero");
         }
 
+        // UC-08: Verificação de Datas (Não pode ser futura)
         if (Data > DateTime.Now)
         {
-            throw new ValorInvalidoException("Data da transação não pode ser futura");
+            erros.Add("Data da transação não pode ser futura");
+        }
+
+        // UC-08: Verificação de Foreign Key
+        if (CartaoId <= 0)
+        {
+            erros.Add("Cartão vinculado é obrigatório");
+        }
+
+        // Se houver erros, lança exceção com todas as mensagens
+        if (erros.Any())
+        {
+            throw new ValorInvalidoException(string.Join("; ", erros));
         }
     }
 }

@@ -25,11 +25,40 @@ public class Usuario
     public virtual ICollection<Cartao> Cartoes { get; set; } = new List<Cartao>();
     public virtual ICollection<ProgramaFidelidade> Programas { get; set; } = new List<ProgramaFidelidade>();
 
-    /// Valida se os dados essenciais do usuário estão preenchidos (RF-008)
-    public bool Validar()
+    /// <summary>
+    /// Valida se os dados essenciais do usuário estão preenchidos conforme UC-08 (RF-008)
+    /// </summary>
+    /// <exception cref="Miles.Core.Exceptions.ValorInvalidoException">Lançada quando dados são inválidos</exception>
+    public void Validar()
     {
-        return !string.IsNullOrWhiteSpace(Nome) &&
-               !string.IsNullOrWhiteSpace(Email) &&
-               !string.IsNullOrWhiteSpace(SenhaHash);
+        var erros = new List<string>();
+
+        // UC-08: Verificação de Campos Obrigatórios
+        if (string.IsNullOrWhiteSpace(Nome))
+        {
+            erros.Add("Nome do usuário é obrigatório");
+        }
+
+        if (string.IsNullOrWhiteSpace(Email))
+        {
+            erros.Add("E-mail do usuário é obrigatório");
+        }
+
+        if (string.IsNullOrWhiteSpace(SenhaHash))
+        {
+            erros.Add("Senha do usuário é obrigatória");
+        }
+
+        // UC-08: Validação de formato de e-mail
+        if (!string.IsNullOrWhiteSpace(Email) && !Email.Contains("@"))
+        {
+            erros.Add("E-mail em formato inválido");
+        }
+
+        // Se houver erros, lança exceção com todas as mensagens
+        if (erros.Any())
+        {
+            throw new Miles.Core.Exceptions.ValorInvalidoException(string.Join("; ", erros));
+        }
     }
 }

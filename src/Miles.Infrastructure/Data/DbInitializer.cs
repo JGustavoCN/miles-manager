@@ -1,4 +1,5 @@
 using Miles.Core.Entities;
+using Miles.Core.Exceptions;
 using Miles.Core.Interfaces;
 using Miles.Core.Strategies;
 using Microsoft.EntityFrameworkCore;
@@ -68,9 +69,14 @@ public static class DbInitializer
             // Valida antes de inserir
             foreach (var programa in programas)
             {
-                if (!programa.Validar())
+                try
                 {
-                    throw new InvalidOperationException($"Programa '{programa.Nome}' possui dados inválidos.");
+                    programa.Validar(); // UC-08
+                }
+                catch (ValorInvalidoException ex)
+                {
+                    Log.Error(ex, "Programa '{Nome}' possui dados inválidos: {Erro}", programa.Nome, ex.Message);
+                    throw;
                 }
             }
 
@@ -126,9 +132,14 @@ public static class DbInitializer
             // Valida antes de inserir (RF-008)
             foreach (var cartao in cartoes)
             {
-                if (!cartao.Validar())
+                try
                 {
-                    throw new InvalidOperationException($"Cartão '{cartao.Nome}' possui dados inválidos.");
+                    cartao.Validar(); // UC-08
+                }
+                catch (ValorInvalidoException ex)
+                {
+                    Log.Error(ex, "Cartão '{Nome}' possui dados inválidos: {Erro}", cartao.Nome, ex.Message);
+                    throw;
                 }
             }
 
@@ -223,23 +234,41 @@ public static class DbInitializer
 
             foreach (var seed in transacoesSeed)
             {
-                var transacao = new Transacao
+                try
                 {
-                    Data = seed.Data,
-                    Valor = seed.Valor,
-                    Descricao = seed.Descricao,
-                    Categoria = seed.Categoria,
-                    CotacaoDolar = seed.CotacaoDolar,
-                    CartaoId = seed.CartaoId
-                };
+                    var transacao = new Transacao
+                    {
+                        Data = seed.Data,
+                        Valor = seed.Valor,
+                        Descricao = seed.Descricao,
+                        Categoria = seed.Categoria,
+                        CotacaoDolar = seed.CotacaoDolar,
+                        CartaoId = seed.CartaoId
+                    };
 
-                // Usa o método CalcularPontos da entidade (que usa a Strategy)
-                transacao.CalcularPontos(strategy, seed.FatorConversao);
+                    // UC-09: Cálculo de Pontos com Tratamento de Erro
+                    try
+                    {
+                        transacao.CalcularPontos(strategy, seed.FatorConversao);
+                    }
+                    catch (Exception ex)
+                    {
+                        // UC-09 FE-01: Log de Erro de Cálculo (não quebra o seed)
+                        Log.Warning(ex, "Erro ao calcular pontos para transação '{Descricao}'. Atribuindo 0 pontos.", seed.Descricao);
+                        transacao.PontosEstimados = 0;
+                    }
 
-                // Valida antes de adicionar (RF-008)
-                transacao.Validar();
+                    // UC-08: Validação antes de adicionar
+                    transacao.Validar();
 
-                transacoes.Add(transacao);
+                    transacoes.Add(transacao);
+                }
+                catch (ValorInvalidoException ex)
+                {
+                    // UC-08 FE-01: Log de Erro de Validação
+                    Log.Error(ex, "Transação '{Descricao}' possui dados inválidos: {Erro}", seed.Descricao, ex.Message);
+                    // Continua com as outras transações ao invés de quebrar tudo
+                }
             }
 
             context.Transacoes.AddRange(transacoes);
