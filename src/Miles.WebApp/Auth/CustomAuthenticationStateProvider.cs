@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Serilog;
 using System.Security.Claims;
 
 namespace Miles.WebApp.Auth;
@@ -46,7 +47,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
             // --- A CORREÇÃO ESTÁ AQUI ---
             // Se der erro ao ler (ex: chave de criptografia mudou), apagamos o dado corrompido
             // Isso permite que o usuário faça login novamente sem ficar travado
-            Console.WriteLine($"Erro ao recuperar sessão: {ex.Message}");
+            Log.Error($"Erro ao recuperar sessão: {ex.Message}");
             await _sessionStorage.DeleteAsync("UserSession");
 
             return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
