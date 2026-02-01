@@ -1,6 +1,6 @@
 using Miles.Application.DTOs;
 using Miles.Core.Entities;
-
+using Miles.Core.ValueObjects;
 namespace Miles.Application;
 
 public static class MilesMapper
@@ -83,5 +83,16 @@ public static class MilesMapper
         };
     }
 
-
+    public static DadosTransacao ToDadosTransacao(TransacaoInputDTO dto)
+    {
+        return new DadosTransacao
+        {
+            Valor = dto.Valor,
+            Data = dto.Data,
+            Descricao = dto.Descricao,
+            Categoria = dto.Categoria,
+            CotacaoDolar = dto.CotacaoDolar,
+            CartaoId = dto.CartaoId
+        };
+    }
 }
