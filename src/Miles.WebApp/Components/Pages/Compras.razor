@@ -1,115 +1,99 @@
-@using MudBlazor
 @page "/compras"
-@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@using Miles.Core.Entities
+@using Miles.Core.Interfaces
+@inject ITransacaoRepository TransacaoRepository
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
 
-<PageTitle>Compras e Extrato - Miles Manager</PageTitle>
+<PageTitle>Minhas Compras</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">
-    <MudIcon Icon="@Icons.Material.Filled.Receipt" Class="mr-2" />
-    Compras e Extrato de Transações
-</MudText>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-8">
 
-<MudText Typo="Typo.body1" Class="mb-4">
-    Registre suas compras e acompanhe o histórico de transações com cálculo automático de pontuação.
-</MudText>
+    <div class="d-flex justify-space-between align-center mb-4">
+        <MudText Typo="Typo.h4">Histórico de Compras</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+            OnClick="IrParaNovaTransacao">
+            Nova Transação
+        </MudButton>
+    </div>
 
-<MudGrid>
-    <MudItem xs="12" md="5">
-        <MudPaper Elevation="3" Class="pa-4">
-            <MudText Typo="Typo.h6" GutterBottom="true">
-                <MudIcon Icon="@Icons.Material.Filled.AddShoppingCart" Class="mr-2" />
-                Registrar Nova Compra
-            </MudText>
-            <MudDivider Class="mb-4" />
+    @if (_carregando)
+    {
+        <div class="d-flex justify-center mt-4">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+        </div>
+    }
+    else if (!_transacoes.Any())
+    {
+        <MudAlert Severity="Severity.Info" Class="mt-4">
+            Nenhuma compra registrada. Aproveite para cadastrar sua primeira transação e acumular milhas!
+        </MudAlert>
+    }
+    else
+    {
+        <MudTable Items="@_transacoes" Hover="true" Striped="true" Class="mt-4">
+            <HeaderContent>
+                <MudTh>Data</MudTh>
+                <MudTh>Descrição</MudTh>
+                <MudTh>Cartão</MudTh>
+                <MudTh>Valor (R$)</MudTh>
+                <MudTh>Pontos (Est.)</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Data">@context.Data.ToShortDateString()</MudTd>
+                <MudTd DataLabel="Descrição">
+                    <MudText Typo="Typo.body2">@context.Descricao</MudText>
+                    <MudText Typo="Typo.caption">@context.Categoria</MudText>
+                </MudTd>
+                <MudTd DataLabel="Cartão">
+                    @if (context.Cartao != null)
+                    {
+                        @($"{context.Cartao.Nome} ({context.Cartao.Bandeira})")
+                    }
+                    else
+                    {
+                        <MudText Color="Color.Error">Cartão excluído</MudText>
+                    }
+                </MudTd>
+                <MudTd DataLabel="Valor">@context.Valor.ToString("C2")</MudTd>
+                <MudTd DataLabel="Pontos">
+                    <MudChip T="string" Color="Color.Success" Size="Size.Small">@context.PontosEstimados pts</MudChip>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    }
 
-            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
-                <MudText Typo="Typo.body2">
-                    📝 Formulário de registro será implementado em breve.
-                </MudText>
-                <MudText Typo="Typo.caption" Class="mt-2">
-                    <strong>Campos que estarão disponíveis:</strong>
-                </MudText>
-                <div class="mt-2 ml-4">
-                    <MudText Typo="Typo.body2" Class="mb-1">
-                        <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Size="Size.Small" /> Valor da Compra (R$)
-                    </MudText>
-                    <MudText Typo="Typo.body2" Class="mb-1">
-                        <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Size="Size.Small" /> Data da Transação
-                    </MudText>
-                    <MudText Typo="Typo.body2" Class="mb-1">
-                        <MudIcon Icon="@Icons.Material.Filled.Description" Size="Size.Small" /> Descrição / Estabelecimento
-                    </MudText>
-                    <MudText Typo="Typo.body2" Class="mb-1">
-                        <MudIcon Icon="@Icons.Material.Filled.Category" Size="Size.Small" /> Categoria (Alimentação, Viagem, etc)
-                    </MudText>
-                    <MudText Typo="Typo.body2" Class="mb-1">
-                        <MudIcon Icon="@Icons.Material.Filled.CreditCard" Size="Size.Small" /> Cartão Utilizado
-                    </MudText>
-                </div>
-            </MudAlert>
-
-            <MudAlert Severity="Severity.Success" Dense="true" Class="mt-3" Variant="Variant.Filled">
-                <MudText Typo="Typo.caption">
-                    ✅ <strong>RF-006:</strong> O cálculo de pontos será automático usando a fórmula: <code>(Valor / Cotação USD) × Fator</code>
-                </MudText>
-            </MudAlert>
-        </MudPaper>
-    </MudItem>
-
-    <MudItem xs="12" md="7">
-        <MudPaper Elevation="3" Class="pa-4">
-            <div class="d-flex justify-space-between align-center mb-4">
-                <MudText Typo="Typo.h6">
-                    <MudIcon Icon="@Icons.Material.Filled.History" Class="mr-2" />
-                    Extrato de Transações
-                </MudText>
-                <MudText Typo="Typo.caption" Color="Color.Primary">
-                    <strong>0 transações</strong>
-                </MudText>
-            </div>
-            <MudDivider Class="mb-4" />
-
-            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
-                <MudText Typo="Typo.body2">
-                    📊 Nenhuma transação registrada ainda.
-                </MudText>
-                <MudText Typo="Typo.caption" Class="mt-2">
-                    Após cadastrar compras, você verá aqui:
-                </MudText>
-                <ul class="mt-2">
-                    <li><MudText Typo="Typo.caption">Data e hora da transação</MudText></li>
-                    <li><MudText Typo="Typo.caption">Descrição e categoria</MudText></li>
-                    <li><MudText Typo="Typo.caption">Valor em reais (R$)</MudText></li>
-                    <li><MudText Typo="Typo.caption">Pontos estimados calculados automaticamente</MudText></li>
-                    <li><MudText Typo="Typo.caption">Cartão utilizado</MudText></li>
-                </ul>
-            </MudAlert>
-        </MudPaper>
-    </MudItem>
-</MudGrid>
-
-<MudPaper Class="pa-4 mt-4" Elevation="2">
-    <MudText Typo="Typo.h6" GutterBottom="true">
-        <MudIcon Icon="@Icons.Material.Filled.Calculate" Class="mr-2" />
-        Como funciona o Cálculo Automático de Pontos?
-    </MudText>
-    <MudDivider Class="mb-3" />
-
-    <MudText Typo="Typo.body2" Class="mb-2">
-        O sistema utiliza a seguinte fórmula matemática (RF-006):
-    </MudText>
-
-    <MudAlert Severity="Severity.Info" Variant="Variant.Filled" Dense="true">
-        <MudText Typo="Typo.body1" Align="Align.Center">
-            <strong>Pontos = (Valor em R$ ÷ Cotação USD) × Fator do Cartão</strong>
-        </MudText>
-    </MudAlert>
-
-    <MudText Typo="Typo.caption" Class="mt-3 mud-text-secondary">
-        <strong>Exemplo:</strong> Compra de R$ 500,00 com cotação de R$ 5,00 e fator 1,5 = (500 ÷ 5) × 1,5 = <strong>150 pontos</strong>
-    </MudText>
-</MudPaper>
+</MudContainer>
 
 @code {
-    // Lógica de registro e listagem virá aqui na Milestone 1
+    private List<Transacao> _transacoes = new();
+    private bool _carregando = true;
+    private int _usuarioId = 1; // Fallback para dev
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Simulação de Auth para pegar o usuário correto
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            if (user.Identity != null && user.Identity.IsAuthenticated)
+            {
+                var idClaim = user.FindFirst(c => c.Type == "sub" || c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
+                if (idClaim != null && int.TryParse(idClaim.Value, out int id)) _usuarioId = id;
+            }
+
+            // Busca as transações usando o Repositório
+            _transacoes = TransacaoRepository.ObterPorUsuario(_usuarioId);
+        }
+        finally
+        {
+            _carregando = false;
+        }
+    }
+
+    private void IrParaNovaTransacao()
+    {
+        NavigationManager.NavigateTo("/transacoes/nova");
+    }
 }

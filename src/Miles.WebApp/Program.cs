@@ -50,6 +50,8 @@ try
     // 3.1. Registro de Repositórios
     builder.Services.AddScoped<ICartaoRepository, CartaoRepository>();
     builder.Services.AddScoped<IProgramaRepository, ProgramaRepository>();
+    builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
+    builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
     // Nota: Outros repositórios (ITransacaoRepository, IProgramaRepository, IUsuarioRepository)
     // serão adicionados conforme forem implementados na camada Infrastructure
 
@@ -63,7 +65,8 @@ try
     // builder.Services.AddScoped<ITransacaoService, TransacaoService>();
     builder.Services.AddScoped<ICartaoService, CartaoService>();
     builder.Services.AddScoped<IProgramaService, ProgramaService>();
-    builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+    builder.Services.AddScoped<ITransacaoService, TransacaoService>();
+
 
     // 3.2. Serviços de Aplicação
     builder.Services.AddScoped<AuthService>();
