@@ -1,132 +1,61 @@
-﻿@using MudBlazor
 @page "/"
+@using MudBlazor
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
 
-<PageTitle>Dashboard - Miles Manager</PageTitle>
+<PageTitle>Bem-vindo - Miles Manager</PageTitle>
 
-<div class="dashboard-header mb-6">
-    <div>
-        <MudText Typo="Typo.h3" Class="dashboard-title">
-            Bem-vindo ao Miles Manager! ✈️
-        </MudText>
-        <MudText Typo="Typo.body1" Class="mud-text-secondary mt-2">
-            Acompanhe seus pontos, milhas e cartões em um só lugar
-        </MudText>
-    </div>
-</div>
-
-<MudGrid Spacing="4" Class="mb-6">
-    <MudItem xs="12" sm="6" md="3">
-        <MudCard Elevation="0" Class="stat-card stat-card-primary">
-            <MudCardContent Class="pa-4">
-                <div class="stat-card-icon mb-3">
-                    <MudIcon Icon="@Icons.Material.Filled.CardGiftcard" Size="Size.Large" />
-                </div>
-                <MudText Typo="Typo.caption" Class="stat-card-label">Total de Pontos</MudText>
-                <MudText Typo="Typo.h4" Class="stat-card-value mt-2">
-                    0
-                </MudText>
-                <MudText Typo="Typo.caption" Class="stat-card-description mt-2">
-                    <MudIcon Icon="@Icons.Material.Filled.TrendingUp" Size="Size.Small" Class="mr-1" />
-                    Todos os programas
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-
-    <MudItem xs="12" sm="6" md="3">
-        <MudCard Elevation="0" Class="stat-card stat-card-secondary">
-            <MudCardContent Class="pa-4">
-                <div class="stat-card-icon mb-3">
-                    <MudIcon Icon="@Icons.Material.Filled.CreditCard" Size="Size.Large" />
-                </div>
-                <MudText Typo="Typo.caption" Class="stat-card-label">Cartões Cadastrados</MudText>
-                <MudText Typo="Typo.h4" Class="stat-card-value mt-2">
-                    0
-                </MudText>
-                <MudText Typo="Typo.caption" Class="stat-card-description mt-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Class="mr-1" />
-                    Prontos para usar
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-
-    <MudItem xs="12" sm="6" md="3">
-        <MudCard Elevation="0" Class="stat-card stat-card-success">
-            <MudCardContent Class="pa-4">
-                <div class="stat-card-icon mb-3">
-                    <MudIcon Icon="@Icons.Material.Filled.Receipt" Size="Size.Large" />
-                </div>
-                <MudText Typo="Typo.caption" Class="stat-card-label">Compras do Mês</MudText>
-                <MudText Typo="Typo.h4" Class="stat-card-value mt-2">
-                    0
-                </MudText>
-                <MudText Typo="Typo.caption" Class="stat-card-description mt-2">
-                    <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Size="Size.Small" Class="mr-1" />
-                    Transações registradas
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-
-    <MudItem xs="12" sm="6" md="3">
-        <MudCard Elevation="0" Class="stat-card stat-card-info">
-            <MudCardContent Class="pa-4">
-                <div class="stat-card-icon mb-3">
-                    <MudIcon Icon="@Icons.Material.Filled.Flight" Size="Size.Large" />
-                </div>
-                <MudText Typo="Typo.caption" Class="stat-card-label">Programas Ativos</MudText>
-                <MudText Typo="Typo.h4" Class="stat-card-value mt-2">
-                    0
-                </MudText>
-                <MudText Typo="Typo.caption" Class="stat-card-description mt-2">
-                    <MudIcon Icon="@Icons.Material.Filled.Star" Size="Size.Small" Class="mr-1" />
-                    Fidelidades cadastradas
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-</MudGrid>
-
-<MudPaper Elevation="0" Class="pa-6 info-card">
-    <div class="d-flex align-center mb-4">
-        <div class="info-icon mr-3">
-            <MudIcon Icon="@Icons.Material.Filled.Info" Size="Size.Large" />
-        </div>
-        <div>
-            <MudText Typo="Typo.h6">Sistema em Desenvolvimento</MudText>
-            <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                Versão 1.0 - Milestone 0 Completa
-            </MudText>
-        </div>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-16 text-center">
+    <div class="mb-8">
+        <MudIcon Icon="@Icons.Material.Filled.AirplanemodeActive" Size="Size.Large" Color="Color.Primary"
+            Style="width: 120px; height: 120px;" />
     </div>
 
-    <MudText Typo="Typo.body1" Class="mb-3">
-        📊 Esta é a página inicial do sistema. Os dados serão carregados dinamicamente quando as funcionalidades de CRUD estiverem implementadas na <strong>Milestone 1</strong>.
+    <MudText Typo="Typo.h2" GutterBottom="true" Color="Color.Primary">Miles Manager</MudText>
+    <MudText Typo="Typo.h5" Class="mud-text-secondary mb-8">
+        Gerencie seus pontos, cartões e milhas em um único lugar.
+        Simples, rápido e eficiente.
     </MudText>
 
-    <MudDivider Class="my-4" />
+    <AuthorizeView>
+        <Authorized>
+            <MudAlert Severity="Severity.Info" Class="mb-6 mx-auto" Style="max-width: 500px;">
+                Você já está conectado como <strong>@context.User.Identity?.Name</strong>.
+            </MudAlert>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large"
+                OnClick="@(() => Navigation.NavigateTo("/dashboard"))" EndIcon="@Icons.Material.Filled.ArrowForward">
+                Acessar meu Dashboard
+            </MudButton>
+        </Authorized>
+        <NotAuthorized>
+            <div class="d-flex justify-center gap-4 mt-8">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large"
+                    OnClick="@(() => Navigation.NavigateTo("/login"))">
+                    Entrar
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" Size="Size.Large"
+                    OnClick="@(() => Navigation.NavigateTo("/cadastro"))">
+                    Criar Conta
+                </MudButton>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
 
-    <div class="feature-grid">
-        <div class="feature-item">
-            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Class="mr-2" />
-            <MudText Typo="Typo.body2">Navegação Funcional</MudText>
-        </div>
-        <div class="feature-item">
-            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Class="mr-2" />
-            <MudText Typo="Typo.body2">Tema Claro/Escuro</MudText>
-        </div>
-        <div class="feature-item">
-            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Class="mr-2" />
-            <MudText Typo="Typo.body2">Design Responsivo</MudText>
-        </div>
-        <div class="feature-item">
-            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Class="mr-2" />
-            <MudText Typo="Typo.body2">Arquitetura Limpa</MudText>
-        </div>
-    </div>
-</MudPaper>
-
-@code {
-    // Código para carregamento de dados virá aqui quando o backend estiver pronto
-}
+    <MudGrid Class="mt-16">
+        <MudItem xs="12" md="4">
+            <MudIcon Icon="@Icons.Material.Filled.Dashboard" Size="Size.Large" Color="Color.Primary" />
+            <MudText Typo="Typo.h6" Class="mt-2">Visão Consolidada</MudText>
+            <MudText Typo="Typo.body2">Veja o saldo de todos os seus programas em uma única tela.</MudText>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudIcon Icon="@Icons.Material.Filled.CreditCard" Size="Size.Large" Color="Color.Primary" />
+            <MudText Typo="Typo.h6" Class="mt-2">Controle de Cartões</MudText>
+            <MudText Typo="Typo.body2">Gerencie limites e vencimentos dos seus cartões de crédito.</MudText>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudIcon Icon="@Icons.Material.Filled.TrendingUp" Size="Size.Large" Color="Color.Primary" />
+            <MudText Typo="Typo.h6" Class="mt-2">Maximize Pontos</MudText>
+            <MudText Typo="Typo.body2">Saiba exatamente quanto suas compras valem em milhas.</MudText>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

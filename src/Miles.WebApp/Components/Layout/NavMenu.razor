@@ -1,3 +1,7 @@
+@using Miles.WebApp.Auth
+@inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
+
 <div class="nav-menu-custom">
     <div class="nav-header">
         <MudIcon Icon="@Icons.Material.Filled.Dashboard" Color="Color.Primary" Size="Size.Large" Class="mr-3" />
@@ -12,49 +16,55 @@
     <MudNavMenu Class="nav-menu-items">
         <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home" Class="nav-link-custom">
             <div class="nav-link-content">
-                <MudText Typo="Typo.body1">Dashboard</MudText>
-                <MudText Typo="Typo.caption" Class="mud-text-secondary">Visão geral</MudText>
+                <MudText Typo="Typo.body1">Início</MudText>
+                <MudText Typo="Typo.caption" Class="mud-text-secondary">Página Principal</MudText>
             </div>
         </MudNavLink>
-
-        <MudNavLink Href="/cartoes" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.CreditCard"
-            Class="nav-link-custom">
-            <div class="nav-link-content">
-                <MudText Typo="Typo.body1">Cartões</MudText>
-                <MudText Typo="Typo.caption" Class="mud-text-secondary">Gerencie seus cartões</MudText>
-            </div>
-        </MudNavLink>
-
-        <MudNavLink Href="/compras" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Receipt"
-            Class="nav-link-custom">
-            <div class="nav-link-content">
-                <MudText Typo="Typo.body1">Compras</MudText>
-                <MudText Typo="Typo.caption" Class="mud-text-secondary">Extrato e transações</MudText>
-            </div>
-        </MudNavLink>
-
-        <MudNavLink Href="/programas" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.CardGiftcard"
-            Class="nav-link-custom">
-            <div class="nav-link-content">
-                <MudText Typo="Typo.body1">Programas</MudText>
-                <MudText Typo="Typo.caption" Class="mud-text-secondary">Fidelidade e milhas</MudText>
-            </div>
-        </MudNavLink>
-
-        <MudDivider Class="my-4" />
-
-        <MudNavLink Href="/configuracoes" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Settings"
-            Class="nav-link-custom">
-            <div class="nav-link-content">
-                <MudText Typo="Typo.body1">Configurações</MudText>
-                <MudText Typo="Typo.caption" Class="mud-text-secondary">Preferências</MudText>
-            </div>
-        </MudNavLink>
-
-        <MudDivider Class="my-4" />
 
         <AuthorizeView>
             <Authorized>
+                <MudNavLink Href="/dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard"
+                    Class="nav-link-custom">
+                    <div class="nav-link-content">
+                        <MudText Typo="Typo.body1">Dashboard</MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">Visão Geral</MudText>
+                    </div>
+                </MudNavLink>
+
+                <MudNavLink Href="/cartoes" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.CreditCard"
+                    Class="nav-link-custom">
+                    <div class="nav-link-content">
+                        <MudText Typo="Typo.body1">Cartões</MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">Gerencie seus cartões</MudText>
+                    </div>
+                </MudNavLink>
+
+                <MudNavLink Href="/compras" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Receipt"
+                    Class="nav-link-custom">
+                    <div class="nav-link-content">
+                        <MudText Typo="Typo.body1">Compras</MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">Extrato e transações</MudText>
+                    </div>
+                </MudNavLink>
+
+                <MudNavLink Href="/programas" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.CardGiftcard"
+                    Class="nav-link-custom">
+                    <div class="nav-link-content">
+                        <MudText Typo="Typo.body1">Programas</MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">Fidelidade e milhas</MudText>
+                    </div>
+                </MudNavLink>
+
+                <MudDivider Class="my-4" />
+
+                <MudNavLink Href="/configuracoes" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Settings"
+                    Class="nav-link-custom">
+                    <div class="nav-link-content">
+                        <MudText Typo="Typo.body1">Configurações</MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">Preferências</MudText>
+                    </div>
+                </MudNavLink>
+
                 <MudNavLink OnClick="@HandleLogout" Icon="@Icons.Material.Filled.Logout"
                     Class="nav-link-custom logout-link">
                     <div class="nav-link-content">
@@ -63,6 +73,15 @@
                     </div>
                 </MudNavLink>
             </Authorized>
+            <NotAuthorized>
+                <MudNavLink Href="/login" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Login"
+                    Class="nav-link-custom">
+                    <div class="nav-link-content">
+                        <MudText Typo="Typo.body1">Entrar</MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">Acessar conta</MudText>
+                    </div>
+                </MudNavLink>
+            </NotAuthorized>
         </AuthorizeView>
 
         <MudDivider Class="my-4" />
@@ -85,10 +104,6 @@
         </MudNavGroup>
     </MudNavMenu>
 </div>
-
-@inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthStateProvider
-@inject NavigationManager Navigation
-@using Miles.WebApp.Auth
 
 @code {
     private async Task HandleLogout()

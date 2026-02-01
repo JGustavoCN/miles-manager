@@ -1,58 +1,156 @@
 @page "/dashboard"
-@using Microsoft.AspNetCore.Components.Authorization
+@using Miles.Application.DTOs
+@using Miles.Application.Interfaces
+@using System.Security.Claims
+@using MudBlazor
+@inject IDashboardFacade DashboardFacade
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 
-<PageTitle>Dashboard - Miles</PageTitle>
+<PageTitle>Dashboard - Miles Manager</PageTitle>
 
-<AuthorizeView>
-    <Authorized>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-12">
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">Bem-vindo ao Dashboard!</h4>
-                        <p>Olá, <strong>@context.User.Identity?.Name</strong>!</p>
-                        <hr>
-                        <p class="mb-0">Você está autenticado com sucesso. (UC-01 ✓)</p>
-                        <p class="mb-0"><small>E-mail: @context.User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</small></p>
-                    </div>
-                </div>
-            </div>
+<div class="dashboard-header mb-6">
+    <MudText Typo="Typo.h3" Class="dashboard-title">
+        Painel de Controle ✈️
+    </MudText>
+    <MudText Typo="Typo.body1" Class="mud-text-secondary mt-2">
+        Bem-vindo, @(_userName ?? "Viajante")! Resumo dos seus ativos.
+    </MudText>
+</div>
 
-            <div class="row mt-4">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Cartões</h5>
-                            <p class="card-text">Gerencie seus cartões de crédito</p>
-                            <a href="/cartoes" class="btn btn-primary">Ver Cartões</a>
-                        </div>
-                    </div>
-                </div>
+@if (_isLoading)
+{
+    <MudGrid Spacing="4">
+        <MudItem xs="12" sm="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudSkeleton Height="100px" width="100%" />
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="8">
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudSkeleton Height="150px" SkeletonType="SkeletonType.Rectangle" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudSkeleton Height="150px" SkeletonType="SkeletonType.Rectangle" />
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+    </MudGrid>
+}
+else if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Class="mb-4">
+        @_errorMessage
+    </MudAlert>
+}
+else if (_dashboardData == null || _dashboardData.SaldosPorPrograma.Count == 0)
+{
+    <MudPaper Class="d-flex flex-column align-center justify-center pa-8 mt-4" Elevation="0" Outlined="true">
+        <MudIcon Icon="@Icons.Material.Filled.SentimentSatisfied" Size="Size.Large" Color="Color.Primary" Class="mb-4"
+            Style="width: 64px; height: 64px;" />
+        <MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true">Vamos começar?</MudText>
+        <MudText Typo="Typo.body1" Align="Align.Center" Class="mb-6 mud-text-secondary">
+            Você ainda não tem pontos registrados.
+        </MudText>
 
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Programas</h5>
-                            <p class="card-text">Veja seus programas de fidelidade</p>
-                            <a href="/programas" class="btn btn-primary">Ver Programas</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Compras</h5>
-                            <p class="card-text">Registre suas transações</p>
-                            <a href="/compras" class="btn btn-primary">Ver Compras</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="d-flex gap-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+                OnClick="@(() => Navigation.NavigateTo("/programas"))">
+                Cadastrar Programa
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.CreditCard"
+                OnClick="@(() => Navigation.NavigateTo("/cartoes"))">
+                Cadastrar Cartão
+            </MudButton>
         </div>
-    </Authorized>
-    <NotAuthorized>
-        <RedirectToLogin />
-    </NotAuthorized>
-</AuthorizeView>
+    </MudPaper>
+}
+else
+{
+    <MudGrid Spacing="4" Class="mb-6">
+        <MudItem xs="12">
+            <MudCard Elevation="2" Class="pa-4" Style="background: var(--mud-palette-primary); color: white;">
+                <MudCardContent>
+                    <div class="d-flex justify-space-between align-center">
+                        <div>
+                            <MudText Typo="Typo.subtitle1">Total Acumulado</MudText>
+                            <MudText Typo="Typo.h2">@_dashboardData.TotalGeralPontos.ToString("N0")</MudText>
+                        </div>
+                        <MudIcon Icon="@Icons.Material.Filled.FlightTakeoff" Size="Size.Large"
+                            Style="font-size: 4rem; opacity: 0.8;" />
+                    </div>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h5" Class="mt-4 mb-2">Seus Programas</MudText>
+            <MudDivider Class="mb-4" />
+        </MudItem>
+
+        @foreach (var programa in _dashboardData.SaldosPorPrograma)
+        {
+            <MudItem xs="12" sm="6" md="4">
+                <MudCard Elevation="3" Class="h-100">
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Color="Color.Secondary">@programa.NomePrograma.Substring(0, 1).ToUpper()</MudAvatar>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">@programa.NomePrograma</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText Typo="Typo.caption">Saldo Atual</MudText>
+                        <MudText Typo="Typo.h4" Color="Color.Primary">@programa.SaldoTotal.ToString("N0")</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
+@code {
+    private bool _isLoading = true;
+    private string? _errorMessage;
+    private string? _userName;
+    private DashboardDetailsDTO? _dashboardData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Pré-condição: Usuário autenticado
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity is null || !user.Identity.IsAuthenticated)
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            _userName = user.Identity.Name;
+            var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier) ?? user.FindFirst("sub");
+
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+            {
+                // Gatilho do processamento
+                _dashboardData = await DashboardFacade.ObterDetalhesAsync(userId);
+            }
+        }
+        catch (Exception)
+        {
+            // FE-01 Passo 2: Mensagem exata de erro
+            _errorMessage = "não foi possível carregar o saldo no momento";
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}
