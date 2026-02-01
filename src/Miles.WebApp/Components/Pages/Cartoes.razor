@@ -1,117 +1,156 @@
-@using MudBlazor
-@using Miles.Core.Interfaces
-@using Miles.Core.Entities
-@inject ICartaoRepository Repository
-
 @page "/cartoes"
-@attribute [Microsoft.AspNetCore.Authorization.Authorize]
-<PageTitle>Cartões - Miles Manager</PageTitle>
+@using Miles.Application.DTOs
+@using Miles.Application.Interfaces
+@using Miles.Core.Exceptions
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
+@using Serilog
+@attribute [Authorize]
 
-<MudText Typo="Typo.h3" GutterBottom="true">
-    <MudIcon Icon="@Icons.Material.Filled.CreditCard" Class="mr-2" />
-    Meus Cartões de Crédito
-</MudText>
+@inject ICartaoService CartaoService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject AuthenticationStateProvider AuthStateProvider
 
-<MudText Typo="Typo.body1" Class="mb-4">
-    Gerencie aqui seus cartões de crédito e configure o fator de conversão de pontos/milhas.
-</MudText>
+<PageTitle>Meus Cartões</PageTitle>
 
-<MudGrid>
-    <MudItem xs="12" md="8">
-        <MudPaper Elevation="3" Class="pa-4">
-            <div class="d-flex justify-space-between align-center mb-4">
-                <MudText Typo="Typo.h6">
-                    <MudIcon Icon="@Icons.Material.Filled.List" Class="mr-2" />
-                    Lista de Cartões
-                </MudText>
-                <MudButton Variant="Variant.Filled"
-                          Color="Color.Primary"
-                          StartIcon="@Icons.Material.Filled.Add"
-                          Disabled="true">
-                    Adicionar Cartão
-                </MudButton>
-            </div>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <MudText Typo="Typo.h4">Meus Cartões</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+            OnClick="@(() => AbrirModal())">
+            Novo Cartão
+        </MudButton>
+    </div>
 
-            <MudDivider Class="mb-4" />
-
-            @if (cartoes == null)
-            {
-                <div class="d-flex justify-center align-center pa-8">
-                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
-                </div>
-            }
-            else if (cartoes.Count == 0)
-            {
-                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
-                    <MudText Typo="Typo.body2">
-                        📋 Nenhum cartão cadastrado ainda.
-                    </MudText>
-                    <MudText Typo="Typo.caption" Class="mt-2">
-                        A funcionalidade de CRUD (Criar, Ler, Atualizar, Deletar) será implementada na <strong>Milestone 1</strong>.
-                    </MudText>
-                </MudAlert>
-            }
-            else
-            {
-                <MudTable Items="@cartoes" Hover="true" Striped="true" Dense="true">
-                    <HeaderContent>
-                        <MudTh>Nome</MudTh>
-                        <MudTh>Bandeira</MudTh>
-                        <MudTh>Programa</MudTh>
-                        <MudTh>Limite</MudTh>
-                        <MudTh>Vencimento</MudTh>
-                        <MudTh>Fator Conversão</MudTh>
-                    </HeaderContent>
-                    <RowTemplate>
-                        <MudTd DataLabel="Nome">@context.Nome</MudTd>
-                        <MudTd DataLabel="Bandeira">@context.Bandeira</MudTd>
-                        <MudTd DataLabel="Programa">@context.Programa?.Nome</MudTd>
-                        <MudTd DataLabel="Limite">@context.Limite.ToString("C")</MudTd>
-                        <MudTd DataLabel="Vencimento">Dia @context.DiaVencimento</MudTd>
-                        <MudTd DataLabel="Fator Conversão">@context.FatorConversao.ToString("N2")</MudTd>
-                    </RowTemplate>
-                </MudTable>
-            }
-        </MudPaper>
-    </MudItem>
-
-    <MudItem xs="12" md="4">
-        <MudPaper Elevation="3" Class="pa-4">
-            <MudText Typo="Typo.h6" GutterBottom="true">
-                <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-2" />
-                Sobre os Cartões
-            </MudText>
-            <MudDivider Class="mb-3" />
-
-<div class="mt-2 ml-2">
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Cadastre múltiplos cartões
-                </MudText>
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Configure fator de conversão
-                </MudText>
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Vincule a programas de fidelidade
-                </MudText>
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Acompanhe limites e vencimentos
-                </MudText>
-            </div>
-
-            <MudAlert Severity="Severity.Warning" Dense="true" Class="mt-3" Variant="Variant.Filled">
-                <MudText Typo="Typo.caption">
-                    ⚠️ <strong>RF-003:</strong> Esta funcionalidade atende ao requisito funcional de "Manter Cartões (CRUD)".
-                </MudText>
-            </MudAlert>
-        </MudPaper>
-    </MudItem>
-</MudGrid>
+    @if (loading)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    }
+    else if (cartoes == null || !cartoes.Any())
+    {
+        <MudAlert Severity="Severity.Info">Nenhum cartão cadastrado. Adicione seu primeiro cartão!</MudAlert>
+    }
+    else
+    {
+        <MudTable Items="@cartoes" Hover="true" Striped="true" Elevation="2">
+            <HeaderContent>
+                <MudTh>Nome</MudTh>
+                <MudTh>Bandeira</MudTh>
+                <MudTh>Limite</MudTh>
+                <MudTh>Vencimento</MudTh>
+                <MudTh>Pontos/USD</MudTh>
+                <MudTh>Ações</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Nome">@context.Nome</MudTd>
+                <MudTd DataLabel="Bandeira">
+                    <MudChip T="string" Color="Color.Info" Size="Size.Small">@context.Bandeira</MudChip>
+                </MudTd>
+                <MudTd DataLabel="Limite">@context.Limite.ToString("C")</MudTd>
+                <MudTd DataLabel="Vencimento">Dia @context.DiaVencimento</MudTd>
+                <MudTd DataLabel="Fator">@context.FatorConversao.ToString("N1")</MudTd>
+                <MudTd DataLabel="Ações">
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                        OnClick="@(() => AbrirModal(context))" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                        OnClick="@(() => Excluir(context))" />
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    }
+</MudContainer>
 
 @code {
-    private List<Cartao>? cartoes;
+    private List<CartaoInputDTO> cartoes = new();
+    private bool loading = true;
+    private int currentUserId;
 
     protected override async Task OnInitializedAsync()
     {
-        cartoes = await Repository.ObterTodosAsync();
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        loading = true;
+        try
+        {
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity != null && user.Identity.IsAuthenticated)
+            {
+                var userIdClaim = user.FindFirst(c => c.Type == "sub" || c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int id))
+                {
+                    currentUserId = id;
+                    cartoes = await CartaoService.ObterPorUsuarioAsync(currentUserId);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Erro ao carregar lista de cartões");
+            Snackbar.Add($"Erro ao carregar cartões: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private async Task AbrirModal(CartaoInputDTO? cartao = null)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("UsuarioId", currentUserId);
+
+        string titulo = "Novo Cartão";
+
+        if (cartao != null)
+        {
+            titulo = "Editar Cartão";
+            parameters.Add("CartaoId", cartao.Id);
+        }
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+
+        // CORREÇÃO: ShowAsync ao invés de Show
+        var dialog = await DialogService.ShowAsync<CartaoForm>(titulo, parameters, options);
+        var result = await dialog.Result;
+
+        if (result != null && !result.Canceled)
+        {
+            await LoadData();
+        }
+    }
+
+    private async Task Excluir(CartaoInputDTO cartao)
+    {
+        bool? result = await DialogService.ShowMessageBox(
+        "Excluir Cartão",
+        $"Tem certeza que deseja excluir o cartão '{cartao.Nome}'?",
+        yesText: "Sim, Excluir", cancelText: "Cancelar");
+
+        if (result == true)
+        {
+            try
+            {
+                await CartaoService.RemoverAsync(cartao.Id);
+                Snackbar.Add("Cartão removido com sucesso", Severity.Success);
+                await LoadData();
+            }
+            catch (DomainException ex)
+            {
+                Log.Warning(ex, "Tentativa de exclusão bloqueada por regra de domínio");
+                Snackbar.Add(ex.Message, Severity.Error);
+            }
+            catch (Exception ex)
+            {
+                // CORREÇÃO: Uso da variável ex para log
+                Log.Error(ex, "Erro ao tentar excluir cartão {Id}", cartao.Id);
+                Snackbar.Add("Erro ao excluir cartão.", Severity.Error);
+            }
+        }
     }
 }

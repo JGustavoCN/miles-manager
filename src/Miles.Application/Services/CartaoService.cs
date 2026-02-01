@@ -26,50 +26,85 @@ public class CartaoService : ICartaoService
         _logger = logger;
     }
 
-    /// <summary>
-    /// Cadastra um novo cartão (UC-03).
-    /// Inclui UC-08 (Validação Centralizada).
-    /// </summary>
+    public async Task<List<CartaoInputDTO>> ObterPorUsuarioAsync(int usuarioId)
+    {
+        var cartoes = await _repository.ObterPorUsuarioAsync(usuarioId);
+        return cartoes.Select(MilesMapper.ToDTO).ToList();
+    }
+
+    public async Task<CartaoInputDTO?> ObterPorIdAsync(int id)
+    {
+        var cartao = await _repository.ObterPorIdAsync(id);
+        return cartao == null ? null : MilesMapper.ToDTO(cartao);
+    }
+
     public void Cadastrar(CartaoInputDTO input)
     {
         try
         {
-            // Validação de existência do programa (UC-03 FE-01)
-            var programa = _programaRepository.ObterPorId(input.ProgramaId);
-            if (programa == null)
-            {
-                throw new ValorInvalidoException("Programa de fidelidade não encontrado.");
-            }
+            ValidarProgramaExistente(input.ProgramaId);
 
-            var cartao = new Cartao
-            {
-                Nome = input.Nome,
-                Bandeira = input.Bandeira,
-                Limite = input.Limite,
-                DiaVencimento = input.DiaVencimento,
-                FatorConversao = input.FatorConversao,
-                UsuarioId = input.UsuarioId,
-                ProgramaId = input.ProgramaId
-            };
+            var cartao = MilesMapper.ToEntity(input);
 
-            // UC-08: Validação Centralizada (lança exception se inválido)
+            // UC-08: Validação Centralizada
             cartao.Validar();
 
-            // Persistência
             _repository.Adicionar(cartao);
-
-            _logger.LogInformation("Cartão cadastrado com sucesso: {Nome}", cartao.Nome);
+            _logger.LogInformation("Cartão {Nome} cadastrado com sucesso", cartao.Nome);
         }
         catch (ValorInvalidoException ex)
         {
-            // UC-08 FE-01: Propaga erro de validação
             _logger.LogWarning(ex, "Dados inválidos ao cadastrar cartão");
             throw;
         }
-        catch (Exception ex)
+    }
+
+    public void Atualizar(CartaoInputDTO input)
+    {
+        try
         {
-            _logger.LogError(ex, "Erro inesperado ao cadastrar cartão");
-            throw new DomainException("Erro ao processar cartão. Tente novamente.", ex);
+            ValidarProgramaExistente(input.ProgramaId);
+
+            // 1. Converte DTO para Entidade (cria um objeto novo/detached)
+            var cartaoAtualizado = MilesMapper.ToEntity(input);
+
+            // 2. Valida regras de domínio
+            cartaoAtualizado.Validar();
+
+            // 3. O Repositório (já corrigido) gerencia o anexo e o update no banco
+            _repository.Atualizar(cartaoAtualizado);
+
+            _logger.LogInformation("Cartão {Id} atualizado com sucesso", cartaoAtualizado.Id);
+        }
+        catch (ValorInvalidoException ex)
+        {
+            _logger.LogWarning(ex, "Dados inválidos ao atualizar cartão");
+            throw;
+        }
+    }
+    public async Task RemoverAsync(int id)
+    {
+        // FE-02: Exclusão Bloqueada (Verificação de Integridade)
+        // Usa o novo método criado no repositório para verificar transações
+        bool possuiTransacoes = await _repository.PossuiTransacoesAsync(id);
+
+        if (possuiTransacoes)
+        {
+            var msg = "O cartão não pode ser excluído por possuir compras associadas";
+            _logger.LogWarning("Tentativa de excluir cartão {Id} bloqueada: {Msg}", id, msg);
+            throw new DomainException(msg);
+        }
+
+        _repository.Remover(id);
+        _logger.LogInformation("Cartão {Id} removido com sucesso", id);
+    }
+
+    private void ValidarProgramaExistente(int programaId)
+    {
+        var programa = _programaRepository.ObterPorId(programaId);
+        if (programa == null)
+        {
+            throw new ValorInvalidoException("Programa de fidelidade não encontrado.");
         }
     }
 }

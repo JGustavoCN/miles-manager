@@ -4,9 +4,13 @@ namespace Miles.Application.Interfaces;
 
 public interface ICartaoService
 {
-    /// <summary>
-    /// Cadastra um novo cartão (UC-03).
-    /// </summary>
-    /// <exception cref="Miles.Core.Exceptions.ValorInvalidoException">Quando dados são inválidos (UC-08 FE-01)</exception>
+    Task<List<CartaoInputDTO>> ObterPorUsuarioAsync(int usuarioId);
+
+    Task<CartaoInputDTO?> ObterPorIdAsync(int id);
+
     void Cadastrar(CartaoInputDTO input);
+
+    void Atualizar(CartaoInputDTO input);
+
+    Task RemoverAsync(int id);
 }

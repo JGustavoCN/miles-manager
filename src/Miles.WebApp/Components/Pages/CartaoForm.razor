@@ -1,0 +1,145 @@
+@using Miles.Application.DTOs
+@using Miles.Application.Interfaces
+@using MudBlazor
+@inject IProgramaService ProgramaService
+@inject ICartaoService CartaoService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form" @bind-IsValid="@success">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="Nome do Cartão (Apelido)" @bind-Value="Model.Nome" Required="true"
+                        RequiredError="Nome é obrigatório" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <MudSelect T="string" Label="Bandeira" @bind-Value="Model.Bandeira" Required="true"
+                        RequiredError="Bandeira é obrigatória" Variant="Variant.Outlined" Margin="Margin.Dense"
+                        AnchorOrigin="Origin.BottomCenter">
+                        <MudSelectItem Value="@("Visa")" />
+                        <MudSelectItem Value="@("Mastercard")" />
+                        <MudSelectItem Value="@("Elo")" />
+                        <MudSelectItem Value="@("Amex")" />
+                    </MudSelect>
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <MudSelect T="int" Label="Programa de Fidelidade" @bind-Value="Model.ProgramaId" Required="true"
+                        RequiredError="Selecione um programa" Variant="Variant.Outlined" Margin="Margin.Dense"
+                        AnchorOrigin="Origin.BottomCenter">
+                        <MudSelectItem Value="0" Disabled="true">Selecione...</MudSelectItem>
+                        @if (programas != null)
+                        {
+                            @foreach (var prog in programas)
+                            {
+                                <MudSelectItem Value="@prog.Id">@prog.Nome</MudSelectItem>
+                            }
+                        }
+                    </MudSelect>
+                </MudItem>
+
+                <MudItem xs="12" sm="4">
+                    <MudNumericField @bind-Value="Model.Limite" Label="Limite (R$)" Format="N2" Min="0.01m"
+                        Required="true" RequiredError="Limite deve ser positivo" Variant="Variant.Outlined"
+                        Margin="Margin.Dense" />
+                </MudItem>
+
+                <MudItem xs="12" sm="4">
+                    <MudNumericField @bind-Value="Model.DiaVencimento" Label="Dia Vencimento" Min="1" Max="31"
+                        Required="true" RequiredError="Entre 1 e 31" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+
+                <MudItem xs="12" sm="4">
+                    <MudNumericField @bind-Value="Model.FatorConversao" Label="Pontos por Dólar" Format="N1" Min="0.01m"
+                        Max="10.0m" Step="0.1m" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit" Disabled="@(!success)">Salvar
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    // CORREÇÃO CRÍTICA PARA MUD BLAZOR V8+:
+    // MudDialogInstance (classe) foi substituída por IMudDialogInstance (interface)
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter] public int? CartaoId { get; set; }
+    [Parameter] public int UsuarioId { get; set; }
+
+    private CartaoInputDTO Model { get; set; } = new();
+    private List<ProgramaInputDTO> programas = new();
+    private MudForm form = null!;
+    private bool success;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            programas = await ProgramaService.ObterPorUsuarioAsync(UsuarioId);
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Erro ao carregar programas de fidelidade.", Severity.Error);
+        }
+
+        if (CartaoId.HasValue)
+        {
+            // Modo Edição
+            var cartaoExistente = await CartaoService.ObterPorIdAsync(CartaoId.Value);
+            if (cartaoExistente != null)
+            {
+                Model = cartaoExistente;
+            }
+            else
+            {
+                Snackbar.Add("Cartão não encontrado.", Severity.Error);
+                MudDialog.Cancel();
+            }
+        }
+        else
+        {
+            // Modo Criação (Defaults)
+            Model.UsuarioId = UsuarioId;
+            Model.FatorConversao = 1.0m;
+        }
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+        await form.Validate();
+        if (!form.IsValid) return;
+
+        try
+        {
+            if (CartaoId.HasValue)
+            {
+                CartaoService.Atualizar(Model);
+                Snackbar.Add("Cartão atualizado com sucesso", Severity.Success);
+            }
+            else
+            {
+                CartaoService.Cadastrar(Model);
+                Snackbar.Add("Cartão cadastrado com sucesso", Severity.Success);
+            }
+
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Miles.Core.Exceptions.ValorInvalidoException ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Warning);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro inesperado: {ex.Message}", Severity.Error);
+        }
+    }
+}

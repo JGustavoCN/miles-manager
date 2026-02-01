@@ -58,6 +58,6 @@ public class CartaoConfiguration : IEntityTypeConfiguration<Cartao>
         builder.HasMany(c => c.Transacoes)
             .WithOne(t => t.Cartao)
             .HasForeignKey(t => t.CartaoId)
-            .OnDelete(DeleteBehavior.Cascade); // Deleta transações ao deletar cartão
+            .OnDelete(DeleteBehavior.Restrict); // Não permite transações ao deletar cartão
     }
 }

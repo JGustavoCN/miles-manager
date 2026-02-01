@@ -7,19 +7,21 @@ namespace Miles.Core.Interfaces;
 
 public interface ICartaoRepository
 {
+
     Task<List<Cartao>> ObterTodosAsync();
+
+    // Alterado para Async para suportar operações de I/O no banco (EF Core)
+    Task<Cartao?> ObterPorIdAsync(int id);
+
+    // Alterado para Async para suportar operações de I/O no banco
+    Task<List<Cartao>> ObterPorUsuarioAsync(int userId);
 
     void Adicionar(Cartao cartao);
 
-
-    List<Cartao> ObterPorUsuario(int userId);
-
-
-    Cartao? ObterPorId(int id);
-
-
     void Atualizar(Cartao cartao);
 
-
     void Remover(int id);
+
+    Task<bool> PossuiTransacoesAsync(int id);
 }
+
