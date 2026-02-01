@@ -1,0 +1,145 @@
+@page "/transacoes/nova"
+@using Miles.Application.DTOs
+@using Miles.Application.Interfaces
+@using Miles.Core.Interfaces
+@using Miles.Core.Entities
+@using Miles.Core.Exceptions
+@inject ITransacaoService TransacaoService
+@inject ICartaoRepository CartaoRepository
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
+
+<PageTitle>Nova Transação</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true" Class="mb-4">Nova Transação</MudText>
+
+<MudPaper Class="pa-4">
+    <EditForm Model="@_input" OnValidSubmit="SalvarTransacao">
+        <DataAnnotationsValidator />
+
+        <MudGrid>
+            <MudItem xs="12" sm="6">
+                <MudDatePicker Label="Data" @bind-Date="_dataNullable" Required="true" MaxDate="DateTime.Today"
+                    ErrorText="Data não pode ser futura" />
+            </MudItem>
+
+            <MudItem xs="12" sm="6">
+                <MudNumericField @bind-Value="_input.Valor" Label="Valor (R$)" Format="C2" Variant="Variant.Text"
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney"
+                    HideSpinButtons="true" Required="true" />
+            </MudItem>
+
+            <MudItem xs="12">
+                <MudTextField @bind-Value="_input.Descricao" Label="Descrição" Required="true" MaxLength="200" />
+            </MudItem>
+
+            <MudItem xs="12" sm="6">
+                <MudTextField @bind-Value="_input.Categoria" Label="Categoria" Required="true" />
+            </MudItem>
+
+            <MudItem xs="12" sm="6">
+                <MudSelect T="int" Label="Cartão de Crédito" @bind-Value="_input.CartaoId"
+                    AnchorOrigin="Origin.BottomCenter" Required="true">
+                    @if (_cartoes.Any())
+                    {
+                        @foreach (var cartao in _cartoes)
+                        {
+                            <MudSelectItem Value="@cartao.Id">@cartao.Nome - @cartao.Bandeira</MudSelectItem>
+                        }
+                    }
+                    else
+                    {
+                        <MudSelectItem Value="0" Disabled="true">Nenhum cartão disponível</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+
+            <MudItem xs="12" sm="6">
+                <MudNumericField @bind-Value="_input.CotacaoDolar" Label="Cotação Dólar (PTAX)" Format="N2"
+                    Adornment="Adornment.Start" AdornmentText="R$" HideSpinButtons="true"
+                    HelperText="Utilizado para conversão de pontos" Required="true" />
+            </MudItem>
+
+            <MudItem xs="12" Class="d-flex justify-end gap-2 mt-4">
+                <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancelar">Cancelar</MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                    Disabled="@_processando">
+                    @if (_processando)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        <MudText Class="ms-2">Salvando...</MudText>
+                    }
+                    else
+                    {
+                        <MudText>Salvar</MudText>
+                    }
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudPaper>
+
+@code {
+    private TransacaoInputDTO _input = new() { Data = DateTime.Today, CotacaoDolar = 5.00m };
+    private DateTime? _dataNullable = DateTime.Today;
+    private List<Cartao> _cartoes = new();
+    private bool _processando = false;
+    private int _usuarioId = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            var idClaim = user.FindFirst(c => c.Type == "sub" || c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (idClaim != null && int.TryParse(idClaim.Value, out int id)) _usuarioId = id;
+        }
+
+        _cartoes = await CartaoRepository.ObterPorUsuarioAsync(_usuarioId);
+
+        if (!_cartoes.Any())
+        {
+            Snackbar.Add("É necessário cadastrar um cartão antes de registrar uma transação", Severity.Warning);
+            NavigationManager.NavigateTo("/cartoes");
+        }
+        else
+        {
+            _input.CartaoId = _cartoes.First().Id;
+        }
+    }
+
+    private async Task SalvarTransacao()
+    {
+        _processando = true;
+        try
+        {
+            if (_dataNullable.HasValue) _input.Data = _dataNullable.Value;
+
+            await TransacaoService.AdicionarAsync(_input);
+
+            Snackbar.Add("Transação registrada com sucesso", Severity.Success);
+            // CORREÇÃO: Redireciona para Compras em vez de Dashboard
+            NavigationManager.NavigateTo("/compras");
+        }
+        catch (DomainException ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro inesperado: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _processando = false;
+        }
+    }
+
+    private void Cancelar()
+    {
+        // CORREÇÃO: Redireciona para Compras em vez de Dashboard
+        NavigationManager.NavigateTo("/compras");
+    }
+}
