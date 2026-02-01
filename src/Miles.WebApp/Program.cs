@@ -10,7 +10,6 @@ using Miles.Core.Factories;
 using Miles.Core.Strategies;
 using Miles.Application.Services;
 using Miles.Application.Interfaces;
-using Miles.Application.Services;
 using Miles.WebApp.Auth;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -49,6 +48,7 @@ try
 
     // 3.1. Registro de Repositórios
     builder.Services.AddScoped<ICartaoRepository, CartaoRepository>();
+    builder.Services.AddScoped<IProgramaRepository, ProgramaRepository>();
     // Nota: Outros repositórios (ITransacaoRepository, IProgramaRepository, IUsuarioRepository)
     // serão adicionados conforme forem implementados na camada Infrastructure
 
@@ -59,8 +59,9 @@ try
     builder.Services.AddScoped<ICalculoPontosStrategy, CalculoPadraoStrategy>();
 
     // 3.4. Registro de Application Services (UC-02, UC-03, UC-08, UC-09)
-    builder.Services.AddScoped<ITransacaoService, TransacaoService>();
+    // builder.Services.AddScoped<ITransacaoService, TransacaoService>();
     builder.Services.AddScoped<ICartaoService, CartaoService>();
+    builder.Services.AddScoped<IProgramaService, ProgramaService>();
     builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
     // 3.2. Serviços de Aplicação

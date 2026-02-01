@@ -27,4 +27,28 @@ public static class MilesMapper
             Email = null
         };
     }
+
+
+    public static ProgramaFidelidade ToEntity(ProgramaInputDTO dto)
+    {
+        return new ProgramaFidelidade
+        {
+            Id = dto.Id,
+            Nome = dto.Nome,
+            Banco = dto.Banco,
+            UsuarioId = dto.UsuarioId
+        };
+    }
+
+    // Método auxiliar inverso, útil para carregar o formulário de edição
+    public static ProgramaInputDTO ToDTO(ProgramaFidelidade entity)
+    {
+        return new ProgramaInputDTO
+        {
+            Id = entity.Id,
+            Nome = entity.Nome,
+            Banco = entity.Banco,
+            UsuarioId = entity.UsuarioId
+        };
+    }
 }
