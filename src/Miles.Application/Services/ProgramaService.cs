@@ -20,6 +20,15 @@ public class ProgramaService : IProgramaService
         return _repository.ObterPorUsuario(usuarioId);
     }
 
+    public Task<List<ProgramaInputDTO>> ObterPorUsuarioAsync(int usuarioId)
+    {
+        var programas = _repository.ObterPorUsuario(usuarioId);
+
+        var dtos = programas.Select(MilesMapper.ToDTO).ToList();
+
+        return Task.FromResult(dtos);
+    }
+
     public ProgramaInputDTO? ObterPorId(int id)
     {
         var programa = _repository.ObterPorId(id);

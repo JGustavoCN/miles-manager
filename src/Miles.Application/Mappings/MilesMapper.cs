@@ -51,4 +51,37 @@ public static class MilesMapper
             UsuarioId = entity.UsuarioId
         };
     }
+
+
+    public static Cartao ToEntity(CartaoInputDTO dto)
+    {
+        return new Cartao
+        {
+            Id = dto.Id,
+            Nome = dto.Nome,
+            Bandeira = dto.Bandeira,
+            Limite = dto.Limite,
+            DiaVencimento = dto.DiaVencimento,
+            FatorConversao = dto.FatorConversao,
+            UsuarioId = dto.UsuarioId,
+            ProgramaId = dto.ProgramaId
+        };
+    }
+
+    public static CartaoInputDTO ToDTO(Cartao entity)
+    {
+        return new CartaoInputDTO
+        {
+            Id = entity.Id,
+            Nome = entity.Nome,
+            Bandeira = entity.Bandeira,
+            Limite = entity.Limite,
+            DiaVencimento = entity.DiaVencimento,
+            FatorConversao = entity.FatorConversao,
+            UsuarioId = entity.UsuarioId,
+            ProgramaId = entity.ProgramaId
+        };
+    }
+
+
 }

@@ -1,7 +1,6 @@
 using Miles.WebApp.Components;
 using Miles.WebApp.Middleware;
 using MudBlazor.Services;
-using Serilog;
 using Miles.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Miles.Core.Interfaces;
@@ -13,6 +12,8 @@ using Miles.Application.Interfaces;
 using Miles.WebApp.Auth;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Hosting;
+using Serilog;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -153,7 +154,7 @@ try
     Log.Information("Aplicação Miles.WebApp iniciada com sucesso!");
     app.Run();
 }
-catch (Exception ex)
+catch (Exception ex) when (ex is not HostAbortedException) // Ignora o stop do EF Core
 {
     Log.Fatal(ex, "A aplicação falhou ao iniciar");
     throw;

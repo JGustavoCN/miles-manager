@@ -5,6 +5,7 @@ namespace Miles.Application.DTOs;
 /// </summary>
 public class CartaoInputDTO
 {
+    public int Id { get; set; }
     public string Nome { get; set; } = string.Empty;
     public string Bandeira { get; set; } = string.Empty;
     public decimal Limite { get; set; }

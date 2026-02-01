@@ -5,6 +5,8 @@ namespace Miles.Application.Interfaces;
 
 public interface IProgramaService
 {
+
+    Task<List<ProgramaInputDTO>> ObterPorUsuarioAsync(int usuarioId);
     List<ProgramaFidelidade> ListarPorUsuario(int usuarioId);
     ProgramaInputDTO? ObterPorId(int id);
     void Adicionar(ProgramaInputDTO dto);
