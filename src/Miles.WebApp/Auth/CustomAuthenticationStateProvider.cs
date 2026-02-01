@@ -54,6 +54,44 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         }
     }
 
+
+    // Adicione este método na classe CustomAuthenticationStateProvider
+    public async Task NotificarPerfilAtualizadoAsync(string novoNome)
+    {
+        // Recupera os dados atuais que não mudaram (ID e Email) das claims atuais
+        var idStr = _currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var email = _currentUser.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (string.IsNullOrEmpty(idStr) || string.IsNullOrEmpty(email) || !int.TryParse(idStr, out int userId))
+        {
+            return; // Segurança: Se não estiver logado corretamente, não faz nada
+        }
+
+        // 1. Cria o objeto de sessão atualizado
+        var userSession = new UserSession
+        {
+            UserId = userId,
+            Nome = novoNome,
+            Email = email
+        };
+
+        // 2. Atualiza no SessionStorage (para persistir ao recarregar a página)
+        await _sessionStorage.SetAsync("UserSession", userSession);
+
+        // 3. Atualiza o estado em memória para a renderização atual
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, idStr),
+            new Claim(ClaimTypes.Name, novoNome),
+            new Claim(ClaimTypes.Email, email)
+        };
+
+        var identity = new ClaimsIdentity(claims, "CustomAuth");
+        _currentUser = new ClaimsPrincipal(identity);
+
+        // 4. Notifica os componentes (Header)
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+    }
     public async Task MarkUserAsAuthenticatedAsync(int userId, string nome, string email)
     {
         var userSession = new UserSession { UserId = userId, Nome = nome, Email = email };
@@ -76,10 +114,26 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 
     public async Task MarkUserAsLoggedOutAsync()
     {
-        await _sessionStorage.DeleteAsync("UserSession");
+        try
+        {
+            // Tenta limpar o armazenamento persistente
+            await _sessionStorage.DeleteAsync("UserSession");
 
-        _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
-        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            // Log de Auditoria (Útil para rastrear quem saiu e quando)
+            Log.Information("Usuário realizou logout do sistema.");
+        }
+        catch (Exception ex)
+        {
+            // Se falhar ao limpar o disco, apenas logamos o aviso,
+            // mas NÃO impedimos o fluxo de continuar para limpar a memória.
+            Log.Warning($"Falha ao limpar sessão do navegador durante logout: {ex.Message}");
+        }
+        finally
+        {
+            // GARANTIA: Remove o usuário da memória independentemente de erros no storage
+            _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
     }
 }
 

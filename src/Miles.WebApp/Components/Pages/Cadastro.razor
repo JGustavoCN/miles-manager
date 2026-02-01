@@ -1,6 +1,13 @@
 @page "/cadastro"
 @layout PublicLayout
-@attribute [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+@using Microsoft.AspNetCore.Authorization
+@using Miles.Application.DTOs
+@using Miles.Core.Interfaces
+@attribute [AllowAnonymous]
+
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
 
 <PageTitle>Cadastro - Miles</PageTitle>
 
@@ -9,12 +16,70 @@
         <div class="col-md-6 col-lg-4 mx-auto">
             <div class="card shadow">
                 <div class="card-body p-4">
-                    <h3 class="card-title text-center mb-4">Criar Conta</h3>
+                    <div class="d-flex flex-column align-center mb-4">
 
-                    <div class="alert alert-info" role="alert">
-                        <strong>Em desenvolvimento</strong><br />
-                        A funcionalidade de cadastro será implementada em breve.
+                        <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Primary" Style="font-size: 4rem;"
+                            Class="mb-2" />
+
+                        <div class="d-flex align-center justify-center">
+                            <MudIcon Icon="@Icons.Material.Filled.FlightTakeoff" Size="Size.Large" Class="mr-2" />
+                            <MudText Typo="Typo.h2" Class="fw-bold">
+                                Miles Manager
+                            </MudText>
+                        </div>
+
+                        <MudText Typo="Typo.body1" Class="mt-2">
+                            Crie sua conta para gerenciar seus pontos
+                        </MudText>
+
                     </div>
+
+                    <EditForm Model="@cadastroModel" OnValidSubmit="HandleCadastro">
+                        <DataAnnotationsValidator />
+
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome Completo</label>
+                            <InputText id="nome" class="form-control" @bind-Value="cadastroModel.Nome"
+                                placeholder="Seu Nome" />
+                            <ValidationMessage For="@(() => cadastroModel.Nome)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail</label>
+                            <InputText id="email" class="form-control" @bind-Value="cadastroModel.Email"
+                                placeholder="seu@email.com" />
+                            <ValidationMessage For="@(() => cadastroModel.Email)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="senha" class="form-label">Senha</label>
+                            <InputText id="senha" type="password" class="form-control" @bind-Value="cadastroModel.Senha"
+                                placeholder="********" />
+                            <ValidationMessage For="@(() => cadastroModel.Senha)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
+                            <InputText id="confirmarSenha" type="password" class="form-control"
+                                @bind-Value="cadastroModel.ConfirmarSenha" placeholder="********" />
+                            <ValidationMessage For="@(() => cadastroModel.ConfirmarSenha)" />
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary" disabled="@loading">
+                                @if (loading)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status"
+                                        aria-hidden="true"></span>
+                                    <span>Criando conta...</span>
+                                }
+                                else
+                                {
+                                    <span>Cadastrar</span>
+                                }
+                            </button>
+                        </div>
+                    </EditForm>
 
                     <div class="text-center mt-3">
                         <small>
@@ -26,3 +91,35 @@
         </div>
     </div>
 </div>
+
+@code {
+    private CadastroInputDTO cadastroModel = new();
+    private bool loading = false;
+
+    private async Task HandleCadastro()
+    {
+        loading = true;
+        try
+        {
+            var resultado = await AuthService.RegistrarUsuario(cadastroModel);
+
+            if (resultado.Sucesso)
+            {
+                Snackbar.Add("Conta criada com sucesso! Você já pode fazer login.", Severity.Success);
+                NavigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                Snackbar.Add(resultado.MensagemErro ?? "Erro desconhecido ao realizar cadastro.", Severity.Error);
+            }
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Ocorreu um erro inesperado ao tentar realizar o cadastro.", Severity.Error);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+}

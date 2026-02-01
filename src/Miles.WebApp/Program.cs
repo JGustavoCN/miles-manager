@@ -66,6 +66,8 @@ try
     builder.Services.AddScoped<ICartaoService, CartaoService>();
     builder.Services.AddScoped<IProgramaService, ProgramaService>();
     builder.Services.AddScoped<ITransacaoService, TransacaoService>();
+    builder.Services.AddScoped<IDashboardFacade, DashboardFacade>();
+    builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 
     // 3.2. Serviços de Aplicação
