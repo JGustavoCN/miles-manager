@@ -9,7 +9,7 @@ public interface IUsuarioRepository
 
     void Adicionar(Usuario usuario);
 
-
+    void Atualizar(Usuario usuario);
     Usuario? ObterPorEmail(string email);
 
 

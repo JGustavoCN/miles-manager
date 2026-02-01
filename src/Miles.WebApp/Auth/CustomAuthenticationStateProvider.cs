@@ -54,6 +54,44 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         }
     }
 
+
+    // Adicione este método na classe CustomAuthenticationStateProvider
+    public async Task NotificarPerfilAtualizadoAsync(string novoNome)
+    {
+        // Recupera os dados atuais que não mudaram (ID e Email) das claims atuais
+        var idStr = _currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var email = _currentUser.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (string.IsNullOrEmpty(idStr) || string.IsNullOrEmpty(email) || !int.TryParse(idStr, out int userId))
+        {
+            return; // Segurança: Se não estiver logado corretamente, não faz nada
+        }
+
+        // 1. Cria o objeto de sessão atualizado
+        var userSession = new UserSession
+        {
+            UserId = userId,
+            Nome = novoNome,
+            Email = email
+        };
+
+        // 2. Atualiza no SessionStorage (para persistir ao recarregar a página)
+        await _sessionStorage.SetAsync("UserSession", userSession);
+
+        // 3. Atualiza o estado em memória para a renderização atual
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, idStr),
+            new Claim(ClaimTypes.Name, novoNome),
+            new Claim(ClaimTypes.Email, email)
+        };
+
+        var identity = new ClaimsIdentity(claims, "CustomAuth");
+        _currentUser = new ClaimsPrincipal(identity);
+
+        // 4. Notifica os componentes (Header)
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+    }
     public async Task MarkUserAsAuthenticatedAsync(int userId, string nome, string email)
     {
         var userSession = new UserSession { UserId = userId, Nome = nome, Email = email };

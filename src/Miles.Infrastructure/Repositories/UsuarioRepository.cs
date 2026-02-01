@@ -20,7 +20,18 @@ public class UsuarioRepository : IUsuarioRepository
         _context.Usuarios.Add(usuario);
         _context.SaveChanges();
     }
+    public void Atualizar(Usuario usuario)
+    {
+        var local = _context.Usuarios.Local.FirstOrDefault(u => u.Id == usuario.Id);
 
+        // Se encontrou, "esquece" a antiga para poder anexar a nova sem conflito
+        if (local != null)
+        {
+            _context.Entry(local).State = EntityState.Detached;
+        }
+        _context.Usuarios.Update(usuario);
+        _context.SaveChanges();
+    }
     public Usuario? ObterPorEmail(string email)
     {
         return _context.Usuarios

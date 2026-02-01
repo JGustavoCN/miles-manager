@@ -1,167 +1,171 @@
-@using MudBlazor
 @page "/configuracoes"
-@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@using System.Security.Claims
+@using Miles.Application.DTOs
+@using Miles.Application.Interfaces
+@using Miles.Core.Exceptions
+@using Miles.WebApp.Auth
 
-<PageTitle>Configurações - Miles Manager</PageTitle>
+@inject IUsuarioService UsuarioService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ISnackbar Snackbar
 
-<MudText Typo="Typo.h3" GutterBottom="true">
-    <MudIcon Icon="@Icons.Material.Filled.Settings" Class="mr-2" />
-    Configurações do Sistema
-</MudText>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-8">
+    <MudText Typo="Typo.h4" GutterBottom="true">Minha Conta</MudText>
+    <MudText Typo="Typo.subtitle1" Class="mb-4">Gerencie seus dados pessoais e segurança.</MudText>
 
-<MudText Typo="Typo.body1" Class="mb-4">
-    Personalize as preferências do sistema e gerencie sua conta.
-</MudText>
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+        <MudTabPanel Text="Dados Cadastrais" Icon="@Icons.Material.Filled.Person">
+            <EditForm Model="@perfilModel" OnValidSubmit="AtualizarPerfil">
+                <DataAnnotationsValidator />
 
-<MudGrid>
-    <MudItem xs="12" md="6">
-        <MudPaper Elevation="3" Class="pa-4">
-            <MudText Typo="Typo.h6" GutterBottom="true">
-                <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-2" />
-                Perfil do Usuário
-            </MudText>
-            <MudDivider Class="mb-4" />
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudTextField Label="Nome Completo" @bind-Value="perfilModel.Nome"
+                            For="@(() => perfilModel.Nome)" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                    </MudItem>
 
-            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-3">
-                <MudText Typo="Typo.body2">
-                    👤 Funcionalidade de edição de perfil será implementada em breve.
-                </MudText>
-                <MudText Typo="Typo.caption" Class="mt-2">
-                    <strong>Você poderá editar:</strong>
-                </MudText>
-                <div class="mt-2 ml-4">
-                    <MudText Typo="Typo.body2">
-                        <MudIcon Icon="@Icons.Material.Filled.Badge" Size="Size.Small" /> Nome completo
-                    </MudText>
-                    <MudText Typo="Typo.body2">
-                        <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" /> E-mail (login)
-                    </MudText>
-                    <MudText Typo="Typo.body2">
-                        <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" /> Senha de acesso
-                    </MudText>
-                </div>
-            </MudAlert>
+                    <MudItem xs="12">
+                        <MudTextField Label="E-mail" Value="@emailExibicao" ReadOnly="true" Variant="Variant.Filled"
+                            Margin="Margin.Dense" HelperText="O e-mail não pode ser alterado." />
+                    </MudItem>
 
-            <MudAlert Severity="Severity.Warning" Dense="true" Variant="Variant.Filled">
-                <MudText Typo="Typo.caption">
-                    ⚠️ <strong>RF-002:</strong> Atende ao requisito de "Manter Usuário (CRUD)".
-                </MudText>
-            </MudAlert>
-        </MudPaper>
-    </MudItem>
+                    <MudItem xs="12" Class="d-flex justify-end mt-4">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                            Disabled="@loading">
+                            @if (loading)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Salvando...</MudText>
+                            }
+                            else
+                            {
+                                <MudText>Salvar Alterações</MudText>
+                            }
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+            </EditForm>
+        </MudTabPanel>
 
-    <MudItem xs="12" md="6">
-        <MudPaper Elevation="3" Class="pa-4">
-            <MudText Typo="Typo.h6" GutterBottom="true">
-                <MudIcon Icon="@Icons.Material.Filled.Palette" Class="mr-2" />
-                Preferências do Sistema
-            </MudText>
-            <MudDivider Class="mb-4" />
+        <MudTabPanel Text="Segurança" Icon="@Icons.Material.Filled.Lock">
+            <EditForm Model="@senhaModel" OnValidSubmit="AlterarSenha">
+                <DataAnnotationsValidator />
 
-            <MudStack Spacing="3">
-                <div class="d-flex justify-space-between align-center pa-2">
-                    <div>
-                        <MudText Typo="Typo.body1">
-                            <MudIcon Icon="@Icons.Material.Filled.DarkMode" Class="mr-2" />
-                            Tema Claro/Escuro
-                        </MudText>
-                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                            Use o botão no cabeçalho para alternar
-                        </MudText>
-                    </div>
-                    <MudText Typo="Typo.caption" Color="Color.Success"><strong>✓ Ativo</strong></MudText>
-                </div>
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudTextField Label="Senha Atual" @bind-Value="senhaModel.SenhaAtual"
+                            For="@(() => senhaModel.SenhaAtual)" InputType="InputType.Password"
+                            Variant="Variant.Outlined" />
+                    </MudItem>
 
-                <MudDivider />
+                    <MudItem xs="12" sm="6">
+                        <MudTextField Label="Nova Senha" @bind-Value="senhaModel.NovaSenha"
+                            For="@(() => senhaModel.NovaSenha)" InputType="InputType.Password"
+                            Variant="Variant.Outlined" />
+                    </MudItem>
 
-                <div class="d-flex justify-space-between align-center pa-2">
-                    <div>
-                        <MudText Typo="Typo.body1">
-                            <MudIcon Icon="@Icons.Material.Filled.Notifications" Class="mr-2" />
-                            Notificações
-                        </MudText>
-                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                            Alertas de vencimento e pontos
-                        </MudText>
-                    </div>
-                    <MudText Typo="Typo.caption" Color="Color.Default">Em breve</MudText>
-                </div>
+                    <MudItem xs="12" sm="6">
+                        <MudTextField Label="Confirmar Nova Senha" @bind-Value="senhaModel.ConfirmacaoSenha"
+                            For="@(() => senhaModel.ConfirmacaoSenha)" InputType="InputType.Password"
+                            Variant="Variant.Outlined" />
+                    </MudItem>
 
-                <MudDivider />
-
-                <div class="d-flex justify-space-between align-center pa-2">
-                    <div>
-                        <MudText Typo="Typo.body1">
-                            <MudIcon Icon="@Icons.Material.Filled.Download" Class="mr-2" />
-                            Exportação de Dados
-                        </MudText>
-                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                            PDF e CSV dos extratos
-                        </MudText>
-                    </div>
-                    <MudText Typo="Typo.caption" Color="Color.Default">Em breve</MudText>
-                </div>
-
-                <MudDivider />
-
-                <div class="d-flex justify-space-between align-center pa-2">
-                    <div>
-                        <MudText Typo="Typo.body1">
-                            <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Class="mr-2" />
-                            Cotação do Dólar
-                        </MudText>
-                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
-                            Configurar fonte de cotação (manual ou API)
-                        </MudText>
-                    </div>
-                    <MudText Typo="Typo.caption" Color="Color.Default">Em breve</MudText>
-                </div>
-            </MudStack>
-        </MudPaper>
-    </MudItem>
-</MudGrid>
-
-<MudPaper Class="pa-4 mt-4" Elevation="2">
-    <MudText Typo="Typo.h6" GutterBottom="true">
-        <MudIcon Icon="@Icons.Material.Filled.Security" Class="mr-2" />
-        Segurança e Privacidade
-    </MudText>
-    <MudDivider Class="mb-3" />
-
-    <MudGrid>
-        <MudItem xs="12" md="4">
-            <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Dense="true">
-                <MudText Typo="Typo.body2">
-                    <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" />
-                    <strong> RF-001:</strong> Autenticação segura
-                </MudText>
-            </MudAlert>
-        </MudItem>
-
-        <MudItem xs="12" md="4">
-            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
-                <MudText Typo="Typo.body2">
-                    <MudIcon Icon="@Icons.Material.Filled.VerifiedUser" Size="Size.Small" />
-                    <strong> RF-008:</strong> Validação de dados
-                </MudText>
-            </MudAlert>
-        </MudItem>
-
-        <MudItem xs="12" md="4">
-            <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Dense="true">
-                <MudText Typo="Typo.body2">
-                    <MudIcon Icon="@Icons.Material.Filled.ExitToApp" Size="Size.Small" />
-                    <strong> RF-009:</strong> Logout seguro
-                </MudText>
-            </MudAlert>
-        </MudItem>
-    </MudGrid>
-
-    <MudText Typo="Typo.caption" Class="mt-3 mud-text-secondary">
-        🔒 Seus dados são armazenados com segurança e criptografia. Senhas são hasheadas e nunca armazenadas em texto plano.
-    </MudText>
-</MudPaper>
+                    <MudItem xs="12" Class="d-flex justify-end mt-4">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary"
+                            Disabled="@loading">
+                            @if (loading)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Processando...</MudText>
+                            }
+                            else
+                            {
+                                <MudText>Alterar Senha</MudText>
+                            }
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+            </EditForm>
+        </MudTabPanel>
+    </MudTabs>
+</MudContainer>
 
 @code {
-    // Lógica de configurações virá aqui quando necessário
+    private PerfilInputDTO perfilModel = new();
+    private TrocaSenhaInputDTO senhaModel = new();
+    private string emailExibicao = string.Empty;
+    private int usuarioId;
+    private bool loading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            var idClaim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value
+            ?? user.FindFirst("sub")?.Value;
+
+            if (int.TryParse(idClaim, out int id))
+            {
+                usuarioId = id;
+                perfilModel.Nome = user.Identity.Name ?? string.Empty;
+                emailExibicao = user.FindFirst(ClaimTypes.Email)?.Value ?? "Não identificado";
+            }
+        }
+    }
+
+    private async Task AtualizarPerfil()
+    {
+        loading = true;
+        try
+        {
+            UsuarioService.AtualizarPerfil(usuarioId, perfilModel);
+
+            if (AuthStateProvider is CustomAuthenticationStateProvider customAuth)
+            {
+                await customAuth.NotificarPerfilAtualizadoAsync(perfilModel.Nome);
+            }
+
+            Snackbar.Add("Dados atualizados com sucesso!", Severity.Success);
+        }
+        catch (ValorInvalidoException ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Warning);
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Erro ao atualizar perfil. Tente novamente.", Severity.Error);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    // Removemos 'async Task' pois o serviço é síncrono
+    private void AlterarSenha()
+    {
+        loading = true;
+        try
+        {
+            UsuarioService.AlterarSenha(usuarioId, senhaModel);
+            Snackbar.Add("Senha alterada com sucesso!", Severity.Success);
+
+            senhaModel = new TrocaSenhaInputDTO();
+        }
+        catch (ValorInvalidoException ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Erro inesperado ao alterar senha.", Severity.Error);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
 }
