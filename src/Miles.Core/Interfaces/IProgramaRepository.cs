@@ -7,18 +7,17 @@ namespace Miles.Core.Interfaces;
 
 public interface IProgramaRepository
 {
-
     void Adicionar(ProgramaFidelidade programa);
-
-
-    List<ProgramaFidelidade> ObterPorUsuario(int userId);
-
-
-    ProgramaFidelidade? ObterPorId(int id);
-
 
     void Atualizar(ProgramaFidelidade programa);
 
-
     void Remover(int id);
+
+    ProgramaFidelidade? ObterPorId(int id);
+
+    List<ProgramaFidelidade> ObterPorUsuario(int userId);
+
+    bool ExistePeloNome(string nome, int usuarioId);
+
+    bool PossuiCartoesVinculados(int id);
 }

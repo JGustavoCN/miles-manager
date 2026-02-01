@@ -1,6 +1,11 @@
-@using MudBlazor
 @page "/programas"
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+@inject IProgramaService ProgramaService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject AuthenticationStateProvider AuthStateProvider
+@using Miles.Core.Exceptions
 
 <PageTitle>Programas de Fidelidade - Miles Manager</PageTitle>
 
@@ -10,7 +15,7 @@
 </MudText>
 
 <MudText Typo="Typo.body1" Class="mb-4">
-    Cadastre e gerencie os programas de milhas/pontos que você participa (ex: Smiles, Latam Pass, Livelo, Esfera).
+    Cadastre e gerencie os programas de milhas/pontos que você participa (ex: Smiles, Latam Pass, Livelo).
 </MudText>
 
 <MudGrid>
@@ -21,99 +26,47 @@
                     <MudIcon Icon="@Icons.Material.Filled.Flight" Class="mr-2" />
                     Meus Programas
                 </MudText>
-                <MudButton Variant="Variant.Filled"
-                          Color="Color.Primary"
-                          StartIcon="@Icons.Material.Filled.Add"
-                          Disabled="true">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+                    OnClick="AbrirModalCadastro">
                     Adicionar Programa
                 </MudButton>
             </div>
 
             <MudDivider Class="mb-4" />
 
-            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
-                <MudText Typo="Typo.body2">
-                    🎁 Nenhum programa cadastrado ainda.
-                </MudText>
-                <MudText Typo="Typo.caption" Class="mt-2">
-                    A funcionalidade de CRUD será implementada na <strong>Milestone 1</strong>.
-                </MudText>
-            </MudAlert>
-
-            <MudText Typo="Typo.h6" Class="mt-6 mb-3">
-                <MudIcon Icon="@Icons.Material.Filled.Star" Class="mr-2" />
-                Programas Populares no Brasil
-            </MudText>
-
-            <MudGrid Spacing="2">
-                <MudItem xs="12" sm="6">
-                    <MudCard Outlined="true">
-                        <MudCardContent Class="pa-3">
-                            <div class="d-flex align-center">
-                                <MudIcon Icon="@Icons.Material.Filled.Flight"
-                                        Color="Color.Primary"
-                                        Size="Size.Large"
-                                        Class="mr-3" />
-                                <div>
-                                    <MudText Typo="Typo.subtitle1"><strong>Smiles</strong></MudText>
-                                    <MudText Typo="Typo.caption">Gol Linhas Aéreas</MudText>
-                                </div>
-                            </div>
-                        </MudCardContent>
-                    </MudCard>
-                </MudItem>
-
-                <MudItem xs="12" sm="6">
-                    <MudCard Outlined="true">
-                        <MudCardContent Class="pa-3">
-                            <div class="d-flex align-center">
-                                <MudIcon Icon="@Icons.Material.Filled.Flight"
-                                        Color="Color.Error"
-                                        Size="Size.Large"
-                                        Class="mr-3" />
-                                <div>
-                                    <MudText Typo="Typo.subtitle1"><strong>Latam Pass</strong></MudText>
-                                    <MudText Typo="Typo.caption">Latam Airlines</MudText>
-                                </div>
-                            </div>
-                        </MudCardContent>
-                    </MudCard>
-                </MudItem>
-
-                <MudItem xs="12" sm="6">
-                    <MudCard Outlined="true">
-                        <MudCardContent Class="pa-3">
-                            <div class="d-flex align-center">
-                                <MudIcon Icon="@Icons.Material.Filled.CardGiftcard"
-                                        Color="Color.Success"
-                                        Size="Size.Large"
-                                        Class="mr-3" />
-                                <div>
-                                    <MudText Typo="Typo.subtitle1"><strong>Livelo</strong></MudText>
-                                    <MudText Typo="Typo.caption">Bradesco / Multi-marcas</MudText>
-                                </div>
-                            </div>
-                        </MudCardContent>
-                    </MudCard>
-                </MudItem>
-
-                <MudItem xs="12" sm="6">
-                    <MudCard Outlined="true">
-                        <MudCardContent Class="pa-3">
-                            <div class="d-flex align-center">
-                                <MudIcon Icon="@Icons.Material.Filled.Stars"
-                                        Color="Color.Warning"
-                                        Size="Size.Large"
-                                        Class="mr-3" />
-                                <div>
-                                    <MudText Typo="Typo.subtitle1"><strong>Esfera</strong></MudText>
-                                    <MudText Typo="Typo.caption">Bradesco / Shoppers</MudText>
-                                </div>
-                            </div>
-                        </MudCardContent>
-                    </MudCard>
-                </MudItem>
-            </MudGrid>
+            @if (programas == null)
+            {
+                <div class="d-flex justify-center align-center pa-8">
+                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+                </div>
+            }
+            else if (!programas.Any())
+            {
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
+                    <MudText Typo="Typo.body2">🎁 Nenhum programa cadastrado ainda.</MudText>
+                    <MudText Typo="Typo.caption" Class="mt-2">Clique em "Adicionar Programa" para começar.</MudText>
+                </MudAlert>
+            }
+            else
+            {
+                <MudTable Items="@programas" Hover="true" Striped="true" Dense="true" Elevation="0">
+                    <HeaderContent>
+                        <MudTh>Nome</MudTh>
+                        <MudTh>Empresa/Banco</MudTh>
+                        <MudTh Style="text-align:center">Ações</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nome">@context.Nome</MudTd>
+                        <MudTd DataLabel="Empresa">@context.Banco</MudTd>
+                        <MudTd Style="text-align:center">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                                OnClick="@(() => AbrirModalEdicao(context))" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                                OnClick="@(() => ConfirmarExclusao(context))" />
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            }
         </MudPaper>
     </MudItem>
 
@@ -121,40 +74,181 @@
         <MudPaper Elevation="3" Class="pa-4">
             <MudText Typo="Typo.h6" GutterBottom="true">
                 <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-2" />
-                Sobre os Programas
+                Dicas
             </MudText>
             <MudDivider Class="mb-3" />
-
-<div class="mt-2 ml-2">
+            <div class="mt-2 ml-2">
                 <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Cadastre quantos programas precisar
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Nomes
+                    devem ser únicos.
                 </MudText>
                 <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Vincule cartões aos programas
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Use
+                    nomes fáceis de identificar.
                 </MudText>
                 <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Visualize saldo consolidado
-                </MudText>
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Acompanhe datas de expiração
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" />
+                    Programas com cartões vinculados não podem ser excluídos.
                 </MudText>
             </div>
-
-            <MudAlert Severity="Severity.Warning" Dense="true" Class="mt-3" Variant="Variant.Filled">
-                <MudText Typo="Typo.caption">
-                    ⚠️ <strong>RF-004:</strong> Esta funcionalidade atende ao requisito de "Manter Programas de Fidelidade".
-                </MudText>
-            </MudAlert>
-
-            <MudAlert Severity="Severity.Info" Dense="true" Class="mt-2" Variant="Variant.Filled">
-                <MudText Typo="Typo.caption">
-                    📊 <strong>RF-007:</strong> O Dashboard consolidará os pontos de todos os programas cadastrados.
-                </MudText>
-            </MudAlert>
         </MudPaper>
     </MudItem>
 </MudGrid>
 
+@* --- DIALOG (MODAL) DE CADASTRO/EDIÇÃO --- *@
+<MudDialog @bind-Visible="dialogVisible" Options="dialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@(isEdicao? Icons.Material.Filled.Edit : Icons.Material.Filled.Add)" Class="mr-2" />
+            @(isEdicao ? "Editar Programa" : "Novo Programa")
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm @ref="form" @bind-IsValid="@success">
+            <MudTextField T="string" Label="Nome do Programa" @bind-Value="programaModel.Nome" Required="true"
+                RequiredError="Nome é obrigatório!" Counter="100" MaxLength="100" HelperText="Ex: Smiles, Livelo" />
+            <MudTextField T="string" Label="Empresa ou Banco" @bind-Value="programaModel.Banco" Counter="100"
+                MaxLength="100" HelperText="Ex: Gol, Bradesco" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="FecharModal">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="SalvarPrograma" Disabled="@(!success)">Salvar
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
 @code {
-    // Lógica de CRUD virá aqui na Milestone 1
+    private List<ProgramaFidelidade>? programas;
+    private ProgramaInputDTO programaModel = new();
+    private bool dialogVisible;
+    private bool isEdicao;
+
+    // CORREÇÃO CS8618: Inicializando com null! ou default!
+    private MudForm form = null!;
+
+    private bool success;
+    private int currentUserId;
+    private DialogOptions dialogOptions = new() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CarregarUsuario();
+        CarregarProgramas();
+    }
+
+    private async Task CarregarUsuario()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var idClaim = user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (int.TryParse(idClaim, out int id))
+        {
+            currentUserId = id;
+        }
+    }
+
+    private void CarregarProgramas()
+    {
+        try
+        {
+            if (currentUserId > 0)
+            {
+                programas = ProgramaService.ListarPorUsuario(currentUserId);
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao carregar programas: {ex.Message}", Severity.Error);
+        }
+    }
+
+    // --- Ações de Modal ---
+
+    private void AbrirModalCadastro()
+    {
+        isEdicao = false;
+        programaModel = new ProgramaInputDTO { UsuarioId = currentUserId };
+        dialogVisible = true;
+    }
+
+    private void AbrirModalEdicao(ProgramaFidelidade programa)
+    {
+        isEdicao = true;
+        programaModel = new ProgramaInputDTO
+        {
+            Id = programa.Id,
+            Nome = programa.Nome,
+            Banco = programa.Banco,
+            UsuarioId = programa.UsuarioId
+        };
+        dialogVisible = true;
+    }
+
+    private void FecharModal() => dialogVisible = false;
+
+    private async Task SalvarPrograma()
+    {
+        await form.Validate();
+        if (!form.IsValid) return;
+
+        try
+        {
+            programaModel.UsuarioId = currentUserId;
+
+            if (isEdicao)
+            {
+                ProgramaService.Atualizar(programaModel);
+                Snackbar.Add("Programa atualizado com sucesso!", Severity.Success);
+            }
+            else
+            {
+                ProgramaService.Adicionar(programaModel);
+                Snackbar.Add("Programa de fidelidade cadastrado com sucesso", Severity.Success);
+            }
+
+            dialogVisible = false;
+            CarregarProgramas();
+        }
+        catch (ValorInvalidoException ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Warning);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro inesperado: {ex.Message}", Severity.Error);
+        }
+    }
+
+    // --- Ação de Exclusão ---
+
+    private async Task ConfirmarExclusao(ProgramaFidelidade programa)
+    {
+        // CORREÇÃO CS0246: Código "placeholder" antigo foi removido.
+        // Usamos apenas o MessageBox direto, que é a abordagem correta.
+
+        bool? result = await DialogService.ShowMessageBox(
+        "Excluir Programa",
+        $"Tem certeza que deseja excluir '{programa.Nome}'? Esta ação não pode ser desfeita.",
+        yesText: "Excluir", cancelText: "Cancelar");
+
+        if (result == true)
+        {
+            try
+            {
+                ProgramaService.Remover(programa.Id);
+                Snackbar.Add("Programa removido com sucesso!", Severity.Success);
+                CarregarProgramas();
+            }
+            catch (ValorInvalidoException ex)
+            {
+                Snackbar.Add(ex.Message, Severity.Warning);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Erro ao excluir: {ex.Message}", Severity.Error);
+            }
+        }
+    }
 }
