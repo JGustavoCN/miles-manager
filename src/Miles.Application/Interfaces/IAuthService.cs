@@ -1,4 +1,5 @@
 using Miles.Core.Entities;
+using Miles.Application.DTOs;
 
 namespace Miles.Core.Interfaces;
 
@@ -9,4 +10,6 @@ public interface IAuthService
     /// Autentica um usuário com email e senha
     /// Retorna o usuário autenticado ou null se as credenciais forem inválidas
     Usuario? Autenticar(string email, string senha);
+
+    Task<SessaoResultDTO> RegistrarUsuario(CadastroInputDTO input);
 }

@@ -58,4 +58,40 @@ public class AuthService : IAuthService
 
         return usuario;
     }
+
+    public async Task<SessaoResultDTO> RegistrarUsuario(CadastroInputDTO input)
+    {
+        // 1. Verificar se o e-mail já está em uso
+        var usuarioExistente = _usuarioRepository.ObterPorEmail(input.Email);
+        if (usuarioExistente != null)
+        {
+            return MilesMapper.ToErrorResult("Este e-mail já está sendo utilizado.");
+        }
+
+        // 2. Criar a entidade e realizar o Hash da senha (Segurança)
+        var novoUsuario = new Usuario
+        {
+            Nome = input.Nome,
+            Email = input.Email,
+            SenhaHash = BCrypt.Net.BCrypt.HashPassword(input.Senha)
+        };
+
+        // 3. Validar regras de domínio (RF-008)
+        try
+        {
+            novoUsuario.Validar();
+        }
+        catch (Exception ex)
+        {
+            return MilesMapper.ToErrorResult(ex.Message);
+        }
+
+        // 4. Persistir no banco de dados
+        _usuarioRepository.Adicionar(novoUsuario);
+
+        // 5. Retornar sucesso (aproveitando o mapper existente)
+        return MilesMapper.ToResult(novoUsuario);
+    }
+
+
 }
