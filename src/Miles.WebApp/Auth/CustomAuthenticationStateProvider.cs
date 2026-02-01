@@ -114,10 +114,26 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 
     public async Task MarkUserAsLoggedOutAsync()
     {
-        await _sessionStorage.DeleteAsync("UserSession");
+        try
+        {
+            // Tenta limpar o armazenamento persistente
+            await _sessionStorage.DeleteAsync("UserSession");
 
-        _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
-        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            // Log de Auditoria (Útil para rastrear quem saiu e quando)
+            Log.Information("Usuário realizou logout do sistema.");
+        }
+        catch (Exception ex)
+        {
+            // Se falhar ao limpar o disco, apenas logamos o aviso,
+            // mas NÃO impedimos o fluxo de continuar para limpar a memória.
+            Log.Warning($"Falha ao limpar sessão do navegador durante logout: {ex.Message}");
+        }
+        finally
+        {
+            // GARANTIA: Remove o usuário da memória independentemente de erros no storage
+            _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
     }
 }
 
