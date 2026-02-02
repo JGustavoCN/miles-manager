@@ -12,7 +12,9 @@ using Miles.Application.Interfaces;
 using Miles.WebApp.Auth;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
+using Microsoft.AspNetCore.HttpOverrides; // 1. Namespace adicionado
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -51,8 +53,6 @@ try
     builder.Services.AddScoped<IProgramaRepository, ProgramaRepository>();
     builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
     builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-    // Nota: Outros repositórios (ITransacaoRepository, IProgramaRepository, IUsuarioRepository)
-    // serão adicionados conforme forem implementados na camada Infrastructure
 
     // 3.2. Registro de Factories (UC-02)
     builder.Services.AddScoped<ITransacaoFactory, TransacaoFactory>();
@@ -60,20 +60,16 @@ try
     // 3.3. Registro de Strategies (UC-09)
     builder.Services.AddScoped<ICalculoPontosStrategy, CalculoPadraoStrategy>();
 
-    // 3.4. Registro de Application Services (UC-02, UC-03, UC-08, UC-09)
-    // builder.Services.AddScoped<ITransacaoService, TransacaoService>();
+    // 3.4. Registro de Application Services
     builder.Services.AddScoped<ICartaoService, CartaoService>();
     builder.Services.AddScoped<IProgramaService, ProgramaService>();
     builder.Services.AddScoped<ITransacaoService, TransacaoService>();
     builder.Services.AddScoped<IDashboardFacade, DashboardFacade>();
     builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
-
-    // 3.2. Serviços de Aplicação
+    // Serviços de Autenticação
     builder.Services.AddScoped<AuthService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
-
-    // 3.3. Autenticação Blazor (Customizada)
     builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
     builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -88,13 +84,31 @@ try
 
     // 4. Serviços do MudBlazor
     builder.Services.AddMudServices();
+    builder.Services.AddHealthChecks()
+        .AddDbContextCheck<AppDbContext>();
+
+    // 5. Configuração de Forwarded Headers (CRÍTICO PARA AZURE/LINUX)
+    // Isso garante que o app saiba que a requisição original foi HTTPS
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.ForwardedHeaders =
+            ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+        // Em nuvem (Azure/AWS), o IP do proxy pode mudar, então limpamos as redes conhecidas/proxies
+        // para confiar nos headers vindos do Load Balancer interno.
+        options.KnownNetworks.Clear();
+        options.KnownProxies.Clear();
+    });
 
     var app = builder.Build();
 
-    // 5. Middleware de erros
+    // 6. Aplicar Forwarded Headers (Deve ser o PRIMEIRO Middleware)
+    app.UseForwardedHeaders();
+
+    // 7. Middleware de erros
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-    // 6. Logging HTTP
+    // 8. Logging HTTP
     app.UseSerilogRequestLogging(options =>
     {
         options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} respondeu {StatusCode} em {Elapsed:0.0000} ms";
@@ -105,6 +119,7 @@ try
         };
     });
 
+    // Configurações de Ambiente
     if (app.Environment.IsDevelopment())
     {
         using (var scope = app.Services.CreateScope())
@@ -121,15 +136,21 @@ try
             }
         }
     }
-
-    if (!app.Environment.IsDevelopment())
+    else // !IsDevelopment (Produção/Staging)
     {
         app.UseExceptionHandler("/Error", createScopeForErrors: true);
+
+        // HSTS instrui o navegador a sempre usar HTTPS
         app.UseHsts();
+
+        // Redirecionamento HTTPS condicional
+        // Só redireciona em Produção e funciona corretamente graças ao UseForwardedHeaders acima
+        app.UseHttpsRedirection();
     }
 
     app.UseStatusCodePagesWithReExecute("/Error");
-    app.UseHttpsRedirection();
+
+    // app.UseHttpsRedirection(); <--- REMOVIDO DAQUI (Movido para dentro do else acima)
 
     app.Use(async (context, next) =>
     {
@@ -144,21 +165,42 @@ try
         await next();
     });
 
-    // --- MIDDLEWARES DE AUTH (OBRIGATÓRIOS AQUI) ---
+    // --- MIDDLEWARES DE AUTH ---
     app.UseAuthentication();
     app.UseAuthorization();
-    // -----------------------------------------------
+    // ---------------------------
 
     app.UseAntiforgery();
 
     app.MapStaticAssets();
+
+    app.MapHealthChecks("/health", new HealthCheckOptions
+    {
+        ResponseWriter = async (context, report) =>
+        {
+            context.Response.ContentType = "application/json";
+            var response = new
+            {
+                status = report.Status.ToString(),
+                checks = report.Entries.Select(e => new
+                {
+                    name = e.Key,
+                    status = e.Value.Status.ToString(),
+                    description = e.Value.Description,
+                    duration = e.Value.Duration.ToString()
+                })
+            };
+            await context.Response.WriteAsJsonAsync(response);
+        }
+    });
+
     app.MapRazorComponents<App>()
         .AddInteractiveServerRenderMode();
 
     Log.Information("Aplicação Miles.WebApp iniciada com sucesso!");
     app.Run();
 }
-catch (Exception ex) when (ex is not HostAbortedException) // Ignora o stop do EF Core
+catch (Exception ex) when (ex is not HostAbortedException)
 {
     Log.Fatal(ex, "A aplicação falhou ao iniciar");
     throw;
