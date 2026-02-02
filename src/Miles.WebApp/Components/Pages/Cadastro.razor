@@ -2,12 +2,16 @@
 @layout PublicLayout
 @using Microsoft.AspNetCore.Authorization
 @using Miles.Application.DTOs
+@using Miles.Application.Services
 @using Miles.Core.Interfaces
+@using Miles.WebApp.Auth
 @attribute [AllowAnonymous]
-
-@inject IAuthService AuthService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject AuthService AuthService // Certifique-se que está injetando a classe concreta ou interface correta
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
+
+@using Microsoft.AspNetCore.Components.Authorization
 
 <PageTitle>Cadastro - Miles</PageTitle>
 
@@ -17,21 +21,17 @@
             <div class="card shadow">
                 <div class="card-body p-4">
                     <div class="d-flex flex-column align-center mb-4">
-
                         <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Primary" Style="font-size: 4rem;"
                             Class="mb-2" />
-
                         <div class="d-flex align-center justify-center">
                             <MudIcon Icon="@Icons.Material.Filled.FlightTakeoff" Size="Size.Large" Class="mr-2" />
                             <MudText Typo="Typo.h2" Class="fw-bold">
                                 Miles Manager
                             </MudText>
                         </div>
-
                         <MudText Typo="Typo.body1" Class="mt-2">
                             Crie sua conta para gerenciar seus pontos
                         </MudText>
-
                     </div>
 
                     <EditForm Model="@cadastroModel" OnValidSubmit="HandleCadastro">
@@ -101,20 +101,54 @@
         loading = true;
         try
         {
-            var resultado = await AuthService.RegistrarUsuario(cadastroModel);
+            // 1. Tenta Registrar
+            var resultadoRegistro = await AuthService.RegistrarUsuario(cadastroModel);
 
-            if (resultado.Sucesso)
+            if (resultadoRegistro.Sucesso)
             {
-                Snackbar.Add("Conta criada com sucesso! Você já pode fazer login.", Severity.Success);
-                NavigationManager.NavigateTo("/login");
+                Log.Information("Usuário {Email} cadastrado com sucesso", resultadoRegistro.Email);
+                Snackbar.Add("Conta criada com sucesso! Entrando...", Severity.Success);
+
+                // 2. Prepara o objeto de Login (DTO) com os dados do cadastro
+                var loginInput = new LoginInputDTO
+                {
+                    Email = cadastroModel.Email,
+                    Senha = cadastroModel.Senha
+                };
+
+                // 3. Tenta realizar o Login Automaticamente
+                // Nota: Verifiquei no seu Login.razor que este método parece ser síncrono ou retorna direto o resultado
+                var resultadoLogin = AuthService.RealizarLogin(loginInput);
+
+                if (resultadoLogin.Sucesso && resultadoLogin.UsuarioId.HasValue)
+                {
+                    // 4. Atualiza o AuthenticationStateProvider
+                    var authProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+
+                    await authProvider.MarkUserAsAuthenticatedAsync(
+                    resultadoLogin.UsuarioId.Value,
+                    resultadoLogin.Nome ?? "",
+                    resultadoLogin.Email ?? ""
+                    );
+
+                    // 5. Redireciona para o Dashboard
+                    NavigationManager.NavigateTo("/dashboard");
+                }
+                else
+                {
+                    // Fallback: Se cadastrou mas falhou no login automático, manda para a tela de login
+                    Snackbar.Add("Cadastro realizado, mas falha ao logar automaticamente.", Severity.Warning);
+                    NavigationManager.NavigateTo("/login");
+                }
             }
             else
             {
-                Snackbar.Add(resultado.MensagemErro ?? "Erro desconhecido ao realizar cadastro.", Severity.Error);
+                Snackbar.Add(resultadoRegistro.MensagemErro ?? "Erro desconhecido ao realizar cadastro.", Severity.Error);
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Log.Error(ex, "Erro ao tentar realizar cadastro");
             Snackbar.Add("Ocorreu um erro inesperado ao tentar realizar o cadastro.", Severity.Error);
         }
         finally
