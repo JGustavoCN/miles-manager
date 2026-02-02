@@ -5,7 +5,7 @@ namespace Miles.WebApp.Middleware;
 
 /// <summary>
 /// Middleware global para captura e tratamento centralizado de exceções.
-/// 
+///
 /// Justificativa Técnica:
 /// - Captura exceções não tratadas em qualquer ponto do pipeline
 /// - Loga detalhes completos (Stack Trace) usando Serilog para diagnóstico
@@ -49,9 +49,26 @@ public class ExceptionHandlingMiddleware
 
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
+        // 1. O PULO DO GATO: Se for um navegador pedindo HTML, ignoramos esse middleware
+        // e deixamos o erro subir para o Blazor mostrar a página Error.razor
+        var acceptHeader = context.Request.Headers["Accept"].ToString();
+
+        // Verifica se é uma requisição de navegador padrão
+        if (acceptHeader.Contains("text/html"))
+        {
+            // Apenas logamos o erro para não perder o registro
+            _logger.LogError(exception,
+               "Erro na UI (HTML): {Message}", exception.Message);
+
+            // "Rethrow": Lança o erro de novo para o Program.cs pegar e mandar para /Error
+            throw exception;
+        }
+
+        // --- DAQUI PRA BAIXO SEGUE SEU CÓDIGO ORIGINAL (Para APIs/JSON) ---
+
         // Log detalhado da exceção com Stack Trace completo
         _logger.LogError(exception,
-            "Exceção não tratada capturada: {ExceptionType} - {Message} | Path: {Path} | Method: {Method}",
+            "Exceção API capturada: {ExceptionType} - {Message} | Path: {Path} | Method: {Method}",
             exception.GetType().Name,
             exception.Message,
             context.Request.Path,
@@ -61,18 +78,13 @@ public class ExceptionHandlingMiddleware
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-        // Resposta JSON padronizada
+        // ... (resto do seu código de resposta JSON) ...
         var response = new ErrorResponse
         {
             StatusCode = context.Response.StatusCode,
             Message = "Ocorreu um erro interno no servidor.",
-            // Em desenvolvimento, expor detalhes; em produção, ocultar
-            Detail = _environment.IsDevelopment()
-                ? $"{exception.GetType().Name}: {exception.Message}"
-                : null,
-            StackTrace = _environment.IsDevelopment()
-                ? exception.StackTrace
-                : null
+            Detail = _environment.IsDevelopment() ? $"{exception.GetType().Name}: {exception.Message}" : null,
+            StackTrace = _environment.IsDevelopment() ? exception.StackTrace : null
         };
 
         var options = new JsonSerializerOptions
