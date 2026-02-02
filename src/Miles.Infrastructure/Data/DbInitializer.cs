@@ -1,10 +1,7 @@
 using Miles.Core.Entities;
 using Miles.Core.Exceptions;
-using Miles.Core.Interfaces;
 using Miles.Core.Strategies;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using Microsoft.Identity.Client;
 
 namespace Miles.Infrastructure.Data;
 

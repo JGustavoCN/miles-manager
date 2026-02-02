@@ -1,6 +1,5 @@
 using Miles.Application.DTOs;
 using Miles.Application.Interfaces;
-using Miles.Core.Entities;
 using Miles.Core.Exceptions;
 using Miles.Core.Interfaces;
 using Microsoft.Extensions.Logging;

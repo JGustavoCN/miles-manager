@@ -1,8 +1,6 @@
 using Miles.Application.DTOs;
 using Miles.Core.Entities;
-using Miles.Core.Exceptions;
 using Miles.Core.Interfaces;
-using BCrypt.Net;
 
 namespace Miles.Application.Services;
 
@@ -59,13 +57,13 @@ public class AuthService : IAuthService
         return usuario;
     }
 
-    public async Task<SessaoResultDTO> RegistrarUsuario(CadastroInputDTO input)
+    public Task<SessaoResultDTO> RegistrarUsuario(CadastroInputDTO input)
     {
         // 1. Verificar se o e-mail já está em uso
         var usuarioExistente = _usuarioRepository.ObterPorEmail(input.Email);
         if (usuarioExistente != null)
         {
-            return MilesMapper.ToErrorResult("Este e-mail já está sendo utilizado.");
+            return Task.FromResult(MilesMapper.ToErrorResult("Este e-mail já está sendo utilizado."));
         }
 
         // 2. Criar a entidade e realizar o Hash da senha (Segurança)
@@ -83,14 +81,14 @@ public class AuthService : IAuthService
         }
         catch (Exception ex)
         {
-            return MilesMapper.ToErrorResult(ex.Message);
+            return Task.FromResult(MilesMapper.ToErrorResult(ex.Message));
         }
 
         // 4. Persistir no banco de dados
         _usuarioRepository.Adicionar(novoUsuario);
 
         // 5. Retornar sucesso (aproveitando o mapper existente)
-        return MilesMapper.ToResult(novoUsuario);
+        return Task.FromResult(MilesMapper.ToResult(novoUsuario));
     }
 
 

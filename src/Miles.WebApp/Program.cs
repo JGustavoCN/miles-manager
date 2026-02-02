@@ -12,7 +12,6 @@ using Miles.Application.Interfaces;
 using Miles.WebApp.Auth;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.Hosting;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
