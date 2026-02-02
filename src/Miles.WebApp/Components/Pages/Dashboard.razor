@@ -2,129 +2,224 @@
 @using Miles.Application.DTOs
 @using Miles.Application.Interfaces
 @using System.Security.Claims
-@using MudBlazor
 @inject IDashboardFacade DashboardFacade
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager Navigation
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 
-<PageTitle>Dashboard - Miles Manager</PageTitle>
+<PageTitle>Dashboard | Miles Manager</PageTitle>
 
-<div class="dashboard-header mb-6">
-    <MudText Typo="Typo.h3" Class="dashboard-title">
-        Painel de Controle ✈️
-    </MudText>
-    <MudText Typo="Typo.body1" Class="mud-text-secondary mt-2">
-        Bem-vindo, @(_userName ?? "Viajante")! Resumo dos seus ativos.
-    </MudText>
-</div>
+<style>
+    /* Alvo: Rótulos do Eixo X (Nomes dos cartões) */
+    .grafico-customizado .mud-charts-xaxis text {
+        font-size: 20px !important;
+        /* Usei rem para melhor escala, ou 16px */
+        font-weight: 700 !important;
+        fill: var(--mud-palette-text-primary) !important;
+        transform: translateY(5px);
+        /* Ajusta a posição vertical se ficar colado na barra */
+    }
 
-@if (_isLoading)
-{
-    <MudGrid Spacing="4">
-        <MudItem xs="12" sm="4">
-            <MudCard>
-                <MudCardContent>
-                    <MudSkeleton Height="100px" width="100%" />
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
-        <MudItem xs="12" sm="8">
-            <MudGrid>
-                <MudItem xs="12" sm="6">
-                    <MudSkeleton Height="150px" SkeletonType="SkeletonType.Rectangle" />
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudSkeleton Height="150px" SkeletonType="SkeletonType.Rectangle" />
-                </MudItem>
-            </MudGrid>
-        </MudItem>
-    </MudGrid>
-}
-else if (!string.IsNullOrEmpty(_errorMessage))
-{
-    <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Class="mb-4">
-        @_errorMessage
-    </MudAlert>
-}
-else if (_dashboardData == null || _dashboardData.SaldosPorPrograma.Count == 0)
-{
-    <MudPaper Class="d-flex flex-column align-center justify-center pa-8 mt-4" Elevation="0" Outlined="true">
-        <MudIcon Icon="@Icons.Material.Filled.SentimentSatisfied" Size="Size.Large" Color="Color.Primary" Class="mb-4"
-            Style="width: 64px; height: 64px;" />
-        <MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true">Vamos começar?</MudText>
-        <MudText Typo="Typo.body1" Align="Align.Center" Class="mb-6 mud-text-secondary">
-            Você ainda não tem pontos registrados.
-        </MudText>
+    /* Alvo: Rótulos do Eixo Y (Valores numéricos) */
+    .grafico-customizado .mud-charts-yaxis text {
+        font-size: 0.9rem !important;
+        fill: var(--mud-palette-text-secondary) !important;
+    }
 
-        <div class="d-flex gap-4">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
-                OnClick="@(() => Navigation.NavigateTo("/programas"))">
-                Cadastrar Programa
-            </MudButton>
-            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.CreditCard"
-                OnClick="@(() => Navigation.NavigateTo("/cartoes"))">
-                Cadastrar Cartão
-            </MudButton>
+    /* Alvo: Legendas (Caso apareçam abaixo ou ao lado) */
+    .grafico-customizado .mud-chart-legend text {
+        font-size: 20px !important;
+        font-weight: 500 !important;
+    }
+</style>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4 mb-8">
+
+    <div class="d-flex justify-space-between align-center mb-6">
+        <div>
+            <MudText Typo="Typo.h4" Color="Color.Primary" Class="fw-bold">Visão Geral</MudText>
+            <MudText Typo="Typo.subtitle1" Class="mud-text-secondary">Seu comando central de milhas.</MudText>
         </div>
-    </MudPaper>
-}
-else
-{
-    <MudGrid Spacing="4" Class="mb-6">
-        <MudItem xs="12">
-            <MudCard Elevation="2" Class="pa-4" Style="background: var(--mud-palette-primary); color: white;">
-                <MudCardContent>
-                    <div class="d-flex justify-space-between align-center">
-                        <div>
-                            <MudText Typo="Typo.subtitle1">Total Acumulado</MudText>
-                            <MudText Typo="Typo.h2">@_dashboardData.TotalGeralPontos.ToString("N0")</MudText>
-                        </div>
-                        <MudIcon Icon="@Icons.Material.Filled.FlightTakeoff" Size="Size.Large"
-                            Style="font-size: 4rem; opacity: 0.8;" />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+            Href="/transacoes/nova">
+            Nova Transação
+        </MudButton>
+    </div>
+
+    @if (_isLoading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="mb-4" />
+        <MudSkeleton Height="200px" />
+    }
+    else if (_dashboardData != null)
+    {
+        <MudGrid Spacing="3">
+
+            @* KPI: Total de Milhas *@
+            <MudItem xs="12" sm="6" md="3">
+                <MudPaper Elevation="2" Class="pa-4 d-flex align-center gap-4 rounded-lg border-l-4 mud-border-primary">
+                    <MudAvatar Color="Color.Primary" Variant="Variant.Outlined">
+                        <MudIcon Icon="@Icons.Material.Filled.FlightTakeoff" />
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.caption">Total de Milhas</MudText>
+                        <MudText Typo="Typo.h5" Class="fw-bold">@_dashboardData.TotalGeralPontos.ToString("N0")</MudText>
                     </div>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
-
-        <MudItem xs="12">
-            <MudText Typo="Typo.h5" Class="mt-4 mb-2">Seus Programas</MudText>
-            <MudDivider Class="mb-4" />
-        </MudItem>
-
-        @foreach (var programa in _dashboardData.SaldosPorPrograma)
-        {
-            <MudItem xs="12" sm="6" md="4">
-                <MudCard Elevation="3" Class="h-100">
-                    <MudCardHeader>
-                        <CardHeaderAvatar>
-                            <MudAvatar Color="Color.Secondary">@programa.NomePrograma.Substring(0, 1).ToUpper()</MudAvatar>
-                        </CardHeaderAvatar>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">@programa.NomePrograma</MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <MudText Typo="Typo.caption">Saldo Atual</MudText>
-                        <MudText Typo="Typo.h4" Color="Color.Primary">@programa.SaldoTotal.ToString("N0")</MudText>
-                    </MudCardContent>
-                </MudCard>
+                </MudPaper>
             </MudItem>
-        }
-    </MudGrid>
-}
+
+            @* KPI: Gasto Total *@
+            <MudItem xs="12" sm="6" md="3">
+                <MudPaper Elevation="2" Class="pa-4 d-flex align-center gap-4 rounded-lg border-l-4 mud-border-success">
+                    <MudAvatar Color="Color.Success" Variant="Variant.Outlined">
+                        <MudIcon Icon="@Icons.Material.Filled.AttachMoney" />
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.caption">Gasto Total</MudText>
+                        <MudText Typo="Typo.h5" Class="fw-bold">R$ @_dashboardData.TotalGastoPeriodo.ToString("N2")
+                        </MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+
+            @* KPI: Transações *@
+            <MudItem xs="12" sm="6" md="3">
+                <MudPaper Elevation="2" Class="pa-4 d-flex align-center gap-4 rounded-lg border-l-4 mud-border-warning">
+                    <MudAvatar Color="Color.Warning" Variant="Variant.Outlined">
+                        <MudIcon Icon="@Icons.Material.Filled.Receipt" />
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.caption">Transações</MudText>
+                        <MudText Typo="Typo.h5" Class="fw-bold">@_dashboardData.QuantidadeTransacoes</MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+
+            @* KPI: Ticket Médio *@
+            <MudItem xs="12" sm="6" md="3">
+                <MudPaper Elevation="2" Class="pa-4 d-flex align-center gap-4 rounded-lg border-l-4 mud-border-info">
+                    <MudAvatar Color="Color.Info" Variant="Variant.Outlined">
+                        <MudIcon Icon="@Icons.Material.Filled.ShoppingBag" />
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.caption">Ticket Médio</MudText>
+                        <MudText Typo="Typo.h5" Class="fw-bold">R$ @_dashboardData.TicketMedio.ToString("N2")</MudText>
+                    </div>
+                </MudPaper>
+            </MudItem>
+
+            @* Gráfico Donut: Por Programa *@
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4 rounded-lg d-flex flex-column align-center" Elevation="2" Style="height: 100%;">
+                    <MudText Typo="Typo.h6" Class="mb-2">Por Programa</MudText>
+                    @if (_dashboardData.SaldosPorPrograma.Any())
+                    {
+                        <MudChart ChartType="ChartType.Donut" Width="100%" Height="250px"
+                            InputData="@(_dashboardData.SaldosPorPrograma.Select(x => x.SaldoTotal).ToArray())"
+                            InputLabels="@(_dashboardData.SaldosPorPrograma.Select(x => x.NomePrograma).ToArray())">
+                            <CustomGraphics>
+                                <text class="donut-inner-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+                                    fill="var(--mud-palette-text-primary)" font-family="Helvetica" font-size="20">
+                                    Total
+                                </text>
+                                <text class="donut-inner-text" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle"
+                                    fill="var(--mud-palette-text-primary)" font-family="Helvetica" font-size="30">
+                                    @_dashboardData.TotalGeralPontos.ToString("N0")
+                                </text>
+                            </CustomGraphics>
+                        </MudChart>
+                    }
+                    else
+                    {
+                        <MudText Class="my-auto">Sem dados</MudText>
+                    }
+                </MudPaper>
+            </MudItem>
+
+            @* Gráfico Pizza: Por Categoria *@
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4 rounded-lg d-flex flex-column align-center" Elevation="2" Style="height: 100%;">
+                    <MudText Typo="Typo.h6" Class="mb-2">Por Categoria</MudText>
+                    @if (_dashboardData.GastosPorCategoria.Any())
+                    {
+                        <MudChart ChartType="ChartType.Pie" Width="100%" Height="250px"
+                            InputData="@(_dashboardData.GastosPorCategoria.Select(x => x.ValorTotal).ToArray())"
+                            InputLabels="@(_dashboardData.GastosPorCategoria.Select(x => x.Categoria).ToArray())" />
+                    }
+                    else
+                    {
+                        <MudText Class="my-auto">Sem dados</MudText>
+                    }
+                </MudPaper>
+            </MudItem>
+
+            @* Gráfico de Barras: Melhores Cartões (COM CLASSE CSS E ABREVIAÇÃO) *@
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4 rounded-lg d-flex flex-column align-center" Elevation="2" Style="height: 100%;">
+                    <MudText Typo="Typo.h6" Class="mb-2">Melhores Cartões</MudText>
+                    @if (_dashboardData.TopCartoes.Any())
+                    {
+                        <MudChart ChartType="ChartType.Bar" Width="100%" Height="250px" Class="grafico-customizado"
+                            ChartSeries="@_seriesCartoes" XAxisLabels="@_labelsCartoes"
+                            ChartOptions="@(new ChartOptions { YAxisLines = false })" />
+                    }
+                    else
+                    {
+                        <MudText Class="my-auto">Sem dados</MudText>
+                    }
+                </MudPaper>
+            </MudItem>
+
+            @* Gráfico de Linha: Evolução *@
+            <MudItem xs="12" md="8">
+                <MudPaper Class="pa-4 rounded-lg" Elevation="2">
+                    <MudText Typo="Typo.h6">Evolução de Pontos (6 Meses)</MudText>
+                    <MudChart ChartType="ChartType.Line" ChartSeries="@_seriesEvolucao" XAxisLabels="@_labelsEvolucao"
+                        Width="100%" Height="300px" />
+                </MudPaper>
+            </MudItem>
+
+            @* Tabela: Últimas Transações *@
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4 rounded-lg" Elevation="2" Style="height: 100%;">
+                    <div class="d-flex justify-space-between align-center mb-2">
+                        <MudText Typo="Typo.h6">Últimas Transações</MudText>
+                        <MudLink Href="/compras" Underline="Underline.Hover">Ver tudo</MudLink>
+                    </div>
+
+                    <MudTable Items="@_dashboardData.UltimasTransacoes" Hover="true" Dense="true" Elevation="0">
+                        <HeaderContent>
+                            <MudTh>Data</MudTh>
+                            <MudTh>Valor</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Data">@context.Data.ToString("dd/MM")</MudTd>
+                            <MudTd DataLabel="Valor" Style="font-weight:bold; color: var(--mud-palette-success);">
+                                R$ @context.Valor.ToString("N0")
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudPaper>
+            </MudItem>
+
+        </MudGrid>
+    }
+</MudContainer>
 
 @code {
     private bool _isLoading = true;
-    private string? _errorMessage;
     private string? _userName;
     private DashboardDetailsDTO? _dashboardData;
+
+    private List<ChartSeries> _seriesEvolucao = new();
+    private string[] _labelsEvolucao = Array.Empty<string>();
+    private List<ChartSeries> _seriesCartoes = new();
+    private string[] _labelsCartoes = Array.Empty<string>();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            // Pré-condição: Usuário autenticado
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
@@ -139,18 +234,46 @@ else
 
             if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
             {
-                // Gatilho do processamento
                 _dashboardData = await DashboardFacade.ObterDetalhesAsync(userId);
+                ConfigurarGraficos();
             }
         }
         catch (Exception)
         {
-            // FE-01 Passo 2: Mensagem exata de erro
-            _errorMessage = "não foi possível carregar o saldo no momento";
+            // Opcional: Adicionar tratamento de erro visual
         }
         finally
         {
             _isLoading = false;
         }
+    }
+
+    private void ConfigurarGraficos()
+    {
+        if (_dashboardData == null) return;
+
+        // Gráfico Linha
+        _labelsEvolucao = _dashboardData.EvolucaoPontos.Select(x => x.MesAno).ToArray();
+        _seriesEvolucao = new List<ChartSeries>() {
+new ChartSeries() { Name = "Pontos", Data = _dashboardData.EvolucaoPontos.Select(x => x.PontosAcumulados).ToArray() }
+};
+
+        // Gráfico Barras (Com abreviação de nomes)
+        _labelsCartoes = _dashboardData.TopCartoes
+        .Select(x => AbreviarNome(x.NomeCartao, 8)) // Limita a 12 caracteres para não quebrar o layout
+        .ToArray();
+
+        _seriesCartoes = new List<ChartSeries>() {
+new ChartSeries() { Name = "Pontos", Data = _dashboardData.TopCartoes.Select(x => x.PontosGerados).ToArray() }
+};
+    }
+
+    // Função auxiliar para abreviar nomes longos
+    private string AbreviarNome(string nome, int tamanhoMaximo = 10)
+    {
+        if (string.IsNullOrEmpty(nome)) return "";
+        return nome.Length > tamanhoMaximo
+        ? $"{nome.Substring(0, tamanhoMaximo)}..."
+        : nome;
     }
 }
