@@ -2,16 +2,16 @@ using Miles.Core.Entities;
 
 namespace Miles.Core.Interfaces;
 
+/// <summary>
 /// Contrato de persistência para a entidade Usuario (RF-002)
-/// Define operações de acesso a dados seguindo o padrão Repository
+/// </summary>
 public interface IUsuarioRepository
 {
+    Task AdicionarAsync(Usuario usuario, CancellationToken ct = default);
 
-    void Adicionar(Usuario usuario);
+    Task AtualizarAsync(Usuario usuario, CancellationToken ct = default);
 
-    void Atualizar(Usuario usuario);
-    Usuario? ObterPorEmail(string email);
+    Task<Usuario?> ObterPorEmailAsync(string email, CancellationToken ct = default);
 
-
-    Usuario? ObterPorId(int id);
+    Task<Usuario?> ObterPorIdAsync(int id, CancellationToken ct = default);
 }

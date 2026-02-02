@@ -4,8 +4,9 @@
 @using Miles.Application.Services
 @using Miles.WebApp.Auth
 @using Microsoft.AspNetCore.Components.Authorization
+@using Miles.Core.Interfaces
 @attribute [Microsoft.AspNetCore.Authorization.AllowAnonymous]
-@inject AuthService AuthService
+@inject IAuthService AuthService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
 
@@ -17,21 +18,17 @@
             <div class="card shadow">
                 <div class="card-body p-4">
                     <div class="d-flex flex-column align-center mb-4">
-
                         <MudIcon Icon="@Icons.Material.Filled.Lock" Color="Color.Primary" Style="font-size: 4rem;"
                             Class="mb-2" />
-
                         <div class="d-flex align-center justify-center">
                             <MudIcon Icon="@Icons.Material.Filled.FlightTakeoff" Size="Size.Large" Class="mr-2" />
                             <MudText Typo="Typo.h2" Class="fw-bold">
                                 Miles Manager
                             </MudText>
                         </div>
-
                         <MudText Typo="Typo.body1" Class="mt-2">
                             Faça login para gerenciar seus pontos
                         </MudText>
-
                     </div>
 
                     @if (!string.IsNullOrEmpty(mensagemErro))
@@ -89,13 +86,13 @@
 
         try
         {
-            var resultado = AuthService.RealizarLogin(loginInput);
+            // CORREÇÃO: Chamada Async
+            var resultado = await AuthService.RealizarLoginAsync(loginInput);
 
             if (resultado.Sucesso && resultado.UsuarioId.HasValue)
             {
-
                 Log.Information("Usuário {Email} autenticado com sucesso", resultado.Email);
-                // ATUALIZADO: Chama o método ASSÍNCRONO e aguarda (await) a gravação no navegador
+
                 var authProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
 
                 await authProvider.MarkUserAsAuthenticatedAsync(
@@ -103,9 +100,6 @@
                 resultado.Nome ?? "",
                 resultado.Email ?? ""
                 );
-
-                // O delay pode ser removido pois o await acima já garante a espera
-                // await Task.Delay(100);
 
                 Navigation.NavigateTo("/dashboard");
             }

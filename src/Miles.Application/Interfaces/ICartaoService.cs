@@ -8,9 +8,11 @@ public interface ICartaoService
 
     Task<CartaoInputDTO?> ObterPorIdAsync(int id);
 
-    void Cadastrar(CartaoInputDTO input);
+    // Mudança: void -> Task e renomeado para CadastrarAsync
+    Task CadastrarAsync(CartaoInputDTO input);
 
-    void Atualizar(CartaoInputDTO input);
+    // Mudança: void -> Task e renomeado para AtualizarAsync
+    Task AtualizarAsync(CartaoInputDTO input);
 
     Task RemoverAsync(int id);
 }

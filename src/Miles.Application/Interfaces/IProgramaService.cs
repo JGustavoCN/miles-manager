@@ -1,15 +1,17 @@
 using Miles.Application.DTOs;
-using Miles.Core.Entities;
 
 namespace Miles.Application.Interfaces;
 
 public interface IProgramaService
 {
-
+    // Apenas métodos Async e retornando DTOs (nada de Entidades aqui)
     Task<List<ProgramaInputDTO>> ObterPorUsuarioAsync(int usuarioId);
-    List<ProgramaFidelidade> ListarPorUsuario(int usuarioId);
-    ProgramaInputDTO? ObterPorId(int id);
-    void Adicionar(ProgramaInputDTO dto);
-    void Atualizar(ProgramaInputDTO dto);
-    void Remover(int id);
+
+    Task<ProgramaInputDTO?> ObterPorIdAsync(int id);
+
+    Task AdicionarAsync(ProgramaInputDTO dto);
+
+    Task AtualizarAsync(ProgramaInputDTO dto);
+
+    Task RemoverAsync(int id);
 }

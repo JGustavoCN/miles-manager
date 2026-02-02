@@ -5,7 +5,6 @@ using Miles.Infrastructure.Data;
 
 namespace Miles.Infrastructure.Repositories;
 
-/// Implementação do repositório de usuários usando EF Core (UC-01)
 public class UsuarioRepository : IUsuarioRepository
 {
     private readonly AppDbContext _context;
@@ -15,34 +14,39 @@ public class UsuarioRepository : IUsuarioRepository
         _context = context;
     }
 
-    public void Adicionar(Usuario usuario)
+    public async Task AdicionarAsync(Usuario usuario, CancellationToken ct = default)
     {
-        _context.Usuarios.Add(usuario);
-        _context.SaveChanges();
+        await _context.Usuarios.AddAsync(usuario, ct);
+        await _context.SaveChangesAsync(ct);
     }
-    public void Atualizar(Usuario usuario)
-    {
-        var local = _context.Usuarios.Local.FirstOrDefault(u => u.Id == usuario.Id);
 
-        // Se encontrou, "esquece" a antiga para poder anexar a nova sem conflito
+    public async Task AtualizarAsync(Usuario usuario, CancellationToken ct = default)
+    {
+        // BLINDAGEM BLAZOR: Verifica se já existe na memória
+        var local = _context.Usuarios.Local.FirstOrDefault(u => u.Id == usuario.Id);
         if (local != null)
         {
             _context.Entry(local).State = EntityState.Detached;
         }
+
         _context.Usuarios.Update(usuario);
-        _context.SaveChanges();
-    }
-    public Usuario? ObterPorEmail(string email)
-    {
-        return _context.Usuarios
-            .AsNoTracking()
-            .FirstOrDefault(u => u.Email == email);
+        await _context.SaveChangesAsync(ct);
+
+        // Limpeza
+        _context.Entry(usuario).State = EntityState.Detached;
     }
 
-    public Usuario? ObterPorId(int id)
+    public async Task<Usuario?> ObterPorEmailAsync(string email, CancellationToken ct = default)
     {
-        return _context.Usuarios
+        return await _context.Usuarios
+            .AsNoTracking() // Login é leitura apenas, muito mais rápido assim
+            .FirstOrDefaultAsync(u => u.Email == email, ct);
+    }
+
+    public async Task<Usuario?> ObterPorIdAsync(int id, CancellationToken ct = default)
+    {
+        return await _context.Usuarios
             .AsNoTracking()
-            .FirstOrDefault(u => u.Id == id);
+            .FirstOrDefaultAsync(u => u.Id == id, ct);
     }
 }

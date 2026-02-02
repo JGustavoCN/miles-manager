@@ -14,43 +14,40 @@ public class UsuarioService : IUsuarioService
         _usuarioRepository = usuarioRepository;
     }
 
-    public void AtualizarPerfil(int usuarioId, PerfilInputDTO dto)
+    public async Task AtualizarPerfilAsync(int usuarioId, PerfilInputDTO dto)
     {
-        var usuario = _usuarioRepository.ObterPorId(usuarioId);
+        var usuario = await _usuarioRepository.ObterPorIdAsync(usuarioId);
         if (usuario == null)
             throw new ValorInvalidoException("Usuário não encontrado.");
 
-        // Atualiza apenas o nome, mantendo o e-mail inalterado (Regra do Checklist)
+        // Atualiza apenas o nome
         usuario.Nome = dto.Nome;
 
-        usuario.Validar(); // Garante integridade (RF-008)
-        _usuarioRepository.Atualizar(usuario);
+        usuario.Validar();
+
+        await _usuarioRepository.AtualizarAsync(usuario);
     }
 
-    public void AlterarSenha(int usuarioId, TrocaSenhaInputDTO dto)
+    public async Task AlterarSenhaAsync(int usuarioId, TrocaSenhaInputDTO dto)
     {
-        var usuario = _usuarioRepository.ObterPorId(usuarioId);
+        var usuario = await _usuarioRepository.ObterPorIdAsync(usuarioId);
         if (usuario == null)
             throw new ValorInvalidoException("Usuário não encontrado.");
 
-        // FE-02: Valida se a senha atual está correta
+        // Valida senha atual
         if (!VerificarSenha(dto.SenhaAtual, usuario.SenhaHash))
         {
             throw new ValorInvalidoException("A senha atual informada está incorreta");
         }
 
-        // Gera o hash da nova senha e atualiza
+        // Gera hash da nova senha
         usuario.SenhaHash = GerarHash(dto.NovaSenha);
 
-        // Não chamamos usuario.Validar() aqui pois ele validaria nome/email,
-        // mas como carregamos do banco, eles devem estar ok.
-        _usuarioRepository.Atualizar(usuario);
+        await _usuarioRepository.AtualizarAsync(usuario);
     }
 
-    // Métodos auxiliares de criptografia (Devem corresponder ao AuthService)
     private bool VerificarSenha(string senhaDigitada, string hashArmazenado)
     {
-        // Exemplo usando BCrypt. Se estiver usando outro, ajuste aqui.
         return BCrypt.Net.BCrypt.Verify(senhaDigitada, hashArmazenado);
     }
 

@@ -37,18 +37,20 @@ public class CartaoService : ICartaoService
         return cartao == null ? null : MilesMapper.ToDTO(cartao);
     }
 
-    public void Cadastrar(CartaoInputDTO input)
+    public async Task CadastrarAsync(CartaoInputDTO input)
     {
         try
         {
-            ValidarProgramaExistente(input.ProgramaId);
+            // Alterado para Async: Validação não bloqueante
+            await ValidarProgramaExistenteAsync(input.ProgramaId);
 
             var cartao = MilesMapper.ToEntity(input);
 
             // UC-08: Validação Centralizada
             cartao.Validar();
 
-            _repository.Adicionar(cartao);
+            await _repository.AdicionarAsync(cartao);
+
             _logger.LogInformation("Cartão {Nome} cadastrado com sucesso", cartao.Nome);
         }
         catch (ValorInvalidoException ex)
@@ -58,20 +60,21 @@ public class CartaoService : ICartaoService
         }
     }
 
-    public void Atualizar(CartaoInputDTO input)
+    public async Task AtualizarAsync(CartaoInputDTO input)
     {
         try
         {
-            ValidarProgramaExistente(input.ProgramaId);
+            // Alterado para Async
+            await ValidarProgramaExistenteAsync(input.ProgramaId);
 
-            // 1. Converte DTO para Entidade (cria um objeto novo/detached)
+            // 1. Converte DTO para Entidade
             var cartaoAtualizado = MilesMapper.ToEntity(input);
 
             // 2. Valida regras de domínio
             cartaoAtualizado.Validar();
 
-            // 3. O Repositório (já corrigido) gerencia o anexo e o update no banco
-            _repository.Atualizar(cartaoAtualizado);
+            // 3. Persistência Async
+            await _repository.AtualizarAsync(cartaoAtualizado);
 
             _logger.LogInformation("Cartão {Id} atualizado com sucesso", cartaoAtualizado.Id);
         }
@@ -81,10 +84,10 @@ public class CartaoService : ICartaoService
             throw;
         }
     }
+
     public async Task RemoverAsync(int id)
     {
-        // FE-02: Exclusão Bloqueada (Verificação de Integridade)
-        // Usa o novo método criado no repositório para verificar transações
+        // FE-02: Exclusão Bloqueada
         bool possuiTransacoes = await _repository.PossuiTransacoesAsync(id);
 
         if (possuiTransacoes)
@@ -94,13 +97,17 @@ public class CartaoService : ICartaoService
             throw new DomainException(msg);
         }
 
-        _repository.Remover(id);
+        await _repository.RemoverAsync(id);
+
         _logger.LogInformation("Cartão {Id} removido com sucesso", id);
     }
 
-    private void ValidarProgramaExistente(int programaId)
+    // Método privado também convertido para Async Task
+    private async Task ValidarProgramaExistenteAsync(int programaId)
     {
-        var programa = _programaRepository.ObterPorId(programaId);
+        // Agora usamos o método assíncrono do repositório de Programas
+        var programa = await _programaRepository.ObterPorIdAsync(programaId);
+
         if (programa == null)
         {
             throw new ValorInvalidoException("Programa de fidelidade não encontrado.");

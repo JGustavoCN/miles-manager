@@ -1,6 +1,5 @@
 using Miles.Application.DTOs;
 using Miles.Application.Interfaces;
-using Miles.Core.Entities;
 using Miles.Core.Exceptions;
 using Miles.Core.Interfaces;
 
@@ -15,31 +14,23 @@ public class ProgramaService : IProgramaService
         _repository = repository;
     }
 
-    public List<ProgramaFidelidade> ListarPorUsuario(int usuarioId)
+    public async Task<List<ProgramaInputDTO>> ObterPorUsuarioAsync(int usuarioId)
     {
-        return _repository.ObterPorUsuario(usuarioId);
+        // O repositório agora retorna IEnumerable, então o Select funciona perfeitamente
+        var programas = await _repository.ObterPorUsuarioAsync(usuarioId);
+        return programas.Select(MilesMapper.ToDTO).ToList();
     }
 
-    public Task<List<ProgramaInputDTO>> ObterPorUsuarioAsync(int usuarioId)
+    public async Task<ProgramaInputDTO?> ObterPorIdAsync(int id)
     {
-        var programas = _repository.ObterPorUsuario(usuarioId);
-
-        var dtos = programas.Select(MilesMapper.ToDTO).ToList();
-
-        return Task.FromResult(dtos);
-    }
-
-    public ProgramaInputDTO? ObterPorId(int id)
-    {
-        var programa = _repository.ObterPorId(id);
+        var programa = await _repository.ObterPorIdAsync(id);
         return programa != null ? MilesMapper.ToDTO(programa) : null;
     }
 
-    public void Adicionar(ProgramaInputDTO dto)
+    public async Task AdicionarAsync(ProgramaInputDTO dto)
     {
-        // 1. Validar Duplicidade de Nome (FE-01)
-        // Regra: "Assegurando que o nome do programa [...] não seja duplicado"
-        if (_repository.ExistePeloNome(dto.Nome, dto.UsuarioId))
+        // 1. Validar Duplicidade de Nome (FE-01) - Agora é Async!
+        if (await _repository.ExistePeloNomeAsync(dto.Nome, dto.UsuarioId))
         {
             throw new ValorInvalidoException("O programa já se encontra cadastrado.");
         }
@@ -49,17 +40,18 @@ public class ProgramaService : IProgramaService
         // 2. Validação da Entidade (RF-008)
         programa.Validar();
 
-        _repository.Adicionar(programa);
+        await _repository.AdicionarAsync(programa);
     }
 
-    public void Atualizar(ProgramaInputDTO dto)
+    public async Task AtualizarAsync(ProgramaInputDTO dto)
     {
-        var programaExistente = _repository.ObterPorId(dto.Id);
+        // 1. Busca do banco (traz o Usuario junto por causa do Include)
+        var programaExistente = await _repository.ObterPorIdAsync(dto.Id);
         if (programaExistente == null) return;
 
-        // Se o nome mudou, verificar se o novo nome já existe para outro programa
+        // Validação de nome único...
         if (programaExistente.Nome != dto.Nome &&
-            _repository.ExistePeloNome(dto.Nome, dto.UsuarioId))
+            await _repository.ExistePeloNomeAsync(dto.Nome, dto.UsuarioId))
         {
             throw new ValorInvalidoException("O programa já se encontra cadastrado.");
         }
@@ -70,18 +62,19 @@ public class ProgramaService : IProgramaService
 
         programaExistente.Validar();
 
-        _repository.Atualizar(programaExistente);
+        programaExistente.Usuario = null!;
+
+        await _repository.AtualizarAsync(programaExistente);
     }
 
-    public void Remover(int id)
+    public async Task RemoverAsync(int id)
     {
         // 1. Validar Integridade Referencial (FE-02)
-        // Regra: "Se existirem cartões vinculados, impedir exclusão e exibir alerta exato"
-        if (_repository.PossuiCartoesVinculados(id))
+        if (await _repository.PossuiCartoesVinculadosAsync(id))
         {
             throw new ValorInvalidoException("Não é possível excluir o programa devido a vínculos existentes.");
         }
 
-        _repository.Remover(id);
+        await _repository.RemoverAsync(id);
     }
 }

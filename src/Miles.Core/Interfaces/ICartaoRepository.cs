@@ -2,26 +2,25 @@ using Miles.Core.Entities;
 
 namespace Miles.Core.Interfaces;
 
+/// <summary>
 /// Contrato de persistência para a entidade Cartao (RF-003)
 /// Gerencia cartões de crédito vinculados a programas de fidelidade
-
+/// </summary>
 public interface ICartaoRepository
 {
+    // Leitura: Retorna IEnumerable para indicar que a query já foi materializada
+    Task<IEnumerable<Cartao>> ObterTodosAsync(CancellationToken ct = default);
 
-    Task<List<Cartao>> ObterTodosAsync();
+    Task<Cartao?> ObterPorIdAsync(int id, CancellationToken ct = default);
 
-    // Alterado para Async para suportar operações de I/O no banco (EF Core)
-    Task<Cartao?> ObterPorIdAsync(int id);
+    Task<IEnumerable<Cartao>> ObterPorUsuarioAsync(int userId, CancellationToken ct = default);
 
-    // Alterado para Async para suportar operações de I/O no banco
-    Task<List<Cartao>> ObterPorUsuarioAsync(int userId);
+    // Escrita: Tudo retorna Task (void assíncrono)
+    Task AdicionarAsync(Cartao cartao, CancellationToken ct = default);
 
-    void Adicionar(Cartao cartao);
+    Task AtualizarAsync(Cartao cartao, CancellationToken ct = default);
 
-    void Atualizar(Cartao cartao);
+    Task RemoverAsync(int id, CancellationToken ct = default);
 
-    void Remover(int id);
-
-    Task<bool> PossuiTransacoesAsync(int id);
+    Task<bool> PossuiTransacoesAsync(int id, CancellationToken ct = default);
 }
-

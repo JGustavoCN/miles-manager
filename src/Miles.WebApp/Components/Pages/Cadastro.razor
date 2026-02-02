@@ -7,7 +7,7 @@
 @using Miles.WebApp.Auth
 @attribute [AllowAnonymous]
 @inject AuthenticationStateProvider AuthStateProvider
-@inject AuthService AuthService // Certifique-se que está injetando a classe concreta ou interface correta
+@inject IAuthService AuthService
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 
@@ -101,24 +101,23 @@
         loading = true;
         try
         {
-            // 1. Tenta Registrar
-            var resultadoRegistro = await AuthService.RegistrarUsuario(cadastroModel);
+            // 1. Tenta Registrar (Agora Async)
+            var resultadoRegistro = await AuthService.RegistrarUsuarioAsync(cadastroModel);
 
             if (resultadoRegistro.Sucesso)
             {
                 Log.Information("Usuário {Email} cadastrado com sucesso", resultadoRegistro.Email);
                 Snackbar.Add("Conta criada com sucesso! Entrando...", Severity.Success);
 
-                // 2. Prepara o objeto de Login (DTO) com os dados do cadastro
+                // 2. Prepara o objeto de Login (DTO)
                 var loginInput = new LoginInputDTO
                 {
                     Email = cadastroModel.Email,
                     Senha = cadastroModel.Senha
                 };
 
-                // 3. Tenta realizar o Login Automaticamente
-                // Nota: Verifiquei no seu Login.razor que este método parece ser síncrono ou retorna direto o resultado
-                var resultadoLogin = AuthService.RealizarLogin(loginInput);
+                // 3. Tenta realizar o Login (Agora Async e Await)
+                var resultadoLogin = await AuthService.RealizarLoginAsync(loginInput);
 
                 if (resultadoLogin.Sucesso && resultadoLogin.UsuarioId.HasValue)
                 {
@@ -131,12 +130,11 @@
                     resultadoLogin.Email ?? ""
                     );
 
-                    // 5. Redireciona para o Dashboard
+                    // 5. Redireciona
                     NavigationManager.NavigateTo("/dashboard");
                 }
                 else
                 {
-                    // Fallback: Se cadastrou mas falhou no login automático, manda para a tela de login
                     Snackbar.Add("Cadastro realizado, mas falha ao logar automaticamente.", Severity.Warning);
                     NavigationManager.NavigateTo("/login");
                 }

@@ -2,22 +2,19 @@ using Miles.Core.Entities;
 
 namespace Miles.Core.Interfaces;
 
-/// Contrato de persistência para a entidade ProgramaFidelidade (RF-004)
-/// Gerencia programas de milhas como Smiles, Latam Pass, Livelo
-
 public interface IProgramaRepository
 {
-    void Adicionar(ProgramaFidelidade programa);
+    Task AdicionarAsync(ProgramaFidelidade programa, CancellationToken ct = default);
 
-    void Atualizar(ProgramaFidelidade programa);
+    Task AtualizarAsync(ProgramaFidelidade programa, CancellationToken ct = default);
 
-    void Remover(int id);
+    Task RemoverAsync(int id, CancellationToken ct = default);
 
-    ProgramaFidelidade? ObterPorId(int id);
+    Task<ProgramaFidelidade?> ObterPorIdAsync(int id, CancellationToken ct = default);
 
-    List<ProgramaFidelidade> ObterPorUsuario(int userId);
+    Task<IEnumerable<ProgramaFidelidade>> ObterPorUsuarioAsync(int userId, CancellationToken ct = default);
 
-    bool ExistePeloNome(string nome, int usuarioId);
+    Task<bool> ExistePeloNomeAsync(string nome, int usuarioId, CancellationToken ct = default);
 
-    bool PossuiCartoesVinculados(int id);
+    Task<bool> PossuiCartoesVinculadosAsync(int id, CancellationToken ct = default);
 }

@@ -1,11 +1,14 @@
 @page "/programas"
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 
+@using Miles.Application.DTOs
+@using Miles.Application.Interfaces
+@using Miles.Core.Exceptions
+
 @inject IProgramaService ProgramaService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject AuthenticationStateProvider AuthStateProvider
-@using Miles.Core.Exceptions
 
 <PageTitle>Programas de Fidelidade - Miles Manager</PageTitle>
 
@@ -49,6 +52,7 @@
             }
             else
             {
+                @* A lista agora é de DTOs *@
                 <MudTable Items="@programas" Hover="true" Striped="true" Dense="true" Elevation="0">
                     <HeaderContent>
                         <MudTh>Nome</MudTh>
@@ -119,12 +123,13 @@
 </MudDialog>
 
 @code {
-    private List<ProgramaFidelidade>? programas;
+    // Mudança: Agora listamos DTOs, não Entidades (Application Layer -> View)
+    private List<ProgramaInputDTO>? programas;
+
     private ProgramaInputDTO programaModel = new();
     private bool dialogVisible;
     private bool isEdicao;
 
-    // CORREÇÃO CS8618: Inicializando com null! ou default!
     private MudForm form = null!;
 
     private bool success;
@@ -134,7 +139,7 @@
     protected override async Task OnInitializedAsync()
     {
         await CarregarUsuario();
-        CarregarProgramas();
+        await CarregarProgramas(); // Agora é Async
     }
 
     private async Task CarregarUsuario()
@@ -148,13 +153,15 @@
         }
     }
 
-    private void CarregarProgramas()
+    // Mudança: Método Async para não bloquear a UI
+    private async Task CarregarProgramas()
     {
         try
         {
             if (currentUserId > 0)
             {
-                programas = ProgramaService.ListarPorUsuario(currentUserId);
+                // Chama o novo método Async do serviço
+                programas = await ProgramaService.ObterPorUsuarioAsync(currentUserId);
                 StateHasChanged();
             }
         }
@@ -173,9 +180,11 @@
         dialogVisible = true;
     }
 
-    private void AbrirModalEdicao(ProgramaFidelidade programa)
+    // Mudança: Recebe DTO
+    private void AbrirModalEdicao(ProgramaInputDTO programa)
     {
         isEdicao = true;
+        // Clonamos o objeto para evitar edição direta na referência da lista antes de salvar
         programaModel = new ProgramaInputDTO
         {
             Id = programa.Id,
@@ -199,17 +208,19 @@
 
             if (isEdicao)
             {
-                ProgramaService.Atualizar(programaModel);
+                // Mudança: Chamada Async
+                await ProgramaService.AtualizarAsync(programaModel);
                 Snackbar.Add("Programa atualizado com sucesso!", Severity.Success);
             }
             else
             {
-                ProgramaService.Adicionar(programaModel);
+                // Mudança: Chamada Async
+                await ProgramaService.AdicionarAsync(programaModel);
                 Snackbar.Add("Programa de fidelidade cadastrado com sucesso", Severity.Success);
             }
 
             dialogVisible = false;
-            CarregarProgramas();
+            await CarregarProgramas();
         }
         catch (ValorInvalidoException ex)
         {
@@ -223,11 +234,9 @@
 
     // --- Ação de Exclusão ---
 
-    private async Task ConfirmarExclusao(ProgramaFidelidade programa)
+    // Mudança: Recebe DTO
+    private async Task ConfirmarExclusao(ProgramaInputDTO programa)
     {
-        // CORREÇÃO CS0246: Código "placeholder" antigo foi removido.
-        // Usamos apenas o MessageBox direto, que é a abordagem correta.
-
         bool? result = await DialogService.ShowMessageBox(
         "Excluir Programa",
         $"Tem certeza que deseja excluir '{programa.Nome}'? Esta ação não pode ser desfeita.",
@@ -237,9 +246,11 @@
         {
             try
             {
-                ProgramaService.Remover(programa.Id);
+                // Mudança: Chamada Async
+                await ProgramaService.RemoverAsync(programa.Id);
+
                 Snackbar.Add("Programa removido com sucesso!", Severity.Success);
-                CarregarProgramas();
+                await CarregarProgramas();
             }
             catch (ValorInvalidoException ex)
             {

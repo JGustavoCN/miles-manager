@@ -2,16 +2,19 @@ using Miles.Core.Entities;
 
 namespace Miles.Core.Interfaces;
 
-/// Contrato de persistência para a entidade Transacao (RF-005)
-/// Gerencia o histórico de compras e cálculo de pontos
 public interface ITransacaoRepository
 {
+    // Create
+    Task AdicionarAsync(Transacao transacao, CancellationToken ct = default);
 
-    void Adicionar(Transacao transacao);
+    // Read
+    Task<Transacao?> ObterPorIdAsync(int id, CancellationToken ct = default);
+    Task<IEnumerable<Transacao>> ObterPorUsuarioAsync(int userId, CancellationToken ct = default);
+    Task<IEnumerable<Transacao>> ObterExtratoAsync(int cartaoId, CancellationToken ct = default);
 
+    // Update
+    Task AtualizarAsync(Transacao transacao, CancellationToken ct = default);
 
-    List<Transacao> ObterExtrato(int cartaoId);
-
-
-    List<Transacao> ObterPorUsuario(int userId);
+    // Delete
+    Task RemoverAsync(int id, CancellationToken ct = default);
 }

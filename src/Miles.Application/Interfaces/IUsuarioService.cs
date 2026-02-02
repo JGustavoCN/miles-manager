@@ -4,6 +4,6 @@ namespace Miles.Application.Interfaces;
 
 public interface IUsuarioService
 {
-    void AtualizarPerfil(int usuarioId, PerfilInputDTO dto);
-    void AlterarSenha(int usuarioId, TrocaSenhaInputDTO dto);
+    Task AtualizarPerfilAsync(int usuarioId, PerfilInputDTO dto);
+    Task AlterarSenhaAsync(int usuarioId, TrocaSenhaInputDTO dto);
 }

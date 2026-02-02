@@ -1,9 +1,13 @@
 @page "/compras"
-@using Miles.Core.Entities
-@using Miles.Core.Interfaces
-@inject ITransacaoRepository TransacaoRepository
+@using Miles.Application.DTOs
+@using Miles.Application.Interfaces
+@using Miles.Core.Exceptions
+
+@inject ITransacaoService TransacaoService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthStateProvider
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 
 <PageTitle>Minhas Compras</PageTitle>
@@ -39,6 +43,7 @@
                 <MudTh>Cartão</MudTh>
                 <MudTh>Valor (R$)</MudTh>
                 <MudTh>Pontos (Est.)</MudTh>
+                <MudTh Style="text-align:center">Ações</MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="Data">@context.Data.ToShortDateString()</MudTd>
@@ -46,19 +51,17 @@
                     <MudText Typo="Typo.body2">@context.Descricao</MudText>
                     <MudText Typo="Typo.caption">@context.Categoria</MudText>
                 </MudTd>
-                <MudTd DataLabel="Cartão">
-                    @if (context.Cartao != null)
-                    {
-                        @($"{context.Cartao.Nome} ({context.Cartao.Bandeira})")
-                    }
-                    else
-                    {
-                        <MudText Color="Color.Error">Cartão excluído</MudText>
-                    }
-                </MudTd>
+                <MudTd DataLabel="Cartão">@context.NomeCartao</MudTd>
                 <MudTd DataLabel="Valor">@context.Valor.ToString("C2")</MudTd>
                 <MudTd DataLabel="Pontos">
                     <MudChip T="string" Color="Color.Success" Size="Size.Small">@context.PontosEstimados pts</MudChip>
+                </MudTd>
+                <MudTd DataLabel="Ações" Style="text-align:center">
+                    @* CORREÇÃO: .GetValueOrDefault() para converter int? em int *@
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
+                        OnClick="@(() => Editar(context.Id.GetValueOrDefault()))" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
+                        OnClick="@(() => Excluir(context))" />
                 </MudTd>
             </RowTemplate>
         </MudTable>
@@ -67,25 +70,26 @@
 </MudContainer>
 
 @code {
-    private List<Transacao> _transacoes = new();
+    private List<TransacaoInputDTO> _transacoes = new();
     private bool _carregando = true;
-    private int _usuarioId = 1; // Fallback para dev
+    private int _usuarioId = 1;
 
     protected override async Task OnInitializedAsync()
     {
+        await CarregarDados();
+    }
+
+    private async Task CarregarDados()
+    {
+        _carregando = true;
         try
         {
-            // Simulação de Auth para pegar o usuário correto
             var authState = await AuthStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
-            if (user.Identity != null && user.Identity.IsAuthenticated)
-            {
-                var idClaim = user.FindFirst(c => c.Type == "sub" || c.Type == System.Security.Claims.ClaimTypes.NameIdentifier);
-                if (idClaim != null && int.TryParse(idClaim.Value, out int id)) _usuarioId = id;
-            }
+            var idClaim = user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(idClaim, out int id)) _usuarioId = id;
 
-            // Busca as transações usando o Repositório
-            _transacoes = TransacaoRepository.ObterPorUsuario(_usuarioId);
+            _transacoes = await TransacaoService.ObterPorUsuarioAsync(_usuarioId);
         }
         finally
         {
@@ -96,5 +100,28 @@
     private void IrParaNovaTransacao()
     {
         NavigationManager.NavigateTo("/transacoes/nova");
+    }
+
+    private void Editar(int id)
+    {
+        NavigationManager.NavigateTo($"/transacoes/editar/{id}");
+    }
+
+    private async Task Excluir(TransacaoInputDTO item)
+    {
+        if (!item.Id.HasValue) return;
+
+        bool? result = await DialogService.ShowMessageBox(
+        "Excluir Transação",
+        $"Deseja remover a compra '{item.Descricao}'?",
+        yesText: "Excluir", cancelText: "Cancelar");
+
+        if (result == true)
+        {
+            // CORREÇÃO: .Value é seguro aqui pois checamos HasValue antes
+            await TransacaoService.RemoverAsync(item.Id.Value);
+            Snackbar.Add("Transação removida.", Severity.Success);
+            await CarregarDados();
+        }
     }
 }

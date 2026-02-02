@@ -14,29 +14,62 @@ public class TransacaoRepository : ITransacaoRepository
         _context = context;
     }
 
-    public void Adicionar(Transacao transacao)
+    public async Task AdicionarAsync(Transacao transacao, CancellationToken ct = default)
     {
-        _context.Transacoes.Add(transacao);
-        _context.SaveChanges();
+        await _context.Transacoes.AddAsync(transacao, ct);
+        await _context.SaveChangesAsync(ct);
     }
 
-    public List<Transacao> ObterExtrato(int cartaoId)
+    public async Task<Transacao?> ObterPorIdAsync(int id, CancellationToken ct = default)
     {
-        return _context.Transacoes
+        return await _context.Transacoes
             .AsNoTracking()
-            .Where(t => t.CartaoId == cartaoId)
-            .OrderByDescending(t => t.Data)
-            .ToList();
+            .Include(t => t.Cartao) // Importante para exibir o nome do cartão na edição
+            .FirstOrDefaultAsync(t => t.Id == id, ct);
     }
 
-    public List<Transacao> ObterPorUsuario(int userId)
+    public async Task<IEnumerable<Transacao>> ObterPorUsuarioAsync(int userId, CancellationToken ct = default)
     {
-        // Inclui o Cartão para filtrar pelo ID do Usuário dono do cartão
-        return _context.Transacoes
+        return await _context.Transacoes
             .AsNoTracking()
             .Include(t => t.Cartao)
             .Where(t => t.Cartao.UsuarioId == userId)
             .OrderByDescending(t => t.Data)
-            .ToList();
+            .ToListAsync(ct);
+    }
+
+    public async Task<IEnumerable<Transacao>> ObterExtratoAsync(int cartaoId, CancellationToken ct = default)
+    {
+        return await _context.Transacoes
+            .AsNoTracking()
+            .Where(t => t.CartaoId == cartaoId)
+            .OrderByDescending(t => t.Data)
+            .ToListAsync(ct);
+    }
+
+    public async Task AtualizarAsync(Transacao transacao, CancellationToken ct = default)
+    {
+        // Proteção contra Tracking Duplicado no Blazor
+        var local = _context.Transacoes.Local.FirstOrDefault(t => t.Id == transacao.Id);
+        if (local != null)
+        {
+            _context.Entry(local).State = EntityState.Detached;
+        }
+
+        _context.Transacoes.Update(transacao);
+        await _context.SaveChangesAsync(ct);
+
+        // Limpeza pós-update
+        _context.Entry(transacao).State = EntityState.Detached;
+    }
+
+    public async Task RemoverAsync(int id, CancellationToken ct = default)
+    {
+        var transacao = await _context.Transacoes.FindAsync(new object[] { id }, ct);
+        if (transacao != null)
+        {
+            _context.Transacoes.Remove(transacao);
+            await _context.SaveChangesAsync(ct);
+        }
     }
 }

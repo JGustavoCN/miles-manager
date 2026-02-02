@@ -121,7 +121,8 @@
         loading = true;
         try
         {
-            UsuarioService.AtualizarPerfil(usuarioId, perfilModel);
+            // Chamada Async
+            await UsuarioService.AtualizarPerfilAsync(usuarioId, perfilModel);
 
             if (AuthStateProvider is CustomAuthenticationStateProvider customAuth)
             {
@@ -144,13 +145,14 @@
         }
     }
 
-    // Removemos 'async Task' pois o serviço é síncrono
-    private void AlterarSenha()
+    // Mudança: void -> async Task
+    private async Task AlterarSenha()
     {
         loading = true;
         try
         {
-            UsuarioService.AlterarSenha(usuarioId, senhaModel);
+            // Chamada Async
+            await UsuarioService.AlterarSenhaAsync(usuarioId, senhaModel);
             Snackbar.Add("Senha alterada com sucesso!", Severity.Success);
 
             senhaModel = new TrocaSenhaInputDTO();

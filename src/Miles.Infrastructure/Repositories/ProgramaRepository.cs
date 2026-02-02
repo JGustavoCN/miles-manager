@@ -14,53 +14,68 @@ public class ProgramaRepository : IProgramaRepository
         _context = context;
     }
 
-    public void Adicionar(ProgramaFidelidade programa)
+    public async Task AdicionarAsync(ProgramaFidelidade programa, CancellationToken ct = default)
     {
-        _context.ProgramasFidelidade.Add(programa);
-        _context.SaveChanges();
+        await _context.ProgramasFidelidade.AddAsync(programa, ct);
+        await _context.SaveChangesAsync(ct);
     }
 
-    public void Atualizar(ProgramaFidelidade programa)
+    public async Task AtualizarAsync(ProgramaFidelidade programa, CancellationToken ct = default)
     {
+        // 1. Verifica se já existe um programa com este ID na memória local do EF
+        var local = _context.ProgramasFidelidade.Local.FirstOrDefault(p => p.Id == programa.Id);
+
+        if (local != null)
+        {
+            // 2. Se existir, desanexa para evitar o erro de "Same Key"
+            _context.Entry(local).State = EntityState.Detached;
+        }
+
+        // 3. Atualiza
         _context.ProgramasFidelidade.Update(programa);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync(ct);
+
+        // 4. Limpeza (Boa prática para Blazor Server)
+        _context.Entry(programa).State = EntityState.Detached;
     }
 
-    public void Remover(int id)
+    public async Task RemoverAsync(int id, CancellationToken ct = default)
     {
-        var programa = _context.ProgramasFidelidade.Find(id);
+        var programa = await _context.ProgramasFidelidade.FindAsync(new object[] { id }, ct);
         if (programa != null)
         {
             _context.ProgramasFidelidade.Remove(programa);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(ct);
         }
     }
 
-    public ProgramaFidelidade? ObterPorId(int id)
+    public async Task<ProgramaFidelidade?> ObterPorIdAsync(int id, CancellationToken ct = default)
     {
-        return _context.ProgramasFidelidade
+        return await _context.ProgramasFidelidade
+            .AsNoTracking() // Performance: Leitura rápida sem tracking
             .Include(p => p.Usuario)
-            .FirstOrDefault(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
     }
 
-    public List<ProgramaFidelidade> ObterPorUsuario(int userId)
+    public async Task<IEnumerable<ProgramaFidelidade>> ObterPorUsuarioAsync(int userId, CancellationToken ct = default)
     {
-        return _context.ProgramasFidelidade
+        return await _context.ProgramasFidelidade
+            .AsNoTracking()
             .Where(p => p.UsuarioId == userId)
-            .OrderBy(p => p.Nome) // Ordenação alfabética facilita a visualização na lista
-            .ToList();
+            .OrderBy(p => p.Nome)
+            .ToListAsync(ct);
     }
 
-    public bool ExistePeloNome(string nome, int usuarioId)
+    public async Task<bool> ExistePeloNomeAsync(string nome, int usuarioId, CancellationToken ct = default)
     {
-        // Verifica duplicidade apenas dentro dos programas do usuário (Multi-tenant)
-        return _context.ProgramasFidelidade
-            .Any(p => p.UsuarioId == usuarioId && p.Nome == nome);
+        // AnyAsync é otimizado: faz "SELECT TOP 1 1 FROM..."
+        return await _context.ProgramasFidelidade
+            .AnyAsync(p => p.UsuarioId == usuarioId && p.Nome == nome, ct);
     }
 
-    public bool PossuiCartoesVinculados(int id)
+    public async Task<bool> PossuiCartoesVinculadosAsync(int id, CancellationToken ct = default)
     {
-        // Verifica integridade referencial para o FE-02
-        return _context.Cartoes.Any(c => c.ProgramaId == id);
+        return await _context.Cartoes
+            .AnyAsync(c => c.ProgramaId == id, ct);
     }
 }

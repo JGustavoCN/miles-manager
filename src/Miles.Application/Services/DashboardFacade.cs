@@ -15,18 +15,21 @@ public class DashboardFacade : IDashboardFacade
         _transacaoRepository = transacaoRepository;
     }
 
-    public Task<DashboardDetailsDTO> ObterDetalhesAsync(int userId)
+    public async Task<DashboardDetailsDTO> ObterDetalhesAsync(int userId)
     {
-        // Passo 2 do Fluxo Principal: Consulta base de dados
-        var programas = _programaRepository.ObterPorUsuario(userId);
-        var transacoes = _transacaoRepository.ObterPorUsuario(userId);
+        // 1. Busca dados de forma Assíncrona (Sem bloquear a thread do servidor)
+        // Nota: O DbContext não é thread-safe, por isso fazemos um await de cada vez.
+        var programas = await _programaRepository.ObterPorUsuarioAsync(userId);
+
+        // AVISO: Este método ObterPorUsuarioAsync ainda vamos criar no TransacaoRepository a seguir!
+        var transacoes = await _transacaoRepository.ObterPorUsuarioAsync(userId);
 
         var dashboardDTO = new DashboardDetailsDTO();
 
-        // Passo 3 do Fluxo Principal: Processamento de cálculo e agrupamento
+        // 2. Processamento em memória (LinQ to Objects)
+        // Como 'programas' e 'transacoes' já estão materializados na memória, este loop é rápido.
         foreach (var programa in programas)
         {
-            // Soma pontos das transações vinculadas aos cartões deste programa
             var saldoDoPrograma = transacoes
                 .Where(t => t.Cartao != null && t.Cartao.ProgramaId == programa.Id)
                 .Sum(t => t.PontosEstimados);
@@ -41,6 +44,6 @@ public class DashboardFacade : IDashboardFacade
 
         dashboardDTO.TotalGeralPontos = dashboardDTO.SaldosPorPrograma.Sum(p => p.SaldoTotal);
 
-        return Task.FromResult(dashboardDTO);
+        return dashboardDTO;
     }
 }

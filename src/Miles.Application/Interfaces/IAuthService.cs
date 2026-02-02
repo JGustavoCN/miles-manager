@@ -3,13 +3,13 @@ using Miles.Application.DTOs;
 
 namespace Miles.Core.Interfaces;
 
-/// Contrato de serviço de autenticação (UC-01)
-/// Define operações de login e validação de credenciais
 public interface IAuthService
 {
-    /// Autentica um usuário com email e senha
-    /// Retorna o usuário autenticado ou null se as credenciais forem inválidas
-    Usuario? Autenticar(string email, string senha);
+    // Autenticar agora retorna Task (pois vai ao banco buscar a senha hash)
+    Task<Usuario?> AutenticarAsync(string email, string senha);
 
-    Task<SessaoResultDTO> RegistrarUsuario(CadastroInputDTO input);
+    // O login completo (que retorna o DTO de sessão)
+    Task<SessaoResultDTO> RealizarLoginAsync(LoginInputDTO input);
+
+    Task<SessaoResultDTO> RegistrarUsuarioAsync(CadastroInputDTO input);
 }

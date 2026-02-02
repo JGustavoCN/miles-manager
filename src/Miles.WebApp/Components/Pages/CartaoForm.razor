@@ -66,8 +66,6 @@
 </MudDialog>
 
 @code {
-    // CORREÇÃO CRÍTICA PARA MUD BLAZOR V8+:
-    // MudDialogInstance (classe) foi substituída por IMudDialogInstance (interface)
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter] public int? CartaoId { get; set; }
@@ -91,7 +89,6 @@
 
         if (CartaoId.HasValue)
         {
-            // Modo Edição
             var cartaoExistente = await CartaoService.ObterPorIdAsync(CartaoId.Value);
             if (cartaoExistente != null)
             {
@@ -105,7 +102,6 @@
         }
         else
         {
-            // Modo Criação (Defaults)
             Model.UsuarioId = UsuarioId;
             Model.FatorConversao = 1.0m;
         }
@@ -122,12 +118,12 @@
         {
             if (CartaoId.HasValue)
             {
-                CartaoService.Atualizar(Model);
+                await CartaoService.AtualizarAsync(Model);
                 Snackbar.Add("Cartão atualizado com sucesso", Severity.Success);
             }
             else
             {
-                CartaoService.Cadastrar(Model);
+                await CartaoService.CadastrarAsync(Model);
                 Snackbar.Add("Cartão cadastrado com sucesso", Severity.Success);
             }
 
