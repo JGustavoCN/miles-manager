@@ -1,0 +1,41 @@
+name: Build and Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+      - 'refact/67-revisão-programa' # Seu branch atual para testar já!
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: 'miles-manager-app-jgustavocn' # O nome exato do seu App Service
+  AZURE_WEBAPP_PACKAGE_PATH: '.' # Caminho raiz para o pacote
+  DOTNET_VERSION: '9.0.x' # Versão do .NET
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore src/Miles.WebApp/Miles.WebApp.csproj
+
+      - name: Build
+        run: dotnet build src/Miles.WebApp/Miles.WebApp.csproj --configuration Release --no-restore
+
+      - name: Publish
+        run: dotnet publish src/Miles.WebApp/Miles.WebApp.csproj --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
