@@ -1,201 +1,205 @@
-@page "/transacoes/nova"
-@page "/transacoes/editar/{TransacaoId:int}"
+@page "/nova-transacao"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
 
 @using Miles.Application.DTOs
 @using Miles.Application.Interfaces
-@using Miles.Core.Interfaces
-@using Miles.Core.Entities
 @using Miles.Core.Exceptions
 
 @inject ITransacaoService TransacaoService
-@inject ICartaoRepository CartaoRepository
-@inject ISnackbar Snackbar
-@inject NavigationManager NavigationManager
+@inject ICartaoService CartaoService
 @inject AuthenticationStateProvider AuthStateProvider
-@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
 
-<PageTitle>@(TransacaoId.HasValue ? "Editar Transação" : "Nova Transação")</PageTitle>
+<PageTitle>Nova Transação - Miles Manager</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true" Class="mb-4">
-    @(TransacaoId.HasValue ? "Editar Transação" : "Nova Transação")
+<MudText Typo="Typo.h3" GutterBottom="true">
+    <MudIcon Icon="@Icons.Material.Filled.AddShoppingCart" Class="mr-2" />
+    Nova Transação
 </MudText>
 
-@* UC-08 FE-01: Exibição padronizada de erros de validação em lista *@
-<ValidationErrors Errors="@_errosValidacao" />
+<MudText Typo="Typo.body1" Class="mb-4">
+    Registre uma nova despesa para simular a geração de pontos.
+</MudText>
 
-<MudPaper Class="pa-4">
-    @if (_carregando)
-    {
-        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
-    }
-    else
-    {
-        <EditForm Model="@_input" OnValidSubmit="SalvarTransacao">
-            <DataAnnotationsValidator />
+<MudCard Elevation="3">
+    <MudCardContent>
+        @if (cartoes == null)
+        {
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="mx-auto d-block" />
+        }
+        else if (!cartoes.Any())
+        {
+            <MudAlert Severity="Severity.Warning">
+                Você precisa cadastrar um cartão de crédito primeiro.
+                <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/cartoes">Ir para Cartões</MudButton>
+            </MudAlert>
+        }
+        else
+        {
+            @* UC-08 FE-01: Exibição estruturada de erros de validação *@
+            <ValidationErrors Errors="@_errosValidacao" />
 
-            <MudGrid>
-                <MudItem xs="12" sm="6">
-                    <MudDatePicker Label="Data" @bind-Date="_dataNullable" Required="true" MaxDate="DateTime.Today"
-                        ErrorText="Data não pode ser futura" />
-                </MudItem>
+            <MudForm @ref="form" @bind-IsValid="@success">
+                <MudGrid>
+                    <MudItem xs="12" md="6">
+                        <MudTextField T="string" Label="Descrição" @bind-Value="transacaoModel.Descricao" Required="true"
+                            RequiredError="Descrição é obrigatória" MaxLength="100" Counter="100"
+                            HelperText="Ex: Compra Carrefour" Immediate="true" />
+                    </MudItem>
 
-                <MudItem xs="12" sm="6">
-                    <MudNumericField @bind-Value="_input.Valor" Label="Valor (R$)" Format="C2" Variant="Variant.Text"
-                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney"
-                        HideSpinButtons="true" Required="true" />
-                </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudNumericField @bind-Value="transacaoModel.Valor" Label="Valor (R$)" Format="N2" Min="0.01M"
+                            Required="true" RequiredError="Valor é obrigatório. Deve ser maior que 0." Immediate="true" />
+                    </MudItem>
 
-                <MudItem xs="12">
-                    <MudTextField @bind-Value="_input.Descricao" Label="Descrição" Required="true" MaxLength="200" />
-                </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudSelect T="string" Label="Categoria" @bind-Value="transacaoModel.Categoria" Required="true"
+                            RequiredError="Categoria é obrigatória">
+                            <MudSelectItem Value="@("Alimentação")">Alimentação</MudSelectItem>
+                            <MudSelectItem Value="@("Transporte")">Transporte</MudSelectItem>
+                            <MudSelectItem Value="@("Educação")">Educação</MudSelectItem>
+                            <MudSelectItem Value="@("Entretenimento")">Entretenimento</MudSelectItem>
+                            <MudSelectItem Value="@("Viagem")">Viagem</MudSelectItem>
+                            <MudSelectItem Value="@("Saúde")">Saúde</MudSelectItem>
+                            <MudSelectItem Value="@("Outros")">Outros</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
 
-                <MudItem xs="12" sm="6">
-                    <MudTextField @bind-Value="_input.Categoria" Label="Categoria" Required="true" />
-                </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudDatePicker Label="Data da Transação" @bind-Date="dataSelecionada" Required="true"
+                            RequiredError="Data é obrigatória" DisableToolbar="true" DateFormat="dd/MM/yyyy" />
+                    </MudItem>
 
-                <MudItem xs="12" sm="6">
-                    <MudSelect T="int" Label="Cartão de Crédito" @bind-Value="_input.CartaoId"
-                        AnchorOrigin="Origin.BottomCenter" Required="true">
-                        @if (_cartoes.Any())
-                        {
-                            @foreach (var cartao in _cartoes)
+                    <MudItem xs="12" md="4">
+                        <MudNumericField @bind-Value="transacaoModel.CotacaoDolar" Label="Cotação do Dólar (R$)" Format="N2"
+                            Min="1.00M" Required="true" RequiredError="Cotação é obrigatória."
+                            HelperText="Valor usado para conversão" Immediate="true" />
+                    </MudItem>
+
+                    <MudItem xs="12" md="12">
+                        <MudSelect T="int" Label="Cartão de Crédito" @bind-Value="transacaoModel.CartaoId" Required="true"
+                            RequiredError="Selecione um cartão de crédito">
+                            @foreach (var cartao in cartoes)
                             {
-                                <MudSelectItem Value="@cartao.Id">@cartao.Nome - @cartao.Bandeira</MudSelectItem>
+                                <MudSelectItem Value="@cartao.Id">@cartao.Nome (@cartao.Bandeira)</MudSelectItem>
                             }
-                        }
-                        else
-                        {
-                            <MudSelectItem Value="0" Disabled="true">Nenhum cartão disponível</MudSelectItem>
-                        }
-                    </MudSelect>
-                </MudItem>
+                        </MudSelect>
+                    </MudItem>
 
-                <MudItem xs="12" sm="6">
-                    <MudNumericField @bind-Value="_input.CotacaoDolar" Label="Cotação Dólar (PTAX)" Format="N2"
-                        Adornment="Adornment.Start" AdornmentText="R$" HideSpinButtons="true"
-                        HelperText="Utilizado para conversão de pontos" Required="true" />
-                </MudItem>
-
-                <MudItem xs="12" Class="d-flex justify-end gap-2 mt-4">
-                    <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancelar">Cancelar</MudButton>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
-                        Disabled="@_processando">
-                        @if (_processando)
-                        {
-                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                            <MudText Class="ms-2">Salvando...</MudText>
-                        }
-                        else
-                        {
-                            <MudText>Salvar</MudText>
-                        }
-                    </MudButton>
-                </MudItem>
-            </MudGrid>
-        </EditForm>
-    }
-</MudPaper>
+                </MudGrid>
+            </MudForm>
+        }
+    </MudCardContent>
+    <MudCardActions Class="pb-4 pl-4 pr-4">
+        <MudButton Variant="Variant.Text" OnClick="Voltar">Cancelar</MudButton>
+        <MudSpacer />
+        @if (cartoes != null && cartoes.Any())
+        {
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success || loading)" OnClick="Salvar">
+                @if (loading)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    <MudText Class="ms-2">Salvando</MudText>
+                }
+                else
+                {
+                    <MudText>Salvar Transação</MudText>
+                }
+            </MudButton>
+        }
+    </MudCardActions>
+</MudCard>
 
 @code {
-    [Parameter] public int? TransacaoId { get; set; }
+    private TransacaoDTO transacaoModel = new()
+    {
+        CotacaoDolar = 5.0m // Valor default
+    };
 
-    private TransacaoInputDTO _input = new() { Data = DateTime.Today, CotacaoDolar = 5.00m };
-    private DateTime? _dataNullable = DateTime.Today;
-    private IEnumerable<Cartao> _cartoes = new List<Cartao>();
+    private DateTime? dataSelecionada = DateTime.Now;
+    private List<CartaoDTO>? cartoes;
+    private int currentUserId;
 
-    private bool _processando = false;
-    private bool _carregando = true;
-    private int _usuarioId = 1;
+    private MudForm form = null!;
+    private bool success;
+    private bool loading;
 
-    // UC-08 FE-01: Lista de erros de validação para o componente <ValidationErrors>
     private List<string>? _errosValidacao;
 
     protected override async Task OnInitializedAsync()
     {
-        try
+        await CarregarUsuario();
+        await CarregarCartoes(); // Sync transformado em Async
+    }
+
+    private async Task CarregarUsuario()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var idClaim = user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (int.TryParse(idClaim, out int id))
         {
-            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-            var user = authState.User;
-            var idClaim = user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            if (int.TryParse(idClaim, out int id)) _usuarioId = id;
-
-            _cartoes = await CartaoRepository.ObterPorUsuarioAsync(_usuarioId);
-
-            if (!_cartoes.Any())
-            {
-                Snackbar.Add("É necessário cadastrar um cartão antes.", Severity.Warning);
-                NavigationManager.NavigateTo("/cartoes");
-                return;
-            }
-
-            if (TransacaoId.HasValue)
-            {
-                var transacaoExistente = await TransacaoService.ObterPorIdAsync(TransacaoId.Value);
-                if (transacaoExistente != null)
-                {
-                    _input = transacaoExistente;
-                    _dataNullable = _input.Data;
-                }
-                else
-                {
-                    Snackbar.Add("Transação não encontrada", Severity.Error);
-                    NavigationManager.NavigateTo("/compras");
-                }
-            }
-            else
-            {
-                _input.CartaoId = _cartoes.First().Id;
-            }
-        }
-        finally
-        {
-            _carregando = false;
+            currentUserId = id;
         }
     }
 
-    private async Task SalvarTransacao()
+    private async Task CarregarCartoes()
     {
-        _processando = true;
-        _errosValidacao = null; // Limpa erros anteriores
         try
         {
-            if (_dataNullable.HasValue) _input.Data = _dataNullable.Value;
+            if (currentUserId > 0)
+            {
+                cartoes = await CartaoService.ObterPorUsuarioAsync(currentUserId);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao carregar cartões: {ex.Message}", Severity.Error);
+        }
+    }
 
-            if (TransacaoId.HasValue)
-            {
-                await TransacaoService.AtualizarAsync(_input);
-                Snackbar.Add("Transação atualizada com sucesso", Severity.Success);
-            }
-            else
-            {
-                await TransacaoService.AdicionarAsync(_input);
-                Snackbar.Add("Transação registrada com sucesso", Severity.Success);
-            }
+    private void Voltar()
+    {
+        NavigationManager.NavigateTo("/compras");
+    }
+
+    private async Task Salvar()
+    {
+        await form.Validate();
+        if (!form.IsValid || cartoes == null || !cartoes.Any()) return;
+
+        // Limpa erros de submissão anterior
+        _errosValidacao = null;
+        loading = true;
+
+        try
+        {
+            transacaoModel.Data = dataSelecionada ?? DateTime.Now;
+
+            // Envia para Application Layer via Async
+            await TransacaoService.AdicionarAsync(transacaoModel);
+
+            Snackbar.Add("Transação salva com sucesso e pontos simulados!", Severity.Success);
 
             NavigationManager.NavigateTo("/compras");
         }
-        catch (ValidationException ex)
+        catch (Miles.Core.Exceptions.ValidationException ex)
         {
             // UC-08 FE-01: Exibe lista detalhada de erros via <ValidationErrors>
             _errosValidacao = ex.Errors.ToList();
         }
-        catch (DomainException ex)
+        catch (ValorInvalidoException ex)
         {
-            // Erros pontuais de domínio (cartão não encontrado, etc.) via Snackbar
-            Snackbar.Add(ex.Message, Severity.Error);
+            Snackbar.Add(ex.Message, Severity.Warning);
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro inesperado: {ex.Message}", Severity.Error);
+            Snackbar.Add($"Erro ao salvar: {ex.Message}", Severity.Error);
         }
         finally
         {
-            _processando = false;
+            loading = false;
         }
-    }
-
-    private void Cancelar()
-    {
-        NavigationManager.NavigateTo("/compras");
     }
 }

@@ -210,7 +210,7 @@ else
             dialogVisible = false;
             await CarregarProgramas();
         }
-        catch (ValidationException ex)
+        catch (Miles.Core.Exceptions.ValidationException ex)
         {
             _errosValidacao = ex.Errors.ToList();
         }
