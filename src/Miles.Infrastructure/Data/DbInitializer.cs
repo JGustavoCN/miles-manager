@@ -70,6 +70,11 @@ public static class DbInitializer
                 {
                     programa.Validar(); // UC-08
                 }
+                catch (ValidationException ex)
+                {
+                    Log.Error(ex, "Programa '{Nome}' possui dados inválidos: {Erro}", programa.Nome, ex.Message);
+                    throw;
+                }
                 catch (ValorInvalidoException ex)
                 {
                     Log.Error(ex, "Programa '{Nome}' possui dados inválidos: {Erro}", programa.Nome, ex.Message);
@@ -132,6 +137,11 @@ public static class DbInitializer
                 try
                 {
                     cartao.Validar(); // UC-08
+                }
+                catch (ValidationException ex)
+                {
+                    Log.Error(ex, "Cartão '{Nome}' possui dados inválidos: {Erro}", cartao.Nome, ex.Message);
+                    throw;
                 }
                 catch (ValorInvalidoException ex)
                 {
@@ -260,11 +270,15 @@ public static class DbInitializer
 
                     transacoes.Add(transacao);
                 }
-                catch (ValorInvalidoException ex)
+                catch (ValidationException ex)
                 {
                     // UC-08 FE-01: Log de Erro de Validação
                     Log.Error(ex, "Transação '{Descricao}' possui dados inválidos: {Erro}", seed.Descricao, ex.Message);
                     // Continua com as outras transações ao invés de quebrar tudo
+                }
+                catch (ValorInvalidoException ex)
+                {
+                    Log.Error(ex, "Transação '{Descricao}' possui dados inválidos: {Erro}", seed.Descricao, ex.Message);
                 }
             }
 
