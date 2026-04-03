@@ -10,7 +10,7 @@ Este documento detalha a implementação da camada de acesso a dados utilizando 
 
 ### Separação de Responsabilidades
 
-```
+```bash
 ┌─────────────────────────────────────────────────────────────┐
 │                    Miles.WebApp (UI)                        │
 │  • Program.cs → Injeção de Dependência                     │
@@ -152,7 +152,7 @@ Em ambientes de produção, falhas temporárias de rede ou do SQL Server podem o
 
 **Exemplo de Comportamento:**
 
-```
+```bash
 Tentativa 1: Falha → Aguarda 1s
 Tentativa 2: Falha → Aguarda 2s
 Tentativa 3: Falha → Aguarda 4s
@@ -190,7 +190,7 @@ No [`appsettings.json`](../src/Miles.WebApp/appsettings.json), foi habilitado o 
 
 **Exemplo de Log:**
 
-```
+```bash
 info: Microsoft.EntityFrameworkCore.Database.Command[20101]
       Executed DbCommand (23ms) [Parameters=[@p0='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
       INSERT INTO [Usuarios] ([Nome]) VALUES (@p0);
