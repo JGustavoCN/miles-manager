@@ -41,7 +41,7 @@
             <MudText Typo="Typo.subtitle1" Class="mud-text-secondary">Seu comando central de milhas.</MudText>
         </div>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
-            Href="/transacoes/nova">
+                   Href="/nova-transacao">
             Nova Transação
         </MudButton>
     </div>
@@ -115,15 +115,15 @@
                     @if (_dashboardData.SaldosPorPrograma.Any())
                     {
                         <MudChart ChartType="ChartType.Donut" Width="100%" Height="250px"
-                            InputData="@(_dashboardData.SaldosPorPrograma.Select(x => x.SaldoTotal).ToArray())"
-                            InputLabels="@(_dashboardData.SaldosPorPrograma.Select(x => x.NomePrograma).ToArray())">
+                                  InputData="@(_dashboardData.SaldosPorPrograma.Select(x => x.SaldoTotal).ToArray())"
+                                  InputLabels="@(_dashboardData.SaldosPorPrograma.Select(x => x.NomePrograma).ToArray())">
                             <CustomGraphics>
                                 <text class="donut-inner-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-                                    fill="var(--mud-palette-text-primary)" font-family="Helvetica" font-size="20">
+                                      fill="var(--mud-palette-text-primary)" font-family="Helvetica" font-size="20">
                                     Total
                                 </text>
                                 <text class="donut-inner-text" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle"
-                                    fill="var(--mud-palette-text-primary)" font-family="Helvetica" font-size="30">
+                                      fill="var(--mud-palette-text-primary)" font-family="Helvetica" font-size="30">
                                     @_dashboardData.TotalGeralPontos.ToString("N0")
                                 </text>
                             </CustomGraphics>
@@ -143,8 +143,8 @@
                     @if (_dashboardData.GastosPorCategoria.Any())
                     {
                         <MudChart ChartType="ChartType.Pie" Width="100%" Height="250px"
-                            InputData="@(_dashboardData.GastosPorCategoria.Select(x => x.ValorTotal).ToArray())"
-                            InputLabels="@(_dashboardData.GastosPorCategoria.Select(x => x.Categoria).ToArray())" />
+                                  InputData="@(_dashboardData.GastosPorCategoria.Select(x => x.ValorTotal).ToArray())"
+                                  InputLabels="@(_dashboardData.GastosPorCategoria.Select(x => x.Categoria).ToArray())" />
                     }
                     else
                     {
@@ -160,8 +160,8 @@
                     @if (_dashboardData.TopCartoes.Any())
                     {
                         <MudChart ChartType="ChartType.Bar" Width="100%" Height="250px" Class="grafico-customizado"
-                            ChartSeries="@_seriesCartoes" XAxisLabels="@_labelsCartoes"
-                            ChartOptions="@(new ChartOptions { YAxisLines = false })" />
+                                  ChartSeries="@_seriesCartoes" XAxisLabels="@_labelsCartoes"
+                                  ChartOptions="@(new ChartOptions { YAxisLines = false })" />
                     }
                     else
                     {
@@ -175,7 +175,7 @@
                 <MudPaper Class="pa-4 rounded-lg" Elevation="2">
                     <MudText Typo="Typo.h6">Evolução de Pontos (6 Meses)</MudText>
                     <MudChart ChartType="ChartType.Line" ChartSeries="@_seriesEvolucao" XAxisLabels="@_labelsEvolucao"
-                        Width="100%" Height="300px" />
+                              Width="100%" Height="300px" />
                 </MudPaper>
             </MudItem>
 

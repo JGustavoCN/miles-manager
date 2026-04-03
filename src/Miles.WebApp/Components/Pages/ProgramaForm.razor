@@ -1,0 +1,111 @@
+@using Miles.Application.DTOs
+@using Miles.Application.Interfaces
+@using Miles.Core.Exceptions
+@using MudBlazor
+
+@inject IProgramaService ProgramaService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <DialogContent>
+        <ValidationErrors Errors="@_errosValidacao" />
+
+        <MudForm @ref="form" @bind-IsValid="@success">
+            <MudTextField T="string" Label="Nome do Programa" @bind-Value="programaModel.Nome" Required="true"
+                RequiredError="Nome é obrigatório!" Counter="100" MaxLength="100" HelperText="Ex: Smiles, Livelo" />
+            <MudTextField T="string" Label="Empresa ou Banco" @bind-Value="programaModel.Banco" Counter="100"
+                MaxLength="100" HelperText="Ex: Gol, Bradesco" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancelar">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Salvar" Disabled="@(!success || loading)">
+            @if (loading)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">Salvando</MudText>
+            }
+            else
+            {
+                <MudText>Salvar</MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter]
+    public int UsuarioId { get; set; }
+
+    [Parameter]
+    public ProgramaInputDTO? ProgramaParaEditar { get; set; }
+
+    private ProgramaInputDTO programaModel = new();
+    private MudForm form = null!;
+    private bool success;
+    private bool loading;
+    private bool isEdicao => ProgramaParaEditar != null;
+
+    private List<string>? _errosValidacao;
+
+    protected override void OnInitialized()
+    {
+        if (isEdicao && ProgramaParaEditar != null)
+        {
+            programaModel = new ProgramaInputDTO
+            {
+                Id = ProgramaParaEditar.Id,
+                Nome = ProgramaParaEditar.Nome,
+                Banco = ProgramaParaEditar.Banco,
+                UsuarioId = UsuarioId
+            };
+        }
+        else
+        {
+            programaModel.UsuarioId = UsuarioId;
+        }
+    }
+
+    private void Cancelar() => MudDialog.Cancel();
+
+    private async Task Salvar()
+    {
+        await form.Validate();
+        if (!form.IsValid) return;
+
+        loading = true;
+        _errosValidacao = null;
+
+        try
+        {
+            if (isEdicao)
+            {
+                await ProgramaService.AtualizarAsync(programaModel);
+            }
+            else
+            {
+                await ProgramaService.AdicionarAsync(programaModel);
+            }
+
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Miles.Core.Exceptions.ValidationException ex)
+        {
+            _errosValidacao = ex.Errors.ToList();
+        }
+        catch (ValorInvalidoException ex)
+        {
+            _errosValidacao = new List<string> { ex.Message };
+        }
+        catch (Exception ex)
+        {
+            _errosValidacao = new List<string> { $"Erro inesperado: {ex.Message}" };
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+}

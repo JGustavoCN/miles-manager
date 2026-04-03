@@ -78,47 +78,13 @@ else
     </MudGrid>
 }
 
-@* --- DIALOG (MODAL) DE CADASTRO/EDIÇÃO --- *@
-<MudDialog @bind-Visible="dialogVisible" Options="dialogOptions">
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@(isEdicao? Icons.Material.Filled.Edit : Icons.Material.Filled.Add)" Class="mr-2" />
-            @(isEdicao ? "Editar Programa" : "Novo Programa")
-        </MudText>
-    </TitleContent>
-    <DialogContent>
-        @* UC-08 FE-01: Componente de validação que exibe as mensagens de erro em tela de forma padronizada *@
-        <ValidationErrors Errors="@_errosValidacao" />
 
-        <MudForm @ref="form" @bind-IsValid="@success">
-            <MudTextField T="string" Label="Nome do Programa" @bind-Value="programaModel.Nome" Required="true"
-                RequiredError="Nome é obrigatório!" Counter="100" MaxLength="100" HelperText="Ex: Smiles, Livelo" />
-            <MudTextField T="string" Label="Empresa ou Banco" @bind-Value="programaModel.Banco" Counter="100"
-                MaxLength="100" HelperText="Ex: Gol, Bradesco" />
-        </MudForm>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="FecharModal">Cancelar</MudButton>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="SalvarPrograma" Disabled="@(!success)">Salvar
-        </MudButton>
-    </DialogActions>
-</MudDialog>
 
 @code {
     // Mudança: Agora listamos DTOs, não Entidades (Application Layer -> View)
     private List<ProgramaInputDTO>? programas;
 
-    private ProgramaInputDTO programaModel = new();
-    private bool dialogVisible;
-    private bool isEdicao;
-
-    private MudForm form = null!;
-
-    private bool success;
     private int currentUserId;
-    private DialogOptions dialogOptions = new() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true };
-
-    private List<string>? _errosValidacao;
 
     protected override async Task OnInitializedAsync()
     {
@@ -157,70 +123,38 @@ else
 
     // --- Ações de Modal ---
 
-    private void AbrirModalCadastro()
+    private async Task AbrirModalCadastro()
     {
-        isEdicao = false;
-        programaModel = new ProgramaInputDTO { UsuarioId = currentUserId };
-        _errosValidacao = null; // limpa erros anteriores
-        dialogVisible = true;
+        await AbrirModal(null);
     }
 
-    // Mudança: Recebe DTO
-    private void AbrirModalEdicao(ProgramaInputDTO programa)
+    private async Task AbrirModalEdicao(ProgramaInputDTO programa)
     {
-        isEdicao = true;
-        // Clonamos o objeto para evitar edição direta na referência da lista antes de salvar
-        programaModel = new ProgramaInputDTO
-        {
-            Id = programa.Id,
-            Nome = programa.Nome,
-            Banco = programa.Banco,
-            UsuarioId = programa.UsuarioId
-        };
-        _errosValidacao = null; // limpa erros anteriores
-        dialogVisible = true;
+        await AbrirModal(programa);
     }
 
-    private void FecharModal() => dialogVisible = false;
-
-    private async Task SalvarPrograma()
+    private async Task AbrirModal(ProgramaInputDTO? programa)
     {
-        await form.Validate();
-        if (!form.IsValid) return;
+        var parameters = new DialogParameters();
+        parameters.Add("UsuarioId", currentUserId);
 
-        _errosValidacao = null;
+        string titulo = "Novo Programa";
 
-        try
+        if (programa != null)
         {
-            programaModel.UsuarioId = currentUserId;
+            titulo = "Editar Programa";
+            parameters.Add("ProgramaParaEditar", programa);
+        }
 
-            if (isEdicao)
-            {
-                // Mudança: Chamada Async
-                await ProgramaService.AtualizarAsync(programaModel);
-                Snackbar.Add("Programa atualizado com sucesso!", Severity.Success);
-            }
-            else
-            {
-                // Mudança: Chamada Async
-                await ProgramaService.AdicionarAsync(programaModel);
-                Snackbar.Add("Programa de fidelidade cadastrado com sucesso", Severity.Success);
-            }
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
 
-            dialogVisible = false;
+        var dialog = await DialogService.ShowAsync<ProgramaForm>(titulo, parameters, options);
+        var result = await dialog.Result;
+
+        if (result != null && !result.Canceled)
+        {
+            Snackbar.Add(programa == null ? "Programa cadastrado com sucesso!" : "Programa atualizado com sucesso!", Severity.Success);
             await CarregarProgramas();
-        }
-        catch (Miles.Core.Exceptions.ValidationException ex)
-        {
-            _errosValidacao = ex.Errors.ToList();
-        }
-        catch (ValorInvalidoException ex)
-        {
-            Snackbar.Add(ex.Message, Severity.Warning);
-        }
-        catch (Exception ex)
-        {
-            Snackbar.Add($"Erro inesperado: {ex.Message}", Severity.Error);
         }
     }
 

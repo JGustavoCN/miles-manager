@@ -17,7 +17,7 @@
     <div class="d-flex justify-space-between align-center mb-4">
         <MudText Typo="Typo.h4">Histórico de Compras</MudText>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
-            OnClick="IrParaNovaTransacao">
+                   OnClick="IrParaNovaTransacao">
             Nova Transação
         </MudButton>
     </div>
@@ -59,9 +59,9 @@
                 <MudTd DataLabel="Ações" Style="text-align:center">
                     @* CORREÇÃO: .GetValueOrDefault() para converter int? em int *@
                     <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
-                        OnClick="@(() => Editar(context.Id.GetValueOrDefault()))" />
+                                   OnClick="@(() => Editar(context.Id.GetValueOrDefault()))" />
                     <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
-                        OnClick="@(() => Excluir(context))" />
+                                   OnClick="@(() => Excluir(context))" />
                 </MudTd>
             </RowTemplate>
         </MudTable>
@@ -99,7 +99,7 @@
 
     private void IrParaNovaTransacao()
     {
-        NavigationManager.NavigateTo("/transacoes/nova");
+        NavigationManager.NavigateTo("/nova-transacao");
     }
 
     private void Editar(int id)

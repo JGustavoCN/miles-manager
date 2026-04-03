@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Miles.Core.Exceptions;
 using Miles.Core.Interfaces;
 
 namespace Miles.Core.Entities;
@@ -8,8 +7,9 @@ namespace Miles.Core.Entities;
 /// Entidade central do domínio que representa uma transação financeira.
 /// Adere ao princípio de Rica Anêmica, com validações embutidas (UC-08).
 /// </summary>
-public class Transacao : BaseEntity
+public class Transacao
 {
+    public int Id { get; set; }
     public DateTime Data { get; set; }
     public decimal Valor { get; set; }
     public string Descricao { get; set; } = string.Empty;
@@ -41,7 +41,17 @@ public class Transacao : BaseEntity
     /// </summary>
     public void CalcularPontos(ICalculoPontosStrategy strategy, decimal fatorConversaoCartao)
     {
-        PontosEstimados = strategy.Calcular(Valor, CotacaoDolar, fatorConversaoCartao);
+        if (strategy == null) throw new ArgumentNullException(nameof(strategy));
+        if (fatorConversaoCartao <= 0) throw new Miles.Core.Exceptions.ValorInvalidoException("Fator de conversão deve ser maior que zero");
+
+        if (CotacaoDolar <= 0)
+        {
+            PontosEstimados = 0;
+            return;
+        }
+
+        var valorDolares = Valor / CotacaoDolar;
+        PontosEstimados = strategy.Calcular(valorDolares, fatorConversaoCartao);
     }
 
     /// <summary>

@@ -119,24 +119,28 @@ try
         };
     });
 
-    // Configurações de Ambiente
-    if (app.Environment.IsDevelopment())
+    // Execução Automática de Migrações (para que o banco de dados Azure recceba colunas e chaves novas)
+    using (var scope = app.Services.CreateScope())
     {
-        using (var scope = app.Services.CreateScope())
+        var services = scope.ServiceProvider;
+        try
         {
-            var services = scope.ServiceProvider;
-            try
+            var context = services.GetRequiredService<AppDbContext>();
+            await context.Database.MigrateAsync();
+
+            if (app.Environment.IsDevelopment())
             {
-                var context = services.GetRequiredService<AppDbContext>();
                 DbInitializer.Initialize(context, Log.Logger);
             }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao popular o banco de dados.");
-            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Erro ao migrar/popular o banco de dados.");
         }
     }
-    else // !IsDevelopment (Produção/Staging)
+
+    // Configurações de Ambiente
+    if (!app.Environment.IsDevelopment())
     {
         app.UseExceptionHandler("/Error", createScopeForErrors: true);
 

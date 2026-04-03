@@ -33,7 +33,7 @@ public class TransacaoRepository : ITransacaoRepository
         return await _context.Transacoes
             .AsNoTracking()
             .Include(t => t.Cartao)
-            .Where(t => t.Cartao.UsuarioId == userId)
+            .Where(t => t.Cartao != null && t.Cartao.UsuarioId == userId)
             .OrderByDescending(t => t.Data)
             .ToListAsync(ct);
     }

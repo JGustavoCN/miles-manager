@@ -89,7 +89,7 @@ public class DashboardFacade : IDashboardFacade
         // 5. NOVO: Top Cartões (Quem gera mais pontos?)
         dashboardDTO.TopCartoes = transacoes
             .Where(t => t.Cartao != null)
-            .GroupBy(t => t.Cartao.Nome)
+            .GroupBy(t => t.Cartao!.Nome)
             .Select(g => new CartaoPerformanceDTO
             {
                 NomeCartao = g.Key,

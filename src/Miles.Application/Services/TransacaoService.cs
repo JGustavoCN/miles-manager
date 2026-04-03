@@ -97,7 +97,7 @@ public class TransacaoService : ITransacaoService
         if (cartao == null) throw new ValorInvalidoException("Cartão não encontrado.");
 
         // 3. Atualiza dados
-        transacaoExistente.AtualizarDados(input.Descricao, input.Valor, input.Data, input.Categoria, input.CartaoId);
+        transacaoExistente.AtualizarDados(input.Data, input.Valor, input.Descricao, input.Categoria, input.CartaoId);
 
         // 4. UC-08: Validação Centralizada — garante integridade antes de qualquer persistência
         transacaoExistente.Validar();

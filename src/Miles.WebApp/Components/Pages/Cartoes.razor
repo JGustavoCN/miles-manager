@@ -110,7 +110,7 @@
         if (cartao != null)
         {
             titulo = "Editar Cartão";
-            parameters.Add("CartaoId", cartao.Id);
+            parameters.Add("CartaoParaEditar", cartao);
         }
 
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };

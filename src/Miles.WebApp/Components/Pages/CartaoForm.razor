@@ -77,13 +77,13 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter]
     public int UsuarioId { get; set; }
 
     [Parameter]
-    public CartaoDTO? CartaoParaEditar { get; set; }
+    public CartaoInputDTO? CartaoParaEditar { get; set; }
 
     private CartaoInputDTO cartaoModel = new();
     private List<ProgramaInputDTO>? programas = new(); // DTO do programa para o Select
@@ -152,7 +152,7 @@
             }
             else
             {
-                await CartaoService.AdicionarAsync(cartaoModel);
+                await CartaoService.CadastrarAsync(cartaoModel);
             }
 
             MudDialog.Close(DialogResult.Ok(true));

@@ -1,4 +1,5 @@
 @page "/nova-transacao"
+@page "/transacoes/editar/{Id:int}"
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 
 @using Miles.Application.DTOs
@@ -14,8 +15,8 @@
 <PageTitle>Nova Transação - Miles Manager</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">
-    <MudIcon Icon="@Icons.Material.Filled.AddShoppingCart" Class="mr-2" />
-    Nova Transação
+    <MudIcon Icon="@(isEdicao ? Icons.Material.Filled.Edit : Icons.Material.Filled.AddShoppingCart)" Class="mr-2" />
+    @(isEdicao ? "Editar Transação" : "Nova Transação")
 </MudText>
 
 <MudText Typo="Typo.body1" Class="mb-4">
@@ -68,7 +69,7 @@
 
                     <MudItem xs="12" md="4">
                         <MudDatePicker Label="Data da Transação" @bind-Date="dataSelecionada" Required="true"
-                            RequiredError="Data é obrigatória" DisableToolbar="true" DateFormat="dd/MM/yyyy" />
+                            RequiredError="Data é obrigatória" DateFormat="dd/MM/yyyy" />
                     </MudItem>
 
                     <MudItem xs="12" md="4">
@@ -104,7 +105,7 @@
                 }
                 else
                 {
-                    <MudText>Salvar Transação</MudText>
+                <MudText>@(isEdicao ? "Atualizar Transação" : "Salvar Transação")</MudText>
                 }
             </MudButton>
         }
@@ -112,13 +113,17 @@
 </MudCard>
 
 @code {
-    private TransacaoDTO transacaoModel = new()
+    [Parameter]
+    public int? Id { get; set; }
+    private bool isEdicao => Id.HasValue;
+
+    private TransacaoInputDTO transacaoModel = new()
     {
         CotacaoDolar = 5.0m // Valor default
     };
 
     private DateTime? dataSelecionada = DateTime.Now;
-    private List<CartaoDTO>? cartoes;
+    private List<CartaoInputDTO>? cartoes;
     private int currentUserId;
 
     private MudForm form = null!;
@@ -130,7 +135,22 @@
     protected override async Task OnInitializedAsync()
     {
         await CarregarUsuario();
-        await CarregarCartoes(); // Sync transformado em Async
+        await CarregarCartoes(); 
+
+        if (isEdicao)
+        {
+            var transacaoExistente = await TransacaoService.ObterPorIdAsync(Id!.Value);
+            if (transacaoExistente != null)
+            {
+                transacaoModel = transacaoExistente;
+                dataSelecionada = transacaoModel.Data;
+            }
+            else
+            {
+                Snackbar.Add("Transação não encontrada.", Severity.Error);
+                NavigationManager.NavigateTo("/compras");
+            }
+        }
     }
 
     private async Task CarregarUsuario()
@@ -138,9 +158,9 @@
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         var idClaim = user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        if (int.TryParse(idClaim, out int id))
+        if (int.TryParse(idClaim, out int id_claim))
         {
-            currentUserId = id;
+            currentUserId = id_claim;
         }
     }
 
@@ -177,10 +197,16 @@
         {
             transacaoModel.Data = dataSelecionada ?? DateTime.Now;
 
-            // Envia para Application Layer via Async
-            await TransacaoService.AdicionarAsync(transacaoModel);
-
-            Snackbar.Add("Transação salva com sucesso e pontos simulados!", Severity.Success);
+            if (isEdicao)
+            {
+                await TransacaoService.AtualizarAsync(transacaoModel);
+                Snackbar.Add("Transação atualizada com sucesso!", Severity.Success);
+            }
+            else
+            {
+                await TransacaoService.AdicionarAsync(transacaoModel);
+                Snackbar.Add("Transação salva com sucesso e pontos simulados!", Severity.Success);
+            }
 
             NavigationManager.NavigateTo("/compras");
         }
