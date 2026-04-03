@@ -17,8 +17,8 @@ public class ProgramaFidelidadeTests
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => programa.Validar());
-        Assert.Contains("Nome do programa de fidelidade é obrigatório", exception.Message);
+        var exception = Assert.Throws<ValidationException>(() => programa.Validar());
+        Assert.Contains("Nome do programa de fidelidade é obrigatório", exception.Errors);
     }
 
     [Fact]
@@ -32,8 +32,8 @@ public class ProgramaFidelidadeTests
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => programa.Validar());
-        Assert.Contains("Usuário vinculado é obrigatório", exception.Message);
+        var exception = Assert.Throws<ValidationException>(() => programa.Validar());
+        Assert.Contains("Usuário vinculado é obrigatório", exception.Errors);
     }
 
     [Fact]

@@ -22,8 +22,8 @@ public class CartaoTests
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => cartao.Validar());
-        Assert.Contains("Nome do cartão é obrigatório", exception.Message);
+        var exception = Assert.Throws<ValidationException>(() => cartao.Validar());
+        Assert.Contains("Nome do cartão é obrigatório", exception.Errors);
     }
 
     [Fact]
@@ -42,8 +42,8 @@ public class CartaoTests
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => cartao.Validar());
-        Assert.Contains("Limite do cartão deve ser maior que zero", exception.Message);
+        var exception = Assert.Throws<ValidationException>(() => cartao.Validar());
+        Assert.Contains("Limite do cartão deve ser maior que zero", exception.Errors);
     }
 
     [Fact]
@@ -55,15 +55,15 @@ public class CartaoTests
             Nome = "Cartão Teste",
             Bandeira = "Elo",
             Limite = 5000m,
-            DiaVencimento = 35, // Inválido
+            DiaVencimento = 35,
             FatorConversao = 1.0m,
             UsuarioId = 1,
             ProgramaId = 1
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => cartao.Validar());
-        Assert.Contains("Dia de vencimento deve estar entre 1 e 31", exception.Message);
+        var exception = Assert.Throws<ValidationException>(() => cartao.Validar());
+        Assert.Contains("Dia de vencimento deve estar entre 1 e 31", exception.Errors);
     }
 
     [Fact]
