@@ -33,7 +33,7 @@ public class Transacao
     public void CalcularPontos(ICalculoPontosStrategy strategy, decimal fatorConversao)
     {
         if (strategy == null) throw new ArgumentNullException(nameof(strategy));
-        if (fatorConversao <= 0) throw new ValorInvalidoException("Fator de conversão inválido");
+        if (fatorConversao <= 0) throw new ValorInvalidoException("Fator de conversão deve ser maior que zero");
 
         if (Valor <= 0 || CotacaoDolar <= 0)
         {
@@ -45,14 +45,39 @@ public class Transacao
         PontosEstimados = strategy.Calcular(valorEmDolares, fatorConversao);
     }
 
+    /// <summary>
+    /// Valida os dados da transação conforme UC-08 (RF-008).
+    /// Lança ValidationException com lista estruturada de erros.
+    /// </summary>
+    /// <exception cref="ValidationException">Lançada com todos os erros encontrados.</exception>
     public void Validar()
     {
         var erros = new List<string>();
-        if (string.IsNullOrWhiteSpace(Descricao)) erros.Add("Descrição obrigatória");
-        if (Valor <= 0) erros.Add("Valor deve ser maior que zero");
-        if (CartaoId <= 0) erros.Add("Cartão obrigatório");
 
-        if (erros.Any()) throw new ValorInvalidoException(string.Join("; ", erros));
+        // UC-08: Campos obrigatórios
+        if (string.IsNullOrWhiteSpace(Descricao))
+            erros.Add("Descrição da transação é obrigatória");
+
+        if (string.IsNullOrWhiteSpace(Categoria))
+            erros.Add("Categoria da transação é obrigatória");
+
+        // UC-08: Valores monetários > 0
+        if (Valor <= 0)
+            erros.Add("Valor da transação deve ser maior que zero");
+
+        if (CotacaoDolar <= 0)
+            erros.Add("Cotação do dólar deve ser maior que zero");
+
+        // UC-08: Data não pode ser futura
+        if (Data > DateTime.Now)
+            erros.Add("Data da transação não pode ser futura");
+
+        // UC-08: Foreign Key
+        if (CartaoId <= 0)
+            erros.Add("Cartão vinculado é obrigatório");
+
+        if (erros.Any())
+            throw new ValidationException(erros);
     }
 
     // --- NOVO MÉTODO PARA UPDATE ---
