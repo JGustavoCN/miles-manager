@@ -37,6 +37,9 @@
                     <EditForm Model="@cadastroModel" OnValidSubmit="HandleCadastro">
                         <DataAnnotationsValidator />
 
+                        @* UC-08 FE-01: Exibição estruturada de erros *@
+                        <ValidationErrors Errors="@_errosValidacao" />
+
                         <div class="mb-3">
                             <label for="nome" class="form-label">Nome Completo</label>
                             <InputText id="nome" class="form-control" @bind-Value="cadastroModel.Nome"
@@ -96,9 +99,12 @@
     private CadastroInputDTO cadastroModel = new();
     private bool loading = false;
 
+    private List<string>? _errosValidacao;
+
     private async Task HandleCadastro()
     {
         loading = true;
+        _errosValidacao = null;
         try
         {
             // 1. Tenta Registrar (Agora Async)
@@ -141,7 +147,15 @@
             }
             else
             {
-                Snackbar.Add(resultadoRegistro.MensagemErro ?? "Erro desconhecido ao realizar cadastro.", Severity.Error);
+                // Verifica se foi um erro de ValidationException concatenado (separado por '; ')
+                if (!string.IsNullOrWhiteSpace(resultadoRegistro.MensagemErro) && resultadoRegistro.MensagemErro.Contains(';'))
+                {
+                    _errosValidacao = resultadoRegistro.MensagemErro.Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
+                }
+                else
+                {
+                    Snackbar.Add(resultadoRegistro.MensagemErro ?? "Erro desconhecido ao realizar cadastro.", Severity.Error);
+                }
             }
         }
         catch (Exception ex)
