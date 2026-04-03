@@ -32,7 +32,6 @@ public class TransacaoService : ITransacaoService
     {
         var transacoes = await _repository.ObterPorUsuarioAsync(usuarioId);
 
-        // Mapeamento manual para incluir campos de visualização
         return transacoes.Select(t => new TransacaoInputDTO
         {
             Id = t.Id,
@@ -42,8 +41,6 @@ public class TransacaoService : ITransacaoService
             Categoria = t.Categoria,
             CartaoId = t.CartaoId,
             CotacaoDolar = t.CotacaoDolar,
-
-            // Novos campos corrigidos
             PontosEstimados = t.PontosEstimados,
             NomeCartao = t.Cartao?.Nome
         }).ToList();
@@ -76,6 +73,10 @@ public class TransacaoService : ITransacaoService
         var dadosTransacao = MilesMapper.ToDadosTransacao(input);
         var transacao = _factory.CriarNova(dadosTransacao);
 
+        // UC-08: Validação Centralizada — garante integridade antes de qualquer persistência
+        transacao.Validar();
+
+        // UC-09: Cálculo Automático de Pontos
         transacao.CalcularPontos(_calculoStrategy, cartao.FatorConversao);
 
         await _repository.AdicionarAsync(transacao);
@@ -87,18 +88,21 @@ public class TransacaoService : ITransacaoService
         if (!input.Id.HasValue)
             throw new ValorInvalidoException("ID da transação inválido para atualização.");
 
-        // 1. Busca Transação (Vem com o Cartao carregado pelo Include)
+        // 1. Busca Transação
         var transacaoExistente = await _repository.ObterPorIdAsync(input.Id.Value);
         if (transacaoExistente == null) throw new ValorInvalidoException("Transação não encontrada.");
 
-        // 2. Busca Cartão (Para pegar o fator de conversão)
+        // 2. Busca Cartão
         var cartao = await _cartaoRepository.ObterPorIdAsync(input.CartaoId);
         if (cartao == null) throw new ValorInvalidoException("Cartão não encontrado.");
 
         // 3. Atualiza dados
         transacaoExistente.AtualizarDados(input.Descricao, input.Valor, input.Data, input.Categoria, input.CartaoId);
 
-        // 4. Recalcula pontos
+        // 4. UC-08: Validação Centralizada — garante integridade antes de qualquer persistência
+        transacaoExistente.Validar();
+
+        // 5. UC-09: Recalcula Pontos
         transacaoExistente.CalcularPontos(_calculoStrategy, cartao.FatorConversao);
 
         transacaoExistente.Cartao = null!;

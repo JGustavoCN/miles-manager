@@ -6,111 +6,84 @@ using Microsoft.Extensions.Logging;
 
 namespace Miles.Application.Services;
 
-/// <summary>
-/// Orquestra o caso de uso UC-03 (Manter Cartões).
-/// </summary>
 public class CartaoService : ICartaoService
 {
-    private readonly ICartaoRepository _repository;
+    private readonly ICartaoRepository _cartaoRepository;
     private readonly IProgramaRepository _programaRepository;
     private readonly ILogger<CartaoService> _logger;
 
     public CartaoService(
-        ICartaoRepository repository,
+        ICartaoRepository cartaoRepository,
         IProgramaRepository programaRepository,
         ILogger<CartaoService> logger)
     {
-        _repository = repository;
+        _cartaoRepository = cartaoRepository;
         _programaRepository = programaRepository;
         _logger = logger;
     }
 
     public async Task<List<CartaoInputDTO>> ObterPorUsuarioAsync(int usuarioId)
     {
-        var cartoes = await _repository.ObterPorUsuarioAsync(usuarioId);
+        var cartoes = await _cartaoRepository.ObterPorUsuarioAsync(usuarioId);
         return cartoes.Select(MilesMapper.ToDTO).ToList();
     }
 
     public async Task<CartaoInputDTO?> ObterPorIdAsync(int id)
     {
-        var cartao = await _repository.ObterPorIdAsync(id);
-        return cartao == null ? null : MilesMapper.ToDTO(cartao);
+        var cartao = await _cartaoRepository.ObterPorIdAsync(id);
+        return cartao != null ? MilesMapper.ToDTO(cartao) : null;
     }
 
     public async Task CadastrarAsync(CartaoInputDTO input)
     {
-        try
-        {
-            // Alterado para Async: Validação não bloqueante
-            await ValidarProgramaExistenteAsync(input.ProgramaId);
+        // UC-03 FE-01: Validação de programa existente
+        await ValidarProgramaExistenteAsync(input.ProgramaId);
 
-            var cartao = MilesMapper.ToEntity(input);
+        var cartao = MilesMapper.ToEntity(input);
 
-            // UC-08: Validação Centralizada
-            cartao.Validar();
+        // UC-08: Validação Centralizada antes de persistir
+        cartao.Validar();
 
-            await _repository.AdicionarAsync(cartao);
-
-            _logger.LogInformation("Cartão {Nome} cadastrado com sucesso", cartao.Nome);
-        }
-        catch (ValorInvalidoException ex)
-        {
-            _logger.LogWarning(ex, "Dados inválidos ao cadastrar cartão");
-            throw;
-        }
+        await _cartaoRepository.AdicionarAsync(cartao);
+        _logger.LogInformation("Cartão cadastrado: {Nome}", cartao.Nome);
     }
 
     public async Task AtualizarAsync(CartaoInputDTO input)
     {
-        try
-        {
-            // Alterado para Async
-            await ValidarProgramaExistenteAsync(input.ProgramaId);
+        var cartaoExistente = await _cartaoRepository.ObterPorIdAsync(input.Id);
+        if (cartaoExistente == null)
+            throw new ValorInvalidoException("Cartão não encontrado.");
 
-            // 1. Converte DTO para Entidade
-            var cartaoAtualizado = MilesMapper.ToEntity(input);
+        // UC-03 FE-01: Validação de programa existente
+        await ValidarProgramaExistenteAsync(input.ProgramaId);
 
-            // 2. Valida regras de domínio
-            cartaoAtualizado.Validar();
+        // Atualiza campos
+        cartaoExistente.Nome = input.Nome;
+        cartaoExistente.Bandeira = input.Bandeira;
+        cartaoExistente.Limite = input.Limite;
+        cartaoExistente.DiaVencimento = input.DiaVencimento;
+        cartaoExistente.FatorConversao = input.FatorConversao;
+        cartaoExistente.ProgramaId = input.ProgramaId;
+        cartaoExistente.Usuario = null!;
+        cartaoExistente.Programa = null!;
 
-            // 3. Persistência Async
-            await _repository.AtualizarAsync(cartaoAtualizado);
+        // UC-08: Validação Centralizada antes de persistir
+        cartaoExistente.Validar();
 
-            _logger.LogInformation("Cartão {Id} atualizado com sucesso", cartaoAtualizado.Id);
-        }
-        catch (ValorInvalidoException ex)
-        {
-            _logger.LogWarning(ex, "Dados inválidos ao atualizar cartão");
-            throw;
-        }
+        await _cartaoRepository.AtualizarAsync(cartaoExistente);
+        _logger.LogInformation("Cartão atualizado: {Id}", cartaoExistente.Id);
     }
 
     public async Task RemoverAsync(int id)
     {
-        // FE-02: Exclusão Bloqueada
-        bool possuiTransacoes = await _repository.PossuiTransacoesAsync(id);
-
-        if (possuiTransacoes)
-        {
-            var msg = "O cartão não pode ser excluído por possuir compras associadas";
-            _logger.LogWarning("Tentativa de excluir cartão {Id} bloqueada: {Msg}", id, msg);
-            throw new DomainException(msg);
-        }
-
-        await _repository.RemoverAsync(id);
-
-        _logger.LogInformation("Cartão {Id} removido com sucesso", id);
+        await _cartaoRepository.RemoverAsync(id);
+        _logger.LogWarning("Cartão removido: {Id}", id);
     }
 
-    // Método privado também convertido para Async Task
     private async Task ValidarProgramaExistenteAsync(int programaId)
     {
-        // Agora usamos o método assíncrono do repositório de Programas
         var programa = await _programaRepository.ObterPorIdAsync(programaId);
-
         if (programa == null)
-        {
             throw new ValorInvalidoException("Programa de fidelidade não encontrado.");
-        }
     }
 }
