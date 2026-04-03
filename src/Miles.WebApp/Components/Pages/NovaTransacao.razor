@@ -20,6 +20,9 @@
     @(TransacaoId.HasValue ? "Editar Transação" : "Nova Transação")
 </MudText>
 
+@* UC-08 FE-01: Exibição padronizada de erros de validação em lista *@
+<ValidationErrors Errors="@_errosValidacao" />
+
 <MudPaper Class="pa-4">
     @if (_carregando)
     {
@@ -104,6 +107,9 @@
     private bool _carregando = true;
     private int _usuarioId = 1;
 
+    // UC-08 FE-01: Lista de erros de validação para o componente <ValidationErrors>
+    private List<string>? _errosValidacao;
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -113,7 +119,6 @@
             var idClaim = user.FindFirst(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(idClaim, out int id)) _usuarioId = id;
 
-            // Carrega Cartões
             _cartoes = await CartaoRepository.ObterPorUsuarioAsync(_usuarioId);
 
             if (!_cartoes.Any())
@@ -123,7 +128,6 @@
                 return;
             }
 
-            // Se for Edição, carrega dados
             if (TransacaoId.HasValue)
             {
                 var transacaoExistente = await TransacaoService.ObterPorIdAsync(TransacaoId.Value);
@@ -140,7 +144,6 @@
             }
             else
             {
-                // Novo: Default
                 _input.CartaoId = _cartoes.First().Id;
             }
         }
@@ -153,27 +156,32 @@
     private async Task SalvarTransacao()
     {
         _processando = true;
+        _errosValidacao = null; // Limpa erros anteriores
         try
         {
             if (_dataNullable.HasValue) _input.Data = _dataNullable.Value;
 
             if (TransacaoId.HasValue)
             {
-                // EDITAR
                 await TransacaoService.AtualizarAsync(_input);
                 Snackbar.Add("Transação atualizada com sucesso", Severity.Success);
             }
             else
             {
-                // CRIAR
                 await TransacaoService.AdicionarAsync(_input);
                 Snackbar.Add("Transação registrada com sucesso", Severity.Success);
             }
 
             NavigationManager.NavigateTo("/compras");
         }
+        catch (ValidationException ex)
+        {
+            // UC-08 FE-01: Exibe lista detalhada de erros via <ValidationErrors>
+            _errosValidacao = ex.Errors.ToList();
+        }
         catch (DomainException ex)
         {
+            // Erros pontuais de domínio (cartão não encontrado, etc.) via Snackbar
             Snackbar.Add(ex.Message, Severity.Error);
         }
         catch (Exception ex)

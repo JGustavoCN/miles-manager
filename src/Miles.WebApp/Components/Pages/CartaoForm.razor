@@ -1,5 +1,6 @@
 @using Miles.Application.DTOs
 @using Miles.Application.Interfaces
+@using Miles.Core.Exceptions
 @using MudBlazor
 @inject IProgramaService ProgramaService
 @inject ICartaoService CartaoService
@@ -7,6 +8,9 @@
 
 <MudDialog>
     <DialogContent>
+        @* UC-08 FE-01: Lista de erros de validação padronizada *@
+        <ValidationErrors Errors="@_errosValidacao" />
+
         <MudForm @ref="form" @bind-IsValid="@success">
             <MudGrid>
                 <MudItem xs="12">
@@ -76,6 +80,9 @@
     private MudForm form = null!;
     private bool success;
 
+    // UC-08 FE-01: Lista de erros de validação
+    private List<string>? _errosValidacao;
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -114,6 +121,8 @@
         await form.Validate();
         if (!form.IsValid) return;
 
+        _errosValidacao = null; // Limpa erros anteriores
+
         try
         {
             if (CartaoId.HasValue)
@@ -129,8 +138,14 @@
 
             MudDialog.Close(DialogResult.Ok(true));
         }
-        catch (Miles.Core.Exceptions.ValorInvalidoException ex)
+        catch (ValidationException ex)
         {
+            // UC-08 FE-01: Exibe lista detalhada de erros via <ValidationErrors>
+            _errosValidacao = ex.Errors.ToList();
+        }
+        catch (DomainException ex)
+        {
+            // Erros pontuais (ex: programa não encontrado) via Snackbar
             Snackbar.Add(ex.Message, Severity.Warning);
         }
         catch (Exception ex)
