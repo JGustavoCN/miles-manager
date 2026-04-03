@@ -1,82 +1,126 @@
 @using Miles.Application.DTOs
 @using Miles.Application.Interfaces
+@using Miles.Core.Exceptions
 @using MudBlazor
-@inject IProgramaService ProgramaService
+
 @inject ICartaoService CartaoService
-@inject ISnackbar Snackbar
+@inject IProgramaService ProgramaService
 
 <MudDialog>
     <DialogContent>
+        @* UC-08 FE-01: Exibição estruturada de erros de validação da entidade *@
+        <ValidationErrors Errors="@_errosValidacao" />
+
         <MudForm @ref="form" @bind-IsValid="@success">
             <MudGrid>
                 <MudItem xs="12">
-                    <MudTextField T="string" Label="Nome do Cartão (Apelido)" @bind-Value="Model.Nome" Required="true"
-                        RequiredError="Nome é obrigatório" Variant="Variant.Outlined" Margin="Margin.Dense" />
-                </MudItem>
-
-                <MudItem xs="12" sm="6">
-                    <MudSelect T="string" Label="Bandeira" @bind-Value="Model.Bandeira" Required="true"
-                        RequiredError="Bandeira é obrigatória" Variant="Variant.Outlined" Margin="Margin.Dense"
-                        AnchorOrigin="Origin.BottomCenter">
-                        <MudSelectItem Value="@("Visa")" />
-                        <MudSelectItem Value="@("Mastercard")" />
-                        <MudSelectItem Value="@("Elo")" />
-                        <MudSelectItem Value="@("Amex")" />
-                    </MudSelect>
-                </MudItem>
-
-                <MudItem xs="12" sm="6">
-                    <MudSelect T="int" Label="Programa de Fidelidade" @bind-Value="Model.ProgramaId" Required="true"
-                        RequiredError="Selecione um programa" Variant="Variant.Outlined" Margin="Margin.Dense"
-                        AnchorOrigin="Origin.BottomCenter">
-                        <MudSelectItem Value="0" Disabled="true">Selecione...</MudSelectItem>
+                    <MudSelect T="int" Label="Programa de Fidelidade" @bind-Value="cartaoModel.ProgramaId"
+                        Required="true" RequiredError="Selecione um programa">
                         @if (programas != null)
                         {
                             @foreach (var prog in programas)
                             {
-                                <MudSelectItem Value="@prog.Id">@prog.Nome</MudSelectItem>
+                                <MudSelectItem Value="@prog.Id">@prog.Nome (@prog.Banco)</MudSelectItem>
                             }
                         }
                     </MudSelect>
                 </MudItem>
 
-                <MudItem xs="12" sm="4">
-                    <MudNumericField @bind-Value="Model.Limite" Label="Limite (R$)" Format="N2" Min="0.01m"
-                        Required="true" RequiredError="Limite deve ser positivo" Variant="Variant.Outlined"
-                        Margin="Margin.Dense" />
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="Nome do Cartão" @bind-Value="cartaoModel.Nome" Required="true"
+                        RequiredError="Nome é obrigatório!" HelperText="Ex: Visa Infinite XP" />
                 </MudItem>
 
-                <MudItem xs="12" sm="4">
-                    <MudNumericField @bind-Value="Model.DiaVencimento" Label="Dia Vencimento" Min="1" Max="31"
-                        Required="true" RequiredError="Entre 1 e 31" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                <MudItem xs="12" sm="6">
+                    <MudSelect T="string" Label="Bandeira" @bind-Value="cartaoModel.Bandeira" Required="true"
+                        RequiredError="Selecione a bandeira">
+                        <MudSelectItem Value="@("Visa")">Visa</MudSelectItem>
+                        <MudSelectItem Value="@("Mastercard")">Mastercard</MudSelectItem>
+                        <MudSelectItem Value="@("Elo")">Elo</MudSelectItem>
+                        <MudSelectItem Value="@("Amex")">American Express</MudSelectItem>
+                    </MudSelect>
                 </MudItem>
 
-                <MudItem xs="12" sm="4">
-                    <MudNumericField @bind-Value="Model.FatorConversao" Label="Pontos por Dólar" Format="N1" Min="0.01m"
-                        Max="10.0m" Step="0.1m" Required="true" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                <MudItem xs="12" sm="6">
+                    <MudNumericField @bind-Value="cartaoModel.Limite" Label="Limite (R$)" Format="N2" Min="0"
+                        Required="true" RequiredError="Limite é obrigatório" />
                 </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <MudNumericField @bind-Value="cartaoModel.DiaVencimento" Label="Dia do Vencimento" Min="1" Max="31"
+                        Required="true" RequiredError="Dia do vencimento é obrigatório" />
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <MudNumericField @bind-Value="cartaoModel.FatorConversao" Label="Pontos por Dólar" Format="N1"
+                        Min="0.1M" Step="0.1M" Required="true" RequiredError="Fator de conversão é obrigatório"
+                        HelperText="Ex: 2.0 (2 pontos/US$)" />
+                </MudItem>
+
             </MudGrid>
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancelar</MudButton>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit" Disabled="@(!success)">Salvar
+        <MudButton OnClick="Cancelar">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!success || loading)" OnClick="Salvar">
+            @if (loading)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">Salvando</MudText>
+            }
+            else
+            {
+                <MudText>Salvar</MudText>
+            }
         </MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
-    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = null!;
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
 
-    [Parameter] public int? CartaoId { get; set; }
-    [Parameter] public int UsuarioId { get; set; }
+    [Parameter]
+    public int UsuarioId { get; set; }
 
-    private CartaoInputDTO Model { get; set; } = new();
-    private List<ProgramaInputDTO> programas = new();
+    [Parameter]
+    public CartaoDTO? CartaoParaEditar { get; set; }
+
+    private CartaoInputDTO cartaoModel = new();
+    private List<ProgramaInputDTO>? programas = new(); // DTO do programa para o Select
     private MudForm form = null!;
     private bool success;
+    private bool loading;
+    private bool isEdicao => CartaoParaEditar != null;
+
+    private List<string>? _errosValidacao;
 
     protected override async Task OnInitializedAsync()
+    {
+        await CarregarProgramas();
+
+        if (isEdicao && CartaoParaEditar != null)
+        {
+            // Preenche o formulário se for edição
+            cartaoModel = new CartaoInputDTO
+            {
+                Id = CartaoParaEditar.Id,
+                Nome = CartaoParaEditar.Nome,
+                Bandeira = CartaoParaEditar.Bandeira,
+                Limite = CartaoParaEditar.Limite,
+                DiaVencimento = CartaoParaEditar.DiaVencimento,
+                FatorConversao = CartaoParaEditar.FatorConversao,
+                UsuarioId = UsuarioId, // Garante que mantém o usuário da sessão
+                ProgramaId = CartaoParaEditar.ProgramaId
+            };
+        }
+        else
+        {
+            // Novo
+            cartaoModel.UsuarioId = UsuarioId;
+        }
+    }
+
+    private async Task CarregarProgramas()
     {
         try
         {
@@ -84,58 +128,47 @@
         }
         catch (Exception)
         {
-            Snackbar.Add("Erro ao carregar programas de fidelidade.", Severity.Error);
-        }
-
-        if (CartaoId.HasValue)
-        {
-            var cartaoExistente = await CartaoService.ObterPorIdAsync(CartaoId.Value);
-            if (cartaoExistente != null)
-            {
-                Model = cartaoExistente;
-            }
-            else
-            {
-                Snackbar.Add("Cartão não encontrado.", Severity.Error);
-                MudDialog.Cancel();
-            }
-        }
-        else
-        {
-            Model.UsuarioId = UsuarioId;
-            Model.FatorConversao = 1.0m;
+            // O tratamento principal de erro pode ser no log, 
+            // modal deve ficar mais limpo se falhar (lista vazia).
+            programas = new List<ProgramaInputDTO>();
         }
     }
 
-    private void Cancel() => MudDialog.Cancel();
+    void Cancelar() => MudDialog.Cancel();
 
-    private async Task Submit()
+    private async Task Salvar()
     {
         await form.Validate();
         if (!form.IsValid) return;
 
+        loading = true;
+        _errosValidacao = null;
+
         try
         {
-            if (CartaoId.HasValue)
+            if (isEdicao)
             {
-                await CartaoService.AtualizarAsync(Model);
-                Snackbar.Add("Cartão atualizado com sucesso", Severity.Success);
+                await CartaoService.AtualizarAsync(cartaoModel);
             }
             else
             {
-                await CartaoService.CadastrarAsync(Model);
-                Snackbar.Add("Cartão cadastrado com sucesso", Severity.Success);
+                await CartaoService.AdicionarAsync(cartaoModel);
             }
 
             MudDialog.Close(DialogResult.Ok(true));
         }
-        catch (Miles.Core.Exceptions.ValorInvalidoException ex)
+        catch (Miles.Core.Exceptions.ValidationException ex)
         {
-            Snackbar.Add(ex.Message, Severity.Warning);
+            // UC-08 FE-01: Exibe lista detalhada de erros via <ValidationErrors>
+            _errosValidacao = ex.Errors.ToList();
         }
-        catch (Exception ex)
+        catch (ValorInvalidoException ex)
         {
-            Snackbar.Add($"Erro inesperado: {ex.Message}", Severity.Error);
+            _errosValidacao = new List<string> { ex.Message };
+        }
+        finally
+        {
+            loading = false;
         }
     }
 }

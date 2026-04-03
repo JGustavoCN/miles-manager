@@ -18,86 +18,65 @@
 </MudText>
 
 <MudText Typo="Typo.body1" Class="mb-4">
-    Cadastre e gerencie os programas de milhas/pontos que você participa (ex: Smiles, Latam Pass, Livelo).
+    Gerencie seus programas de fidelidade, como companhias aéreas ou recompensas de cartão de crédito.
 </MudText>
 
-<MudGrid>
-    <MudItem xs="12" md="8">
-        <MudPaper Elevation="3" Class="pa-4">
-            <div class="d-flex justify-space-between align-center mb-4">
-                <MudText Typo="Typo.h6">
-                    <MudIcon Icon="@Icons.Material.Filled.Flight" Class="mr-2" />
-                    Meus Programas
-                </MudText>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
-                    OnClick="AbrirModalCadastro">
-                    Adicionar Programa
-                </MudButton>
-            </div>
+<MudToolBar Class="mb-4 px-0">
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+        OnClick="AbrirModalCadastro">
+        Novo Programa
+    </MudButton>
+</MudToolBar>
 
-            <MudDivider Class="mb-4" />
-
-            @if (programas == null)
-            {
-                <div class="d-flex justify-center align-center pa-8">
-                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
-                </div>
-            }
-            else if (!programas.Any())
-            {
-                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
-                    <MudText Typo="Typo.body2">🎁 Nenhum programa cadastrado ainda.</MudText>
-                    <MudText Typo="Typo.caption" Class="mt-2">Clique em "Adicionar Programa" para começar.</MudText>
-                </MudAlert>
-            }
-            else
-            {
-                @* A lista agora é de DTOs *@
-                <MudTable Items="@programas" Hover="true" Striped="true" Dense="true" Elevation="0">
-                    <HeaderContent>
-                        <MudTh>Nome</MudTh>
-                        <MudTh>Empresa/Banco</MudTh>
-                        <MudTh Style="text-align:center">Ações</MudTh>
-                    </HeaderContent>
-                    <RowTemplate>
-                        <MudTd DataLabel="Nome">@context.Nome</MudTd>
-                        <MudTd DataLabel="Empresa">@context.Banco</MudTd>
-                        <MudTd Style="text-align:center">
-                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small"
-                                OnClick="@(() => AbrirModalEdicao(context))" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small"
-                                OnClick="@(() => ConfirmarExclusao(context))" />
-                        </MudTd>
-                    </RowTemplate>
-                </MudTable>
-            }
-        </MudPaper>
-    </MudItem>
-
-    <MudItem xs="12" md="4">
-        <MudPaper Elevation="3" Class="pa-4">
-            <MudText Typo="Typo.h6" GutterBottom="true">
-                <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-2" />
-                Dicas
-            </MudText>
-            <MudDivider Class="mb-3" />
-            <div class="mt-2 ml-2">
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Nomes
-                    devem ser únicos.
-                </MudText>
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" /> Use
-                    nomes fáceis de identificar.
-                </MudText>
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" />
-                    Programas com cartões vinculados não podem ser excluídos.
-                </MudText>
-            </div>
-        </MudPaper>
-    </MudItem>
-</MudGrid>
+@if (programas == null)
+{
+    // Mudança: Mostrar progress bar enquanto carrega (Async)
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="mx-auto d-block mt-4" />
+}
+else if (!programas.Any())
+{
+    // Mudança: Empty State mais bonito caso não tenha programas
+    <MudAlert Severity="Severity.Info" Class="mt-4">
+        Você ainda não possui nenhum programa de fidelidade cadastrado. Clique no botão acima para adicionar um.
+    </MudAlert>
+}
+else
+{
+    <MudGrid>
+        @foreach (var programa in programas)
+        {
+            <MudItem xs="12" sm="6" md="4">
+                <MudCard Elevation="3" Class="h-100">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">@programa.Nome</MudText>
+                            @if (!string.IsNullOrWhiteSpace(programa.Banco))
+                            {
+                                <MudText Typo="Typo.body2" Color="Color.Secondary">Banco: @programa.Banco</MudText>
+                            }
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.FlightTakeoff" Color="Color.Primary" />
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText Typo="Typo.body2">
+                            Total de Pontos (Simulado): --
+                        </MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        @* Mudança: Passar o objeto DTO completo *@
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit"
+                            OnClick="() => AbrirModalEdicao(programa)">Editar</MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete"
+                            OnClick="() => ConfirmarExclusao(programa)">Excluir</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
 
 @* --- DIALOG (MODAL) DE CADASTRO/EDIÇÃO --- *@
 <MudDialog @bind-Visible="dialogVisible" Options="dialogOptions">
@@ -108,6 +87,9 @@
         </MudText>
     </TitleContent>
     <DialogContent>
+        @* UC-08 FE-01: Componente de validação que exibe as mensagens de erro em tela de forma padronizada *@
+        <ValidationErrors Errors="@_errosValidacao" />
+
         <MudForm @ref="form" @bind-IsValid="@success">
             <MudTextField T="string" Label="Nome do Programa" @bind-Value="programaModel.Nome" Required="true"
                 RequiredError="Nome é obrigatório!" Counter="100" MaxLength="100" HelperText="Ex: Smiles, Livelo" />
@@ -135,6 +117,8 @@
     private bool success;
     private int currentUserId;
     private DialogOptions dialogOptions = new() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true };
+
+    private List<string>? _errosValidacao;
 
     protected override async Task OnInitializedAsync()
     {
@@ -177,6 +161,7 @@
     {
         isEdicao = false;
         programaModel = new ProgramaInputDTO { UsuarioId = currentUserId };
+        _errosValidacao = null; // limpa erros anteriores
         dialogVisible = true;
     }
 
@@ -192,6 +177,7 @@
             Banco = programa.Banco,
             UsuarioId = programa.UsuarioId
         };
+        _errosValidacao = null; // limpa erros anteriores
         dialogVisible = true;
     }
 
@@ -201,6 +187,8 @@
     {
         await form.Validate();
         if (!form.IsValid) return;
+
+        _errosValidacao = null;
 
         try
         {
@@ -221,6 +209,10 @@
 
             dialogVisible = false;
             await CarregarProgramas();
+        }
+        catch (Miles.Core.Exceptions.ValidationException ex)
+        {
+            _errosValidacao = ex.Errors.ToList();
         }
         catch (ValorInvalidoException ex)
         {

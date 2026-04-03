@@ -18,8 +18,8 @@ public class UsuarioTests
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => usuario.Validar());
-        Assert.Contains("Nome do usuário é obrigatório", exception.Message);
+        var exception = Assert.Throws<ValidationException>(() => usuario.Validar());
+        Assert.Contains("Nome do usuário é obrigatório", exception.Errors);
     }
 
     [Fact]
@@ -34,8 +34,8 @@ public class UsuarioTests
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => usuario.Validar());
-        Assert.Contains("E-mail do usuário é obrigatório", exception.Message);
+        var exception = Assert.Throws<ValidationException>(() => usuario.Validar());
+        Assert.Contains("E-mail do usuário é obrigatório", exception.Errors);
     }
 
     [Fact]
@@ -45,13 +45,13 @@ public class UsuarioTests
         var usuario = new Usuario
         {
             Nome = "João Silva",
-            Email = "emailinvalido", // Sem @
+            Email = "emailinvalido",
             SenhaHash = "hash123"
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => usuario.Validar());
-        Assert.Contains("E-mail em formato inválido", exception.Message);
+        var exception = Assert.Throws<ValidationException>(() => usuario.Validar());
+        Assert.Contains("E-mail em formato inválido", exception.Errors);
     }
 
     [Fact]
@@ -66,8 +66,8 @@ public class UsuarioTests
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => usuario.Validar());
-        Assert.Contains("Senha do usuário é obrigatória", exception.Message);
+        var exception = Assert.Throws<ValidationException>(() => usuario.Validar());
+        Assert.Contains("Senha do usuário é obrigatória", exception.Errors);
     }
 
     [Fact]

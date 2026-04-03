@@ -16,7 +16,7 @@ public class TransacaoTests
         // Arrange - UC-08: Data futura não é permitida
         var transacao = new Transacao
         {
-            Data = DateTime.Now.AddDays(1), // Data futura
+            Data = DateTime.Now.AddDays(1),
             Valor = 100.00m,
             Descricao = "Teste",
             Categoria = "Teste",
@@ -25,7 +25,7 @@ public class TransacaoTests
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => transacao.Validar());
+        var exception = Assert.Throws<ValidationException>(() => transacao.Validar());
         Assert.Contains("Data da transação não pode ser futura", exception.Message);
     }
 
@@ -36,7 +36,7 @@ public class TransacaoTests
         var transacao = new Transacao
         {
             Data = DateTime.Now,
-            Valor = -100.00m, // Valor negativo
+            Valor = -100.00m,
             Descricao = "Teste",
             Categoria = "Teste",
             CotacaoDolar = 5.00m,
@@ -44,7 +44,7 @@ public class TransacaoTests
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => transacao.Validar());
+        var exception = Assert.Throws<ValidationException>(() => transacao.Validar());
         Assert.Contains("Valor da transação deve ser maior que zero", exception.Message);
     }
 
@@ -63,7 +63,7 @@ public class TransacaoTests
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => transacao.Validar());
+        var exception = Assert.Throws<ValidationException>(() => transacao.Validar());
         Assert.Contains("Valor da transação deve ser maior que zero", exception.Message);
     }
 
@@ -77,12 +77,12 @@ public class TransacaoTests
             Valor = 100.00m,
             Descricao = "Teste",
             Categoria = "Teste",
-            CotacaoDolar = 0m, // Cotação zero
+            CotacaoDolar = 0m,
             CartaoId = 1
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => transacao.Validar());
+        var exception = Assert.Throws<ValidationException>(() => transacao.Validar());
         Assert.Contains("Cotação do dólar deve ser maior que zero", exception.Message);
     }
 
@@ -94,14 +94,14 @@ public class TransacaoTests
         {
             Data = DateTime.Now,
             Valor = 100.00m,
-            Descricao = "", // Vazia
+            Descricao = "",
             Categoria = "Teste",
             CotacaoDolar = 5.00m,
             CartaoId = 1
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => transacao.Validar());
+        var exception = Assert.Throws<ValidationException>(() => transacao.Validar());
         Assert.Contains("Descrição da transação é obrigatória", exception.Message);
     }
 
@@ -114,13 +114,13 @@ public class TransacaoTests
             Data = DateTime.Now,
             Valor = 100.00m,
             Descricao = "Teste",
-            Categoria = "", // Vazia
+            Categoria = "",
             CotacaoDolar = 5.00m,
             CartaoId = 1
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => transacao.Validar());
+        var exception = Assert.Throws<ValidationException>(() => transacao.Validar());
         Assert.Contains("Categoria da transação é obrigatória", exception.Message);
     }
 
@@ -130,24 +130,27 @@ public class TransacaoTests
         // Arrange - UC-08: Múltiplos erros devem ser retornados
         var transacao = new Transacao
         {
-            Data = DateTime.Now.AddDays(1), // Data futura
-            Valor = 0m, // Valor zero
-            Descricao = "", // Vazia
-            Categoria = "", // Vazia
-            CotacaoDolar = 0m, // Cotação zero
-            CartaoId = 0 // ID inválido
+            Data = DateTime.Now.AddDays(1),
+            Valor = 0m,
+            Descricao = "",
+            Categoria = "",
+            CotacaoDolar = 0m,
+            CartaoId = 0
         };
 
         // Act & Assert
-        var exception = Assert.Throws<ValorInvalidoException>(() => transacao.Validar());
+        var exception = Assert.Throws<ValidationException>(() => transacao.Validar());
 
-        // Verifica se a mensagem contém múltiplos erros
-        Assert.Contains("Descrição da transação é obrigatória", exception.Message);
-        Assert.Contains("Categoria da transação é obrigatória", exception.Message);
-        Assert.Contains("Valor da transação deve ser maior que zero", exception.Message);
-        Assert.Contains("Cotação do dólar deve ser maior que zero", exception.Message);
-        Assert.Contains("Data da transação não pode ser futura", exception.Message);
-        Assert.Contains("Cartão vinculado é obrigatório", exception.Message);
+        // UC-08: Verifica lista estruturada de erros via Errors property
+        Assert.Contains("Descrição da transação é obrigatória", exception.Errors);
+        Assert.Contains("Categoria da transação é obrigatória", exception.Errors);
+        Assert.Contains("Valor da transação deve ser maior que zero", exception.Errors);
+        Assert.Contains("Cotação do dólar deve ser maior que zero", exception.Errors);
+        Assert.Contains("Data da transação não pode ser futura", exception.Errors);
+        Assert.Contains("Cartão vinculado é obrigatório", exception.Errors);
+
+        // Verifica que a lista tem exatamente 6 erros
+        Assert.Equal(6, exception.Errors.Count);
     }
 
     [Fact]
@@ -176,7 +179,7 @@ public class TransacaoTests
         var transacao = new Transacao
         {
             Valor = 100.00m,
-            CotacaoDolar = 0m // Cotação zero
+            CotacaoDolar = 0m
         };
 
         // Act

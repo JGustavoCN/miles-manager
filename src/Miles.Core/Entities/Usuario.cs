@@ -26,39 +26,30 @@ public class Usuario
     public virtual ICollection<ProgramaFidelidade> Programas { get; set; } = new List<ProgramaFidelidade>();
 
     /// <summary>
-    /// Valida se os dados essenciais do usuário estão preenchidos conforme UC-08 (RF-008)
+    /// Valida se os dados essenciais do usuário estão preenchidos conforme UC-08 (RF-008).
+    /// Lança ValidationException com lista estruturada de erros.
     /// </summary>
-    /// <exception cref="Miles.Core.Exceptions.ValorInvalidoException">Lançada quando dados são inválidos</exception>
+    /// <exception cref="Miles.Core.Exceptions.ValidationException">Lançada quando dados são inválidos</exception>
     public void Validar()
     {
         var erros = new List<string>();
 
         // UC-08: Verificação de Campos Obrigatórios
         if (string.IsNullOrWhiteSpace(Nome))
-        {
             erros.Add("Nome do usuário é obrigatório");
-        }
 
         if (string.IsNullOrWhiteSpace(Email))
-        {
             erros.Add("E-mail do usuário é obrigatório");
-        }
 
         if (string.IsNullOrWhiteSpace(SenhaHash))
-        {
             erros.Add("Senha do usuário é obrigatória");
-        }
 
         // UC-08: Validação de formato de e-mail
-        if (!string.IsNullOrWhiteSpace(Email) && !Email.Contains("@"))
-        {
+        if (!string.IsNullOrWhiteSpace(Email) && !Email.Contains('@'))
             erros.Add("E-mail em formato inválido");
-        }
 
-        // Se houver erros, lança exceção com todas as mensagens
+        // Se houver erros, lança ValidationException com lista estruturada
         if (erros.Any())
-        {
-            throw new Miles.Core.Exceptions.ValorInvalidoException(string.Join("; ", erros));
-        }
+            throw new Miles.Core.Exceptions.ValidationException(erros);
     }
 }

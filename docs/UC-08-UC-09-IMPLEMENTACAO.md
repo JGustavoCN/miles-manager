@@ -47,7 +47,7 @@
 
 ### ✅ Exceções
 
-#### 1.6 ValidationException.cs 
+#### 1.6 ValidationException.cs
 
 - ✅ Suporta múltiplas mensagens de erro
 - ✅ Lista somente leitura (IReadOnlyList)
@@ -72,29 +72,29 @@
 
 ### ✅ DTOs Criados
 
-#### 3.1 TransacaoInputDTO.cs 
+#### 3.1 TransacaoInputDTO.cs
 
 - ✅ Propriedades: Valor, Data, Descricao, Categoria, CotacaoDolar, CartaoId
 
-#### 3.2 CartaoInputDTO.cs 
+#### 3.2 CartaoInputDTO.cs
 
 - ✅ Propriedades: Nome, Bandeira, Limite, DiaVencimento, FatorConversao, UsuarioId, ProgramaId
 
 ### ✅ Interfaces de Services
 
-#### 3.3 ITransacaoService.cs 
+#### 3.3 ITransacaoService.cs
 
 - ✅ Método `Registrar(TransacaoInputDTO)`
 - ✅ Documentação UC-02, UC-08, UC-09
 
-#### 3.4 ICartaoService.cs 
+#### 3.4 ICartaoService.cs
 
 - ✅ Método `Cadastrar(CartaoInputDTO)`
 - ✅ Documentação UC-03, UC-08
 
 ### ✅ Services Implementados
 
-#### 3.5 TransacaoService.cs 
+#### 3.5 TransacaoService.cs
 
 - ✅ Validação de existência do cartão (UC-02 FE-02)
 - ✅ Chamada ao Factory pattern
@@ -103,7 +103,7 @@
 - ✅ Logs estruturados com ILogger
 - ✅ Propagação de exceções de validação
 
-#### 3.6 CartaoService.cs 
+#### 3.6 CartaoService.cs
 
 - ✅ Validação de existência do programa (UC-03 FE-01)
 - ✅ **Validação Centralizada** (UC-08) antes de persistir
